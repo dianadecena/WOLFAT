@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 
 import { createBottomTabNavigator } from 'react-navigation'
 import Home from './views/Home'
-import Saved from './views/Saved'
+import Tattoos from './views/Tattoos'
 import Inbox from './views/Inbox'
 import Trips from './views/Trips'
 
@@ -19,7 +19,7 @@ export default createBottomTabNavigator({
     }
   },
   Profile: {
-    screen: Saved,
+    screen: Tattoos,
     navigationOptions: {
       tabBarLabel: 'PROFILE',
       tabBarIcon: ({ tintColor }) => (
@@ -43,6 +43,19 @@ export default createBottomTabNavigator({
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/notifications.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
+    }
+  }
+}, {
+  tabBarOptions: {
+    activeTintColor: '#330D5A',
+    inactiveTintColor: 'grey',
+    style: {
+      backgroundColor: 'black',
+      borderTopWidth: 0,
+      shadowOffset: { width: 5, height: 3 },
+      shadowColor: 'white',
+      shadowOpacity: 0.5,
+      elevation: 5
     }
   }
 })
