@@ -7,6 +7,8 @@ import Tattoos from './views/Tattoos'
 import Inbox from './views/Inbox'
 import Trips from './views/Trips'
 
+import {createSwitchNavigator} from 'react-navigation'
+
 
 export default createBottomTabNavigator({
   Home: {
@@ -57,6 +59,18 @@ export default createBottomTabNavigator({
       shadowOpacity: 0.5,
       elevation: 5
     }
+  }
+})
+
+const AppSwitchNavigator = createSwitchNavigator({
+  Loading: {
+    screen: Loading
+  },
+  Login: {
+    screen: Login
+  },
+  Dashboard:{
+    screen: dashboard
   }
 })
 
