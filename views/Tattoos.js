@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
 import Inbox from './Inbox'
 import { StatusBar } from 'react-native';
@@ -22,42 +22,55 @@ class Tattoos extends React.Component {
 }
 
 export default createMaterialTopTabNavigator({
-    Populares: {
+    Tatuajes: {
       screen: Tattoos,
       navigationOptions: {
-        tabBarLabel: 'populares',
+        tabBarLabel: 'tatuajes',
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={require('./assets/tattoo-machine.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
+        )
       }
     },
-    Ubicacion: {
+    Salon: {
       screen: Inbox,
       navigationOptions: {
-        tabBarLabel: 'ubicación',
+        tabBarLabel: 'estética',
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={require('./assets/salon.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
+        )
       }
     },
-    Estilos: {
+    Piercing: {
       screen: Inbox,
       navigationOptions: {
-        tabBarLabel: 'estilos',
+        tabBarLabel: 'perforaciones',
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={require('./assets/piercing.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
+        )
       }
     },
-    Sketches: {
+    Maquillaje: {
       screen: Inbox,
       navigationOptions: {
-        tabBarLabel: 'sketches',
+        tabBarLabel: 'maquillaje',
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={require('./assets/cosmetics.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
+        )
       }
     }
   }, {
     tabBarOptions: {
-      activeTintColor: 'white',
-      inactiveTintColor: 'grey',
+      showIcon: true,
+      activeTintColor: '#330D5A',
+      inactiveTintColor: 'black',
       indicatorStyle: {
           backgroundColor: '#330D5A',
       },
       labelStyle: {
-        fontSize: 8,
+        fontSize: 7,
       },
       style: {
-        backgroundColor: '#262626',
+        backgroundColor: 'white',
         borderTopWidth: 0,
         marginTop: StatusBar.currentHeight
       }

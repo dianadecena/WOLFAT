@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     shadowColor: 'white',
     marginLeft: 5,
     shadowOpacity: 1.0,
-    marginTop: 30,
+    marginTop: 20,
   },
   bottomCard: {
     alignItems: 'center',
