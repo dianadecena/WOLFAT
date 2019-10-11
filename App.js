@@ -1,13 +1,18 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-import { createBottomTabNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import Home from './views/Home'
 import Tattoos from './views/Tattoos'
 import Inbox from './views/Inbox'
 import Trips from './views/Trips'
+import Loading from './views/Loading'
+import Login from './views/Login'
 
 import {createSwitchNavigator} from 'react-navigation'
+import firebase from 'firebase'
+import {firebaseConfig} from './config'
+firebase.initializeApp(firebaseConfig)
 
 
 export default createBottomTabNavigator({
@@ -30,9 +35,9 @@ export default createBottomTabNavigator({
     }
   },
   Inbox: {
-    screen: Trips,
+    screen: Login,
     navigationOptions: {
-      tabBarLabel: 'INBOX',
+      tabBarLabel: 'Login',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/message.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
@@ -59,18 +64,6 @@ export default createBottomTabNavigator({
       shadowOpacity: 0.5,
       elevation: 5
     }
-  }
-})
-
-const AppSwitchNavigator = createSwitchNavigator({
-  Loading: {
-    screen: Loading
-  },
-  Login: {
-    screen: Login
-  },
-  Dashboard:{
-    screen: dashboard
   }
 })
 
