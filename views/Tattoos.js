@@ -1,26 +1,21 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, Text } from 'react-native';
-import bgImage from './assets/background.png';
-import { Dimensions } from "react-native";
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { createMaterialTopTabNavigator } from 'react-navigation'
 import Inbox from './Inbox'
 import { StatusBar } from 'react-native';
-
-var width = Dimensions.get('window').width;
+import Card from './components/Card'
 
 class Tattoos extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
       <View style={styles.backgroundContainer}>
-        <View style={styles.topCard}>
-        </View>
-        <View style={styles.bottomCard}>
-        </View>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <Card imageUri={require('./assets/tattooer.jpg')}/>
+        <Card imageUri={require('./assets/tattooer.jpg')}/>
+        <Card imageUri={require('./assets/tattooer.jpg')}/>
+        <Card imageUri={require('./assets/tattooer.jpg')}/>
+        </ScrollView>
       </View>
     );
   }
@@ -68,6 +63,7 @@ export default createMaterialTopTabNavigator({
       }
     }
   })
+  
 
 const styles = StyleSheet.create({
   backgroundContainer: {
@@ -105,6 +101,9 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     shadowOpacity: 1.0,
     marginTop: 5,
+  },
+  card: {
+    marginLeft: 10,
   }
 });
 
