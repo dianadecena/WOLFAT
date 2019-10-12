@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image } from 'react-native';
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import Home from './views/Home'
 import Tattoos from './views/Tattoos'
+import Profile from './views/Profile'
 import Inbox from './views/Inbox'
 import Trips from './views/Trips'
 import Loading from './views/Loading'
@@ -12,6 +13,7 @@ import Login from './views/Login'
 import {createSwitchNavigator} from 'react-navigation'
 import firebase from 'firebase'
 import {firebaseConfig} from './config'
+import Dashboard from './views/Dashboard';
 firebase.initializeApp(firebaseConfig)
 
 
@@ -26,7 +28,7 @@ export default createBottomTabNavigator({
     }
   },
   Profile: {
-    screen: Tattoos,
+    screen: Profile,
     navigationOptions: {
       tabBarLabel: 'PROFILE',
       tabBarIcon: ({ tintColor }) => (
@@ -44,7 +46,7 @@ export default createBottomTabNavigator({
     }
   },
   Notifications: {
-    screen: Inbox,
+    screen: Tattoos,
     navigationOptions: {
       tabBarLabel: 'NOTIFICATIONS',
       tabBarIcon: ({ tintColor }) => (
@@ -54,7 +56,7 @@ export default createBottomTabNavigator({
   }
 }, {
   tabBarOptions: {
-    activeTintColor: '#330D5A',
+    activeTintColor: '#8D3FDC',
     inactiveTintColor: 'grey',
     style: {
       backgroundColor: 'black',

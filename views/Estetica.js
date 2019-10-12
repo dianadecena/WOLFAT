@@ -4,26 +4,24 @@ import { createMaterialTopTabNavigator } from 'react-navigation'
 import Inbox from './Inbox'
 import { StatusBar } from 'react-native';
 import Card from './components/Card'
-import Estetica from './Estetica'
-import Makeup from './Makeup'
 
-class Tattoos extends React.Component {
+class Estetica extends React.Component {
 
   render() {
     return (
       <View style={styles.backgroundContainer}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
+        <Card imageUri={require('./assets/haircut.jpg')}/>
+        <Card imageUri={require('./assets/haircut.jpg')}/>
+        <Card imageUri={require('./assets/haircut.jpg')}/>
+        <Card imageUri={require('./assets/haircut.jpg')}/>
         </ScrollView>
       </View>
     );
   }
 }
 
-export default Tattoos;
+export default Estetica;
 
 const styles = StyleSheet.create({
   backgroundContainer: {

@@ -6,6 +6,7 @@ import salon from './assets/salon.png';
 import piercing from './assets/piercing.png';
 import cosmetics from './assets/cosmetics.png';
 import { Dimensions } from "react-native";
+import logo from './assets/wolfat.png'
 
 var width = Dimensions.get('window').width;
 
@@ -20,28 +21,10 @@ class Home extends React.Component {
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
       <View style={{
         width: width, height: 200, borderBottomLeftRadius: 55,
-        borderBottomRightRadius: 55, backgroundColor: '#141414', alignItems: 'center',
+        borderBottomRightRadius: 55, backgroundColor: 'black', alignItems: 'center',
         justifyContent: 'center'
       }}>
-      <Text style={{ fontSize: 40, color: 'white'
-      }}>WOLFAT</Text>
-      </View>
-      <View style={{
-        flex: 1, flexDirection: 'row', flexWrap: 'wrap', alignContent: 'center',
-        marginTop: 10, marginLeft: 75
-      }}>
-        <View style={styles.cardOption}>
-          <Image source={tattoo} style={{ width: 80, height: 80, marginTop: 5 }} />
-        </View>
-        <View style={styles.cardOption}>
-          <Image source={salon} style={{ width: 65, height: 65, marginTop: 10 }} />
-        </View>
-        <View style={styles.cardOption}>
-          <Image source={piercing} style={{ width: 65, height: 65, marginTop: 10 }} />
-        </View>
-        <View style={styles.cardOption}>
-          <Image source={cosmetics} style={{ width: 65, height: 65, marginTop: 10 }} />
-        </View>
+      <Image source={logo} />
       </View>
     </ImageBackground>
     );
