@@ -1,29 +1,37 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
-import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
-import Home from './views/Home'
-import Tattoos from './views/Tattoos'
-import Profile from './views/Profile'
-import Inbox from './views/Inbox'
-import Trips from './views/Trips'
-import Loading from './views/Loading'
-import Login from './views/Login'
-import SubirImagen from './views/SubirImagen'
-import Init from './views/Init'
+import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import Home from './views/Home';
+import Tattoos from './views/Tattoos';
+import Profile from './views/Profile';
+import Inbox from './views/Inbox';
+import Trips from './views/Trips';
+import Loading from './views/Loading';
+import SubirImagen from './views/SubirImagen';
+import Init from './views/Init';
 
-import {createSwitchNavigator} from 'react-navigation'
-import firebase from 'firebase'
-import {firebaseConfig} from './config'
+import {createSwitchNavigator} from 'react-navigation';
+import firebase from 'firebase';
+import {firebaseConfig} from './config';
 import Dashboard from './views/Dashboard';
 firebase.initializeApp(firebaseConfig)
 
+class App extends React.Component {
+  render() {
+    return (
+      <AppContainer/>
+    );
+  }
+}
+export default App;
+
 
 const BottomTab = createBottomTabNavigator({
-  Home: {
-    screen: Home,
+  Dashboard: {
+    screen: Dashboard,
     navigationOptions: {
-      tabBarLabel: 'HOME',
+      tabBarLabel: 'Dashboard',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/home.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
@@ -71,7 +79,21 @@ const BottomTab = createBottomTabNavigator({
   }
 })
 
-export default createStackNavigator({BottomTab}, {headerMode: "none"});
+const StackNavigator  = createStackNavigator({BottomTab}, {headerMode: "none"});
+
+const LoginSwitch = createSwitchNavigator({
+  Loading:{
+    screen: Loading
+  },
+  Home:{
+    screen: Home
+  },
+  Dashboard:{
+    screen: StackNavigator
+  }
+})
+
+const AppContainer = createAppContainer(LoginSwitch);
 
 const styles = StyleSheet.create({
   container: {

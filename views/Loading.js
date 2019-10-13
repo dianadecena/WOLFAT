@@ -5,20 +5,21 @@ import {
     StyleSheet,
     ActivityIndicator
 } from "react-native";
+import firebase from 'firebase';
 
 class Loading extends Component {
 
     componentDidMount(){
-        this.isLoggedIn;
+        this.isLoggedIn();
     }
 
     isLoggedIn = () => {
         firebase.auth().onAuthStateChanged(function(user){
             if(user){
-                this.props.navigation.navigate('Home');
+                this.props.navigation.navigate('Dashboard');
             }
             else{
-                this.props.navigation.navigate('Login');
+                this.props.navigation.navigate('Home');
             }
         }.bind(this))
     }
