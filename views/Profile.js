@@ -17,11 +17,11 @@ class Profile extends React.Component {
         <Text style={{color:'white'}}>Descripción</Text>
         </View>
 
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-        <View style={{width: 150, marginLeft: 20}}>
+        <View style={{flex:1, flexDirection: 'row', marginTop: 10, justifyContent: 'space-around'}}>
+        <View style={{width: 150}}>
         <Button title="FAVORITO" color="#ccff00"></Button>
         </View>
-        <View style={{width: 150, marginLeft: 200}}>
+        <View style={{width: 150}}>
         <Button title="FAVORITO" color="#ccff00"></Button>
         </View>
         </View>

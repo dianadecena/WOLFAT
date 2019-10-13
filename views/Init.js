@@ -8,11 +8,16 @@ import cosmetics from './assets/cosmetics.png';
 import { Dimensions } from "react-native";
 import logo from './assets/wolfat.png';
 import * as Font from 'expo-font';
-import Button from './components/Button'
+import Button from './components/Button';
+import { withNavigation } from 'react-navigation';
 
 var width = Dimensions.get('window').width;
 
-class Home extends React.Component {
+class Init extends React.Component {
+
+    static onArtistPress() {
+        alert("HHHHHHH");
+    }
 
   state = {
     fontLoaded: false,
@@ -29,21 +34,24 @@ class Home extends React.Component {
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
       <View style={{marginTop: 60, padding: 20}}> 
       { this.state.fontLoaded ? (
-            <Text style={{ fontFamily: 'old-london', fontSize: 90, color: '#141414' }}>
+            <Text style={{ fontFamily: 'old-london', fontSize: 100, color: '#141414' }}>
               wolfat
             </Text>
           ) : null }
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Button text="Create Account" background="black" color="white"/>
-      <Button text="Sign in with Google" background="white" color="black"/>
+      <Text style={{color: '#E7E7E7', fontSize: 20}}>ARE YOU AN ARTIST OR A CLIENTE?</Text>
+      </View>
+      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
+      <Button text="A R T I S T" background="black" color="white" handleOnPress={this.onArtistPress}/>
+      <Button text="C L I E N T" background="white" color="black" />
       </View>
     </ImageBackground>
     );
   }
 }
 
-export default Home;
+export default withNavigation(Init);
 
 const styles = StyleSheet.create({
   backgroundContainer: {
@@ -52,4 +60,3 @@ const styles = StyleSheet.create({
     height: null,
   }
 });
-
