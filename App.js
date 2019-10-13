@@ -21,7 +21,7 @@ firebase.initializeApp(firebaseConfig)
 
 const BottomTab = createBottomTabNavigator({
   Home: {
-    screen: Init,
+    screen: Home,
     navigationOptions: {
       tabBarLabel: 'HOME',
       tabBarIcon: ({ tintColor }) => (
