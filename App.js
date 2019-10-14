@@ -3,11 +3,10 @@ import { StyleSheet, Image } from 'react-native';
 
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
 import Home from './views/Home';
-import Tattoos from './views/Tattoos';
 import Profile from './views/Profile';
 import Loading from './views/Loading';
 import SubirImagen from './views/SubirImagen';
-import Init from './views/Init';
+import ImageDetails from './views/ImageDetails';
 
 import {createSwitchNavigator} from 'react-navigation';
 import firebase from 'firebase';
@@ -54,7 +53,7 @@ const BottomTab = createBottomTabNavigator({
     }
   },
   Notifications: {
-    screen: Tattoos,
+    screen: ImageDetails,
     navigationOptions: {
       tabBarLabel: 'NOTIFICATIONS',
       tabBarIcon: ({ tintColor }) => (
@@ -88,6 +87,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   Dashboard:{
     screen: StackNavigator
+  },
+  ImageDetails:{
+    screen: ImageDetails
   }
 })
 

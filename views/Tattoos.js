@@ -24,11 +24,11 @@ class Tattoos extends React.Component {
       </Text>) : null }
       </View>
       <View style={styles.cardContainer}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
-        <Card imageUri={require('./assets/tattooer.jpg')}/>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} decelerationRate={0.5}>
+        <Card imageUri={require('./assets/tattoo1.jpg')}/>
+        <Card imageUri={require('./assets/tattoo1.jpg')}/>
+        <Card imageUri={require('./assets/tattoo1.jpg')}/>
+        <Card imageUri={require('./assets/tattoo1.jpg')}/>
         </ScrollView>
       </View>
       </View>

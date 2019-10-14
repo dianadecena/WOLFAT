@@ -1,11 +1,16 @@
 import React from 'react';
 import { StyleSheet, View, ImageBackground, Image } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 class Card extends React.Component {
 
+  imageDetails(){
+    this.props.navigation.navigate('ImageDetails');
+  }
+
   render() {
     return (
-        <View style={styles.card}>
+        <View onStartShouldSetResponder={() => this.imageDetails()} style={styles.card}>
         <Image source={this.props.imageUri} style={styles.topCard}/>
         <View style={styles.bottomCard}>
         </View>
@@ -14,7 +19,7 @@ class Card extends React.Component {
   }
 }
 
-export default Card;
+export default withNavigation(Card);
 
 const styles = StyleSheet.create({
   topCard: {

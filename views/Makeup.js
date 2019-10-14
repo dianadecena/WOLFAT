@@ -23,7 +23,7 @@ class Makeup extends React.Component {
       </Text>) : null }
       </View>
       <View style={styles.cardContainer}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} decelerationRate={0.5}>
         <Card imageUri={require('./assets/makeup.jpg')}/>
         <Card imageUri={require('./assets/makeup.jpg')}/>
         <Card imageUri={require('./assets/makeup.jpg')}/>

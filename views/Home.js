@@ -1,13 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ImageBackground, Image, Text, Button } from 'react-native';
 import bgImage from './assets/background.png';
-import tattoo from './assets/tattoo-machine.png';
-import salon from './assets/salon.png';
-import piercing from './assets/piercing.png';
-import cosmetics from './assets/cosmetics.png';
 import { Dimensions } from "react-native";
-import logo from './assets/wolfat.png';
-import * as Font from 'expo-font';
 //import Button from './components/Button'
 import firebase from 'firebase'
 import * as Google from 'expo-google-app-auth'
