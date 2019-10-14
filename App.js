@@ -15,7 +15,7 @@ import Dashboard from './views/Dashboard';
 firebase.initializeApp(firebaseConfig)
 
 class App extends React.Component {
-  render() {
+  render() { 
     return (
       <AppContainer/>
     );
