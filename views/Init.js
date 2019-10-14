@@ -9,8 +9,8 @@ var width = Dimensions.get('window').width;
 
 class Init extends React.Component {
 
-    static onArtistPress() {
-        alert("HHHHHHH");
+    onArtistPress() {
+      this.props.navigation.navigate('Loading');
     }
 
   state = {
@@ -37,7 +37,9 @@ class Init extends React.Component {
       <Text style={{color: '#E7E7E7', fontSize: 20}}>ARE YOU AN ARTIST OR A CLIENTE?</Text>
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Button text="A R T I S T" background="black" color="white" handleOnPress={this.onArtistPress}/>
+      <View onStartShouldSetResponder={() => this.onArtistPress()}>
+      <Button text="A R T I S T" background="black" color="white" />
+      </View>
       <Button text="C L I E N T" background="white" color="black" />
       </View>
     </ImageBackground>

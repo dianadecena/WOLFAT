@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ImageBackground, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import add from '../assets/plus.png'
 
 class Card extends React.Component {
 
@@ -10,9 +11,12 @@ class Card extends React.Component {
 
   render() {
     return (
-        <View onStartShouldSetResponder={() => this.imageDetails()} style={styles.card}>
+        <View style={styles.card}>
         <Image source={this.props.imageUri} style={styles.topCard}/>
         <View style={styles.bottomCard}>
+        <View onStartShouldSetResponder={() => this.imageDetails()}>
+        <Image source={add} style={{width:24, height:24, marginLeft:220, marginTop:5}}/>
+        </View>
         </View>
         </View>
     );
@@ -38,8 +42,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   bottomCard: {
-    alignItems: 'center',
-    justifyContent: 'center',
     backgroundColor: '#330D5A',
     width: 260,
     height: 36,
@@ -50,6 +52,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     shadowOpacity: 1.0,
     marginTop: 5,
+    opacity: .7
   },
   card: {
     marginLeft: 10,

@@ -5,6 +5,7 @@ import { createBottomTabNavigator, createAppContainer, createStackNavigator } fr
 import Home from './views/Home';
 import Profile from './views/Profile';
 import Loading from './views/Loading';
+import Init from './views/Init';
 import SubirImagen from './views/SubirImagen';
 import ImageDetails from './views/ImageDetails';
 
@@ -79,6 +80,9 @@ const BottomTab = createBottomTabNavigator({
 const StackNavigator  = createStackNavigator({BottomTab}, {headerMode: "none"});
 
 const LoginSwitch = createSwitchNavigator({
+  Init:{
+    screen: Init
+  },
   Loading:{
     screen: Loading
   },
