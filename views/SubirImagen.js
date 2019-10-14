@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Image, View } from 'react-native';
+import { Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -19,7 +19,7 @@ export default class ImagePickerExample extends React.Component {
           onPress={this._pickImage}
         />
         {image &&
-          <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+          <Image source={{ uri: image }} style={styles.card} />}
       </View>
     );
   }
@@ -51,3 +51,20 @@ export default class ImagePickerExample extends React.Component {
     }
   };
 }
+
+const styles = StyleSheet.create({
+  card: {
+    resizeMode: 'cover',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    width: 260,
+    height: 360,
+    borderRadius: 20,
+    shadowOffset: { width: 0, height: 2, },
+    shadowColor: 'white',
+    marginLeft: 5,
+    shadowOpacity: 1.0,
+    marginTop: 30,
+  }
+});

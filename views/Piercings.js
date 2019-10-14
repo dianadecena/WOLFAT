@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, View, ScrollView, Text } from 'react-native';
 import Card from './components/Card'
 
-class Makeup extends React.Component {
+class Piercings extends React.Component {
+
   state = {
     fontLoaded: false,
   }
@@ -16,26 +17,26 @@ class Makeup extends React.Component {
   render() {
     return (
       <View style={styles.backgroundContainer}>
-      <View style={{marginTop: 3, marginLeft: 20}}> 
+        <View style={{marginTop: 3, marginLeft: 20}}> 
       { this.state.fontLoaded ? (
       <Text style={{ fontFamily: 'old-london', fontSize: 50, color: 'white' }}>
-        makeup 
+        piercings 
       </Text>) : null }
       </View>
       <View style={styles.cardContainer}>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-        <Card imageUri={require('./assets/makeup.jpg')}/>
-        <Card imageUri={require('./assets/makeup.jpg')}/>
-        <Card imageUri={require('./assets/makeup.jpg')}/>
-        <Card imageUri={require('./assets/makeup.jpg')}/>
+        <Card imageUri={require('./assets/piercing.jpg')}/>
+        <Card imageUri={require('./assets/piercing.jpg')}/>
+        <Card imageUri={require('./assets/piercing.jpg')}/>
+        <Card imageUri={require('./assets/piercing.jpg')}/>
         </ScrollView>
-      </View>
+        </View>
       </View>
     );
   }
 }
 
-export default Makeup;
+export default Piercings;
 
 const styles = StyleSheet.create({
   backgroundContainer: {

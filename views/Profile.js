@@ -26,6 +26,13 @@ class Profile extends React.Component {
         </View>
         </View>
 
+        <View  onStartShouldSetResponder={() => alert('You click by View')}
+        style={{marginLeft: 20, width: 40, height: 40, borderRadius: 50, 
+        backgroundColor: 'white', alignItems: 'center', justifyContent: 'center', zIndex: 4}}>
+        <Image style={{resizeMode: 'cover'}} 
+        source={require('./assets/camera.png')}/>
+        </View>
+
         </View>
       </View>
     );

@@ -125,8 +125,8 @@ class Home extends React.Component {
           ) : null }
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Button title="Create Account" background="black" color="black"/>
-      <Button title="Sign in with Google" background="white" color="black" onPress={() => this.signInWithGoogleAsync()}/>
+      <Button title="Create Account" color="black"/>
+      <Button title="Sign in with Google" color="white" onPress={() => this.signInWithGoogleAsync()}/>
       </View>
     </ImageBackground>
     );

@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from 'react-navigation'
 import Estetica from './Estetica'
 import Makeup from './Makeup'
 import Tattoos from './Tattoos'
+import Piercings from './Piercings'
 import { StatusBar } from 'react-native';
 
 export default createMaterialTopTabNavigator({
@@ -25,8 +26,8 @@ export default createMaterialTopTabNavigator({
         )
       }
     },
-    Piercing: {
-      screen: Makeup,
+    Piercings: {
+      screen: Piercings,
       navigationOptions: {
         tabBarLabel: 'perforaciones',
         tabBarIcon: ({ tintColor }) => (
@@ -47,17 +48,18 @@ export default createMaterialTopTabNavigator({
     tabBarOptions: {
       showIcon: true,
       scrollEnabled: false,
-      activeTintColor: '#330D5A',
-      inactiveTintColor: 'black',
+      activeTintColor: '#ccff00',
+      inactiveTintColor: 'white',
       indicatorStyle: {
-          backgroundColor: '#330D5A',
+          backgroundColor: '#ccff00',
       },
       labelStyle: {
         fontSize: 7,
       },
       style: {
         height: 60,
-        backgroundColor: 'white',
+        backgroundColor: '#151515',
+        blurRadius: 1,
         borderTopWidth: 0,
         marginTop: StatusBar.currentHeight
       }

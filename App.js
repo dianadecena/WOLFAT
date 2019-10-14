@@ -1,12 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
 import Home from './views/Home';
 import Tattoos from './views/Tattoos';
 import Profile from './views/Profile';
-import Inbox from './views/Inbox';
-import Trips from './views/Trips';
 import Loading from './views/Loading';
 import SubirImagen from './views/SubirImagen';
 import Init from './views/Init';
@@ -31,7 +29,7 @@ const BottomTab = createBottomTabNavigator({
   Dashboard: {
     screen: Dashboard,
     navigationOptions: {
-      tabBarLabel: 'Dashboard',
+      tabBarLabel: 'DASHBOARD',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/home.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
@@ -49,9 +47,9 @@ const BottomTab = createBottomTabNavigator({
   Inbox: {
     screen: SubirImagen,
     navigationOptions: {
-      tabBarLabel: 'Login',
+      tabBarLabel: 'INBOX',
       tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/message.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
+        <Image source={require('./assets/paper-plane.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
     }
   },
@@ -60,7 +58,7 @@ const BottomTab = createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'NOTIFICATIONS',
       tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/notifications.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
+        <Image source={require('./assets/notification.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
     }
   }
