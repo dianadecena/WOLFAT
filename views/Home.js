@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, Text, Button } from 'react-native';
+import { StyleSheet, View, ImageBackground, Image, Text } from 'react-native';
 import bgImage from './assets/background.png';
 import { Dimensions } from "react-native";
-//import Button from './components/Button'
+import Button from './components/Button'
 import firebase from 'firebase'
 import * as Google from 'expo-google-app-auth'
 
@@ -110,21 +110,21 @@ class Home extends React.Component {
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>
-      <View style={{marginTop: 60, padding: 20}}> 
-      { this.state.fontLoaded ? (
+        <View style={{ marginTop: 60, padding: 20 }}>
+          {this.state.fontLoaded ? (
             <Text style={{ fontFamily: 'old-london', fontSize: 90, color: '#141414' }}>
               wolfat
             </Text>
-          ) : null }
-      </View>
-      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center', padding: 10}}>
-      <Button title="Create Account" color="black" />
-      </View>
-      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center', padding: 10}}>
-      <Button title="Sign in with Google" color="black" onPress={() => this.signInWithGoogleAsync()}/>
-      </View>
-      
-    </ImageBackground>
+          ) : null}
+        </View>
+        <View style={{ marginTop: 20, alignItems: 'center', justifyContent: 'center', padding: 10 }}>
+          <Button text="CREATE ACCOUNT" background="black" color="white" />
+        </View>
+
+        <View onStartShouldSetResponder={() => this.signInWithGoogleAsync()} style={{ alignItems: 'center', justifyContent: 'center', padding: 10 }}>
+          <Button text="SIGN IN WITH GOOGLE" background="white" color="black" />
+        </View>
+      </ImageBackground>
     );
   }
 }
