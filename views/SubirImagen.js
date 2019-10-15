@@ -3,23 +3,36 @@ import { Button, Image, View, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import { withNavigation } from 'react-navigation';
 
-export default class ImagePickerExample extends React.Component {
+class SubirImagen extends React.Component {
   state = {
     image: null,
   };
+
+  uploadImage(image){
+    this.props.navigation.navigate('Profile', {
+      image: image,
+    });
+  }
+
 
   render() {
     let { image } = this.state;
 
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={styles.backgroundContainer}>
         <Button
           title="Pick an image from camera roll"
           onPress={this._pickImage}
         />
         {image &&
           <Image source={{ uri: image }} style={styles.card} />}
+      <Button
+          title="UPLOAD"
+          color="black"
+          onPress={() => this.uploadImage(image)}
+        />
       </View>
     );
   }
@@ -52,7 +65,17 @@ export default class ImagePickerExample extends React.Component {
   };
 }
 
+export default withNavigation(SubirImagen);
+
 const styles = StyleSheet.create({
+  backgroundContainer: {
+    flex: 1,
+    backgroundColor: '#141414',
+    width: null,
+    height: null,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   card: {
     resizeMode: 'cover',
     alignItems: 'center',

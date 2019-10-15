@@ -97,6 +97,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   ImageDetails:{
     screen: ImageDetails
+  },
+  SubirImagen:{
+    screen: SubirImagen
   }
 })
 

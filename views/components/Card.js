@@ -5,8 +5,10 @@ import add from '../assets/plus.png'
 
 class Card extends React.Component {
 
-  imageDetails(){
-    this.props.navigation.navigate('ImageDetails');
+  imageDetails(image){
+    this.props.navigation.navigate('ImageDetails', {
+      image: image,
+    });
   }
 
   render() {
@@ -14,7 +16,7 @@ class Card extends React.Component {
         <View style={styles.card}>
         <Image source={this.props.imageUri} style={styles.topCard}/>
         <View style={styles.bottomCard}>
-        <View onStartShouldSetResponder={() => this.imageDetails()}>
+        <View onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}>
         <Image source={add} style={{width:24, height:24, marginLeft:220, marginTop:5}}/>
         </View>
         </View>
