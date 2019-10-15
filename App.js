@@ -48,7 +48,7 @@ const BottomTab = createBottomTabNavigator({
     }
   },
   Inbox: {
-    screen: SubirImagen,
+    screen: Dashboard,
     navigationOptions: {
       tabBarLabel: 'INBOX',
       tabBarIcon: ({ tintColor }) => (
@@ -57,7 +57,7 @@ const BottomTab = createBottomTabNavigator({
     }
   },
   Notifications: {
-    screen: ImageDetails,
+    screen: Dashboard,
     navigationOptions: {
       tabBarLabel: 'NOTIFICATIONS',
       tabBarIcon: ({ tintColor }) => (
