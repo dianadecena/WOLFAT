@@ -13,6 +13,10 @@ class Init extends React.Component {
       this.props.navigation.navigate('Loading');
     }
 
+    onClientPress() {
+      this.props.navigation.navigate('Dashboard');
+    }
+
   state = {
     fontLoaded: false,
   }
@@ -34,13 +38,15 @@ class Init extends React.Component {
           ) : null }
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: '#E7E7E7', fontSize: 20}}>ARE YOU AN ARTIST OR A CLIENTE?</Text>
+      <Text style={{color: '#E7E7E7', fontSize: 20}}>ARE YOU AN ARTIST OR A CLIENT?</Text>
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
       <View onStartShouldSetResponder={() => this.onArtistPress()}>
       <Button text="A R T I S T" background="black" color="white" />
       </View>
+      <View onStartShouldSetResponder={() => this.onClientPress()}>
       <Button text="C L I E N T" background="white" color="black" />
+      </View>
       </View>
     </ImageBackground>
     );

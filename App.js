@@ -15,6 +15,9 @@ import {firebaseConfig} from './config';
 import Dashboard from './views/Dashboard';
 firebase.initializeApp(firebaseConfig)
 
+import ignoreWarnings from 'react-native-ignore-warnings';
+ignoreWarnings('Setting a timer');
+
 class App extends React.Component {
   render() { 
     return (
