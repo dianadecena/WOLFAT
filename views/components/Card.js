@@ -18,7 +18,7 @@ class Card extends React.Component {
         <View style={styles.bottomCard}>
         <View onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}>
         <Image source={add} style={{width:24, height:24, marginLeft:220, marginTop:5}}/>
-        </View>
+        </View>  
         </View>
         </View>
     );

@@ -5,6 +5,8 @@ import { Dimensions } from "react-native";
 import Button from './components/Button';
 import { withNavigation } from 'react-navigation';
 
+//hay que volarse esta vista
+
 var width = Dimensions.get('window').width;
 
 class Init extends React.Component {

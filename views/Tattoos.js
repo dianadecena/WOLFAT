@@ -24,7 +24,7 @@ class Tattoos extends React.Component {
       </Text>) : null }
       </View>
       <View style={styles.cardContainer}>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} decelerationRate={0.5}>
+        <ScrollView decelerationRate={0.5}>
         <Card imageUri={require('./assets/tattoo1.jpg')}/>
         <Card imageUri={require('./assets/tattoo1.jpg')}/>
         <Card imageUri={require('./assets/tattoo1.jpg')}/>
