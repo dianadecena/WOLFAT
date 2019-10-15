@@ -122,7 +122,7 @@ class Home extends React.Component {
         </View>
 
         <View onStartShouldSetResponder={() => this.signInWithGoogleAsync()} style={{ alignItems: 'center', justifyContent: 'center', padding: 10 }}>
-          <Button text="SIGN IN WITH GOOGLE" background="white" color="black" />
+          <Button text="SIGN IN WITH GOOGLE" background="white" color="black" onPress = {() => this.signInWithGoogleAsync()} />
         </View>
       </ImageBackground>
     );

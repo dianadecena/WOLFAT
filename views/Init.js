@@ -9,11 +9,11 @@ var width = Dimensions.get('window').width;
 
 class Init extends React.Component {
 
-    onArtistPress() {
+    onArtistPress = () => {
       this.props.navigation.navigate('Loading');
     }
 
-    onClientPress() {
+    onClientPress = () => {
       this.props.navigation.navigate('Dashboard');
     }
 
@@ -42,10 +42,10 @@ class Init extends React.Component {
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
       <View onStartShouldSetResponder={() => this.onArtistPress()}>
-      <Button text="A R T I S T" background="black" color="white" />
+      <Button text="A R T I S T" background="black" color="white" onPress={this.onArtistPress} />
       </View>
       <View onStartShouldSetResponder={() => this.onClientPress()}>
-      <Button text="C L I E N T" background="white" color="black" />
+      <Button text="C L I E N T" background="white" color="black" onPress={this.onClientPress}/>
       </View>
       </View>
     </ImageBackground>

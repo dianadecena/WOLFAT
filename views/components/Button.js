@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 
 export default class Button extends React.Component {
 
+
+
     render() {
         const {
-            handleOnPress,
+            onPress,
           } = this.props;
     return (
         <View style={[styles.wrapper, {backgroundColor: this.props.background}]}>
           <TouchableNativeFeedback
             useForeground={true}
-            onPress={handleOnPress}
+            onPress={onPress}
           >
             <View style={styles.buttonText}>
               <Text style={{color: this.props.color}}>{this.props.text}</Text>
