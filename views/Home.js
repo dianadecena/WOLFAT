@@ -118,10 +118,13 @@ class Home extends React.Component {
             </Text>
           ) : null }
       </View>
-      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Button title="Create Account" color="black"/>
-      <Button title="Sign in with Google" color="white" onPress={() => this.signInWithGoogleAsync()}/>
+      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+      <Button title="Create Account" color="black" />
       </View>
+      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center', padding: 10}}>
+      <Button title="Sign in with Google" color="black" onPress={() => this.signInWithGoogleAsync()}/>
+      </View>
+      
     </ImageBackground>
     );
   }
