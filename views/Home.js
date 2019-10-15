@@ -107,7 +107,6 @@ class Home extends React.Component {
     }
   }
 
-
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>

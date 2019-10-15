@@ -12,6 +12,10 @@ class ImageDetails extends React.Component {
         this.props.navigation.navigate('Dashboard');
     }
 
+    viewProfile(){
+      this.props.navigation.navigate('Profile');
+    }
+
   render() {
     return (
       <ImageBackground source={tattoo} style={styles.backgroundContainer}>
@@ -65,7 +69,7 @@ class ImageDetails extends React.Component {
 
         <View style={{alignItems: 'center', justifyContent:'center', marginTop:10}}>
         <View style={{width: 150, padding:6}}>
-        <Button title="VER PERFIL" color="black"></Button>
+        <Button title="VER PERFIL" color="black" onPress={() => this.viewProfile()}></Button>
         </View>
         </View>
 
