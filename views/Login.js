@@ -23,7 +23,9 @@ class Login extends Component {
     }
     return false;
   }
-
+  prueba = () =>{
+    var prueba = firebase.database().ref()
+  }
   onSignIn = googleUser => {
     console.log('Google Auth Response', googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
