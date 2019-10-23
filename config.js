@@ -1,9 +1,9 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firebase-firestore'
+import firebase from 'firebase';
 
-
-const config = {
+const firebaseConfig = {
   apiKey: "AIzaSyBv9vw2zoiXUL18U9CwOyU7eoKA0nWJVYg",
   authDomain: "wolfat-9ca6f.firebaseapp.com",
   databaseURL: "https://wolfat-9ca6f.firebaseio.com",
@@ -16,7 +16,7 @@ const config = {
 
 class Firebase {
 	constructor() {
-		app.initializeApp(config)
+		app.initializeApp(firebaseConfig)
 		this.auth = app.auth()
 		this.db = app.firestore()
 	}
@@ -27,19 +27,6 @@ class Firebase {
 
 	logout() {
 		return this.auth.signOut()
-	}
-
-	async register(nombre, apellido, nombreUsuario, email, password, fotoperfil, ubicacion) {
-		await this.auth.createUserWithEmailAndPassword(email, password)
-		return this.auth.currentUser.updateProfile({
-      displayName: nombreUsuario,
-      Nombre:nombre,
-      apellido: apellido,
-      fotoperfil: fotoperfil,
-      ubicacion: ubicacion
-
-
-		})
 	}
 
 	addQuote(quote) {

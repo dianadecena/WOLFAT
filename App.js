@@ -8,12 +8,12 @@ import Loading from './views/Loading';
 import Init from './views/Init';
 import SubirImagen from './views/SubirImagen';
 import ImageDetails from './views/ImageDetails';
+import SignUp from './views/SignUp'
 
 import {createSwitchNavigator} from 'react-navigation';
 import firebase from 'firebase';
 import {firebaseConfig} from './config';
 import Dashboard from './views/Dashboard';
-firebase.initializeApp(firebaseConfig)
 
 import ignoreWarnings from 'react-native-ignore-warnings';
 ignoreWarnings('Setting a timer');
@@ -100,6 +100,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   SubirImagen:{
     screen: SubirImagen
+  },
+  SignUp:{
+    screen: SignUp
   }
 })
 

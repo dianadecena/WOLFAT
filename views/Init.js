@@ -11,8 +11,8 @@ var width = Dimensions.get('window').width;
 
 class Init extends React.Component {
 
-    onArtistPress = () => {
-      this.props.navigation.navigate('Loading');
+    onSignUp = () => {
+      this.props.navigation.navigate('SignUp');
     }
 
     onClientPress = () => {
@@ -46,8 +46,8 @@ class Init extends React.Component {
       <View onStartShouldSetResponder={() => this.onArtistPress()}>
       <Button text="A R T I S T" background="black" color="white" onPress={this.onArtistPress} />
       </View>
-      <View onStartShouldSetResponder={() => this.onClientPress()}>
-      <Button text="C L I E N T" background="white" color="black" onPress={this.onClientPress}/>
+      <View onStartShouldSetResponder={() => this.onSignUp()}>
+      <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp}/>
       </View>
       </View>
     </ImageBackground>
