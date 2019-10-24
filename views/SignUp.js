@@ -6,12 +6,10 @@ import {
   StyleSheet,
   TextInput
 } from "react-native";
-import firebase from 'firebase'
 import Button from './components/Button';
-import 'firebase/auth'
-import '@firebase/firestore'
-
-var db = firebase.firestore(); 
+  
+import firebase from 'firebase';
+import db from '../config';
 
 class SignUp extends Component {
 
@@ -23,34 +21,29 @@ class SignUp extends Component {
         this.setState({ [key]: val })
     }
 
-    async register(nombre, apellido, nombreUsuario, email, password, ubicacion) {
-      //await Firebase.auth.createUserWithEmailAndPassword(email, password)
-      /*return Firebase.auth.currentUser.updateProfile({
-        displayName: nombreUsuario,
-        Nombre:nombre,
-        Apellido: apellido,
-        email: email, 
-        password: password,
-        Ubicacion: ubicacion
-      })*/
-      db.collection("Usuario").add({
-        Nombre: nombre,
-        Apellido: apellido,
-        Ubicacion: ubicacion,
-        displayName: nombreUsuario,
-        email: email,
-        password: password
-    })
-    .then(function() {
-        console.log("Document successfully written!");
-    })
-    .catch(function(error) {
-        console.error("Error writing document: ", error);
-    });
+    register = async () => {
+      const { nombre, apellido, username, email, password, ubicacion} = this.state
+
+      try {
+        const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
+        if(response.user.uid) {
+          const user = {
+            uid: response.user.uid,
+            Nombre: nombre,
+            Apellido: apellido,
+            Ubicacion: ubicacion,
+            displayName: username,
+            email: email,
+            password: password
+          }
+          db.collection('Usuario').doc(response.user.uid).set(user)
+        }
+      } catch (e) {
+        alert(e)
+      }
     }
 
   render() {
-    const { nombre, apellido, username, email, password, ubicacion} = this.state
 
     return (
         <View style={styles.container}>
@@ -107,8 +100,7 @@ class SignUp extends Component {
         />
         <View style={{marginTop:40}}>
         <Button
-          text="SIGN UP" background="#330D5A" color="white" onPress={()=> this.register(nombre, apellido, username,
-            password, email, ubicacion)}
+          text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
         />
         </View>
       </View>

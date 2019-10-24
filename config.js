@@ -1,7 +1,5 @@
-import app from 'firebase/app'
-import 'firebase/auth'
-import 'firebase/firebase-firestore'
-import firebase from 'firebase';
+import firebase from 'firebase'
+require('firebase/firestore')
 
 const firebaseConfig = {
   apiKey: "AIzaSyBv9vw2zoiXUL18U9CwOyU7eoKA0nWJVYg",
@@ -14,54 +12,9 @@ const firebaseConfig = {
   measurementId: "G-VTRR95CYGR"
 }
 
-class Firebase {
-	constructor() {
-		app.initializeApp(firebaseConfig)
-		this.auth = app.auth()
-		this.db = app.firestore()
-	}
+firebase.initializeApp(firebaseConfig)
 
-	login(email, password) {
-		return this.auth.signInWithEmailAndPassword(email, password)
-	}
+//export firestore database
+const db = firebase.firestore()
 
-	logout() {
-		return this.auth.signOut()
-	}
-
-	addQuote(quote) {
-		if(!this.auth.currentUser) {
-			return alert('Not authorized')
-		}
-
-		return this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).set({
-			quote
-		})
-	}
-
-	isInitialized() {
-		return new Promise(resolve => {
-			this.auth.onAuthStateChanged(resolve)
-		})
-	}
-
-	getCurrentUsername() {
-		return this.auth.currentUser && this.auth.currentUser.displayName
-  }
-  getCurrentApellido() {
-		return this.auth.currentUser && this.auth.currentUser.apellido
-  }
-  getCurrentUbicacion() {
-		return this.auth.currentUser && this.auth.currentUser.ubicacion
-  }
-  getCurrentFoto() {
-		return this.auth.currentUser && this.auth.currentUser.fotoperfil
-	}
-
-	async getCurrentUserQuote() {
-		const quote = await this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).get()
-		return quote.get('quote')
-	}
-}
-
-export default new Firebase()
+export default db
