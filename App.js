@@ -103,6 +103,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   SignUp:{
     screen: SignUp
+  },
+  Login:{
+    screen: Login
   }
 })
 

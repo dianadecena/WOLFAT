@@ -15,8 +15,8 @@ class Init extends React.Component {
       this.props.navigation.navigate('SignUp');
     }
 
-    onClientPress = () => {
-      this.props.navigation.navigate('Dashboard');
+    onLogIn = () => {
+      this.props.navigation.navigate('Login');
     }
 
   state = {
@@ -44,7 +44,7 @@ class Init extends React.Component {
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
       <View onStartShouldSetResponder={() => this.onArtistPress()}>
-      <Button text="A R T I S T" background="black" color="white" onPress={this.onArtistPress} />
+      <Button text="Log In" background="black" color="white" onPress={this.onLogIn} />
       </View>
       <View onStartShouldSetResponder={() => this.onSignUp()}>
       <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp}/>
