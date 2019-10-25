@@ -3,29 +3,31 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput
+  TextInput,
+  Alert
 } from "react-native";
 import Button from './components/Button';
-  
+
 import firebase from 'firebase';
 import db from '../config';
 
 class SignUp extends Component {
 
-    state = {
-        nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: ''
-    }
+  state = {
+    nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: ''
+  }
 
-    onChangeText = (key, val) => {
-        this.setState({ [key]: val })
-    }
+  onChangeText = (key, val) => {
+    this.setState({ [key]: val })
+  }
 
-    register = async () => {
-      const { nombre, apellido, username, email, password, ubicacion} = this.state
+  register = async () => {
+    const { nombre, apellido, username, email, password, ubicacion } = this.state
 
+    if (this.state.nombre != '' && this.state.apellido != '' && this.state.username != '' && this.state.password != '' && this.state.email != '' && this.state.ubicacion != '') {
       try {
         const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        if(response.user.uid) {
+        if (response.user.uid) {
           const user = {
             uid: response.user.uid,
             Nombre: nombre,
@@ -40,28 +42,33 @@ class SignUp extends Component {
       } catch (e) {
         alert(e)
       }
+    } else {
+      Alert.alert('Error', 'No se pueden dejar campos en blanco')
     }
+
+
+  }
 
   render() {
 
     return (
-        <View style={styles.container}>
-        <View style={{marginTop:40}}>
-        <TextInput
-          style={styles.input}
-          placeholder='nombre'
-          autoCapitalize="none"
-          placeholderTextColor='black'
-          onChangeText={(nombre) => this.setState({nombre})}
-          value={this.state.nombre}
-        />
+      <View style={styles.container}>
+        <View style={{ marginTop: 40 }}>
+          <TextInput
+            style={styles.input}
+            placeholder='nombre'
+            autoCapitalize="none"
+            placeholderTextColor='black'
+            onChangeText={(nombre) => this.setState({ nombre })}
+            value={this.state.nombre}
+          />
         </View>
         <TextInput
           style={styles.input}
           placeholder='apellido'
           autoCapitalize="none"
           placeholderTextColor='black'
-          onChangeText={(apellido) => this.setState({apellido})}
+          onChangeText={(apellido) => this.setState({ apellido })}
           value={this.state.apellido}
         />
         <TextInput
@@ -69,7 +76,7 @@ class SignUp extends Component {
           placeholder='username'
           autoCapitalize="none"
           placeholderTextColor='black'
-          onChangeText={(username) => this.setState({username})}
+          onChangeText={(username) => this.setState({ username })}
           value={this.state.username}
         />
         <TextInput
@@ -78,7 +85,7 @@ class SignUp extends Component {
           secureTextEntry={true}
           autoCapitalize="none"
           placeholderTextColor='black'
-          onChangeText={(password) => this.setState({password})}
+          onChangeText={(password) => this.setState({ password })}
           value={this.state.password}
         />
         <TextInput
@@ -86,7 +93,7 @@ class SignUp extends Component {
           placeholder='email'
           autoCapitalize="none"
           placeholderTextColor='black'
-          onChangeText={(email) => this.setState({email})}
+          onChangeText={(email) => this.setState({ email })}
           value={this.state.email}
         />
         <TextInput
@@ -94,13 +101,13 @@ class SignUp extends Component {
           placeholder='ubicacion'
           autoCapitalize="none"
           placeholderTextColor='black'
-          onChangeText={(ubicacion) => this.setState({ubicacion})}
+          onChangeText={(ubicacion) => this.setState({ ubicacion })}
           value={this.state.ubicacion}
         />
-        <View style={{marginTop:40}}>
-        <Button
-          text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
-        />
+        <View style={{ marginTop: 40 }}>
+          <Button
+            text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
+          />
         </View>
       </View>
     );
@@ -109,17 +116,17 @@ class SignUp extends Component {
 export default SignUp;
 
 const styles = StyleSheet.create({
-    input: {
-        width: 300,
-        height: 50,
-        backgroundColor: 'white',
-        margin: 10,
-        padding: 12,
-        color: 'black',
-        borderRadius: 20,
-        fontSize: 18,
-        fontWeight: '300'
-      },
+  input: {
+    width: 300,
+    height: 50,
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 12,
+    color: 'black',
+    borderRadius: 20,
+    fontSize: 18,
+    fontWeight: '300'
+  },
   container: {
     backgroundColor: '#141414',
     flex: 1,
