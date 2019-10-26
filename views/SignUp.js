@@ -37,7 +37,7 @@ class SignUp extends Component {
             email: email,
             password: password
           }
-          db.collection('Usuario').doc(response.user.uid).set(user)
+          db.firestore().collection('Usuario').doc(response.user.uid).set(user)
         }
       } catch (e) {
         alert(e)

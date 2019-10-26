@@ -24,7 +24,7 @@ class Login extends Component {
     login = async () => {
         const { email, password } = this.state
         if (this.state.email != '' && this.state.password != '') {
-            db.collection('Usuario').where('email', '==', email).where('password', '==', password).get()
+            db.firestore().collection('Usuario').where('email', '==', email).where('password', '==', password).get()
                 .then((snapshot) => {
                     if (snapshot.empty) {
                         Alert.alert('Error', 'El email y la contraseña no coinciden')

@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@google-cloud/storage": "^4.0.0",
     "expo": "^35.0.0",
     "expo-cli": "^3.4.1",
     "expo-google-app-auth": "^7.0.0",
