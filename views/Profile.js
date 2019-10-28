@@ -5,20 +5,34 @@ import firebase from 'firebase';
 import db from '../config';
 
 const imagesUser = [];
+var nombre;
 
 class Profile extends React.Component {
 
+state = {
+  nombre,
+  arregloFotos
+}
+
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(function(user) {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log(user.uid);
-        var usuario = db.firestore().collection('Usuario').doc(user.uid)
-        var data = usuario.select('images').get()
-        var posts = data.images
-          posts.forEach(function(response) {
-            console.log(response.data())
-            imagesUser.push(response.data())
-          })
+        
+        db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
+          if (doc.exists) {
+              console.log("Document data:", doc.data());
+              console.log(doc.data().Nombre) 
+              nombre = doc.data().Nombre
+              console.log(nombre)
+              this.setState({nombre})
+          } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+          }
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
       } else {
         // No user is signed in.
       }
@@ -30,17 +44,6 @@ class Profile extends React.Component {
   }
 
   render() {
-    var loop = [];
-    for (let i = 0; i < imagesUser.length; i++) {
-      loop.push(
-        <FlatList
-          horizontal={false}
-          numColumns={2}>
-        <Image source={{ uri: image }} style={styles.card} />
-        </FlatList>
-      );
-    }
-
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={0.5}>
         <View>
@@ -49,7 +52,7 @@ class Profile extends React.Component {
         <Image source={require('./assets/profile.jpg')} style={{borderRadius: 50, width: 100, height: 100}}/>
         </View>
         <View style={{alignItems:'center', justifyContent:'center', marginTop: 10}}> 
-        <Text style={{color:'white'}}>Nombre Apellido</Text>
+        <Text style={{color:'white'}}>{this.state.nombre}</Text>
         <Text style={{color:'white'}}>Caracas, Venezuela</Text>
         <Text style={{color:'white'}}>Descripción</Text>
         </View>
@@ -69,7 +72,6 @@ class Profile extends React.Component {
         </View>
 
         <View style={{alignItems:'center', justifyContent:'center', marginTop:40}}>
-        {loop}
         </View>
 
         </View>
