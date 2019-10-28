@@ -47,24 +47,6 @@ const BottomTab = createBottomTabNavigator({
         <Image source={require('./assets/skull.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
     }
-  },
-  Inbox: {
-    screen: Dashboard,
-    navigationOptions: {
-      tabBarLabel: 'INBOX',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/paper-plane.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
-  Notifications: {
-    screen: Dashboard,
-    navigationOptions: {
-      tabBarLabel: 'NOTIFICATIONS',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/notification.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
   }
 }, {
   tabBarOptions: {
@@ -73,10 +55,14 @@ const BottomTab = createBottomTabNavigator({
     style: {
       backgroundColor: 'black',
       borderTopWidth: 0,
-      shadowOffset: { width: 5, height: 3 },
-      shadowColor: 'white',
-      shadowOpacity: 0.5,
-      elevation: 5
+      borderRadius: 20,
+      width: 200,
+      position: 'absolute',
+			left: 0,
+			right: 0,
+      bottom: 0,
+      alignItems: 'center',
+      justifyContent: 'center',
     }
   }
 })
@@ -115,7 +101,7 @@ const AppContainer = createAppContainer(LoginSwitch);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#141414',
     alignItems: 'center',
     justifyContent: 'center',
   },
