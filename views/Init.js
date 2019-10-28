@@ -43,7 +43,7 @@ class Init extends React.Component {
       <Text style={{color: '#E7E7E7', fontSize: 20}}>ARE YOU AN ARTIST OR A CLIENT?</Text>
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <View onStartShouldSetResponder={() => this.onArtistPress()}>
+      <View onStartShouldSetResponder={() => this.onLogin()}>
       <Button text="Log In" background="black" color="white" onPress={this.onLogIn} />
       </View>
       <View onStartShouldSetResponder={() => this.onSignUp()}>

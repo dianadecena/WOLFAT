@@ -13,33 +13,6 @@ class SubirImagen extends React.Component {
     image: null,
   };
 
-  /*ploadImage(image){
-    this.props.navigation.navigate('Profile', {
-      image: image,
-    });
-  }
-*/
-
-  chooseImage = async() => {
-    let result =  await ImagePicker.launchCameraAsync();
-    //let result = await ImagePicker.launchImageLibraryAsync();
-    if (!result.cancelled) {
-      this.uploadImage(result.uri).then((uploadTask)=> {
-        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-          console.log('File available at', downloadURL);
-        });
-      }); 
-    }
-  }
-
-  uploadImage = async(uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    let filename = uri.split('/').pop();
-    var ref = db.storage().ref().child('${user}/${filename}');
-    return await ref.put(blob);
-  }
-
   render() {
     let { image } = this.state;
 
@@ -49,17 +22,17 @@ class SubirImagen extends React.Component {
           title="Pick an image from camera roll"
           onPress={this.chooseImage}
         />
-        
+      {image && <Image source={{ uri: image }} style={styles.card} />}
       <Button
           title="UPLOAD"
           color="black"
-          onPress={() => this.uploadImage()}
+          onPress={() => this.uploadImage(image)}
         />
       </View>
     );
   }
 
-  /*componentDidMount() {
+  componentDidMount() {
     this.getPermissionAsync();
   }
 
@@ -72,7 +45,7 @@ class SubirImagen extends React.Component {
     }
   }
 
-  _pickImage = async () => {
+   chooseImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -84,8 +57,41 @@ class SubirImagen extends React.Component {
     if (!result.cancelled) {
       this.setState({ image: result.uri });
     }
-  };*/
-}
+  };
+
+  uploadImage = async(uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    let filename = uri.split('/').pop();
+    var storageRef = db.storage().ref().child('images/' + filename);
+    storageRef.put(blob).then(function(snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+    }).then(function() {
+        // Upload completed successfully, now we can get the download URL
+        storageRef.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
+            firebase.auth().onAuthStateChanged(function(user) {
+              if (user) {
+                var usuarios = db.firestore().collection('Usuario').doc(user.uid);
+                console.log(user.uid);
+                usuarios.update({
+                  images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
+              });
+              db.firestore().collection('Posts').add({
+                image: downloadURL,
+                uid: user.uid
+            });
+              } else {
+                // No user is signed in.
+              }
+            });
+        });
+    });
+  
+  }
+};
 
 export default withNavigation(SubirImagen);
 

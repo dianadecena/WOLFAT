@@ -1,15 +1,46 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, Button} from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, Button, FlatList} from 'react-native';
 import { withNavigation } from 'react-navigation';
+import firebase from 'firebase';
+import db from '../config';
+
+const imagesUser = [];
 
 class Profile extends React.Component {
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user.uid);
+        var usuario = db.firestore().collection('Usuario').doc(user.uid)
+        var data = usuario.select('images').get()
+        var posts = data.images
+          posts.forEach(function(response) {
+            console.log(response.data())
+            imagesUser.push(response.data())
+          })
+      } else {
+        // No user is signed in.
+      }
+    });
+  }
 
   uploadImage(){
     this.props.navigation.navigate('SubirImagen');
   }
 
   render() {
-    const image = this.props.navigation.getParam('image', 'NO-ID')
+    var loop = [];
+    for (let i = 0; i < imagesUser.length; i++) {
+      loop.push(
+        <FlatList
+          horizontal={false}
+          numColumns={2}>
+        <Image source={{ uri: image }} style={styles.card} />
+        </FlatList>
+      );
+    }
+
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={0.5}>
         <View>
@@ -38,7 +69,7 @@ class Profile extends React.Component {
         </View>
 
         <View style={{alignItems:'center', justifyContent:'center', marginTop:40}}>
-        <Image source={{ uri: image }} style={styles.card}/>
+        {loop}
         </View>
 
         </View>
