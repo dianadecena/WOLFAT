@@ -4,14 +4,15 @@ import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
 
-const imagesUser = [];
-var nombre;
+var nombre, ubicacion, descripcion, imagesUser;
 
 class Profile extends React.Component {
 
 state = {
   nombre,
-  arregloFotos
+  ubicacion,
+  descripcion,
+  imagesUser
 }
 
   componentDidMount() {
@@ -21,11 +22,15 @@ state = {
         
         db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
           if (doc.exists) {
-              console.log("Document data:", doc.data());
-              console.log(doc.data().Nombre) 
               nombre = doc.data().Nombre
-              console.log(nombre)
+              ubicacion = doc.data().Ubicacion
+              descripcion = doc.data().Descripcion 
+              imagesUser = doc.data().images
               this.setState({nombre})
+              this.setState({ubicacion})
+              this.setState({descripcion})
+              this.setState({imagesUser})
+              console.log(imagesUser)
           } else {
               // doc.data() will be undefined in this case
               console.log("No such document!");
@@ -44,6 +49,15 @@ state = {
   }
 
   render() {
+
+    const images = ['one', 'two'];
+    console.log(images)
+    const items = []
+    console.log(this.state.imagesUser)
+    for(const [index, image] of this.state.imagesUser.entries()) {
+      items.push(<Text style={{color:'white'}} key={index}>{image}</Text>)
+    }
+    
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={0.5}>
         <View>
@@ -53,8 +67,8 @@ state = {
         </View>
         <View style={{alignItems:'center', justifyContent:'center', marginTop: 10}}> 
         <Text style={{color:'white'}}>{this.state.nombre}</Text>
-        <Text style={{color:'white'}}>Caracas, Venezuela</Text>
-        <Text style={{color:'white'}}>Descripción</Text>
+        <Text style={{color:'white'}}>{this.state.ubicacion}</Text>
+        <Text style={{color:'white'}}>{this.state.descripcion}</Text>
         </View>
 
         <View style={{flexDirection: 'row', marginTop: 10, justifyContent: 'space-around', height: 40}}>
@@ -70,10 +84,10 @@ state = {
         </View>
 
         </View>
-
+   
         <View style={{alignItems:'center', justifyContent:'center', marginTop:40}}>
+        {items}
         </View>
-
         </View>
       </ScrollView>
     );
