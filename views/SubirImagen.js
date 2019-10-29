@@ -6,7 +6,9 @@ import * as Permissions from 'expo-permissions';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase'
 import db from '../config';
+import back from './assets/back.png';
 import Button from './components/Button';
+
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
 const sleep = (milliseconds) => {
@@ -38,6 +40,10 @@ class SubirImagen extends React.Component {
         <Button
           text="Upload" background="#330D5A" color="white" onPress={() => this.uploadImage(image) && this.toProfile()}
         />
+
+        <View style={{marginLeft: 20}} onStartShouldSetResponder={() => this.toProfile()}>
+              <Image source={back} style={{width: 26, height: 26}}></Image>
+          </View>
       </View>
     );
   }

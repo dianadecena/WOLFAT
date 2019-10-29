@@ -57,7 +57,7 @@ const BottomTab = createBottomTabNavigator({
       backgroundColor: 'black',
       borderTopWidth: 0,
       borderRadius: 20,
-      width: 200,
+      alignSelf: "stretch",
       position: 'absolute',
 			left: 0,
 			right: 0,
@@ -95,6 +95,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   EditarPerfil:{
     screen: EditarPerfil
+  },
+  Profile:{
+    screen: Profile
   }
 })
 

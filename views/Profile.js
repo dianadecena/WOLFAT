@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, Button, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, FlatList } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
+import Button from './components/Button';
 
-var nombre, ubicacion, descripcion, imagesUser = [];
+var nombre, apellido, ubicacion, descripcion, imagesUser = [];
 
 class Profile extends React.Component {
 
@@ -12,6 +13,7 @@ class Profile extends React.Component {
 
   state = {
     nombre,
+    apellido,
     ubicacion,
     descripcion,
     imagesUser
@@ -26,10 +28,12 @@ class Profile extends React.Component {
         db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
           if (doc.exists) {
             nombre = doc.data().Nombre
+            apellido = doc.data().Apellido
             ubicacion = doc.data().Ubicacion
             descripcion = doc.data().Descripcion
             imagesUser = doc.data().images
             this.setState({ nombre })
+            this.setState({ apellido })
             this.setState({ ubicacion })
             this.setState({ descripcion })
             this.setState({ imagesUser })
@@ -51,7 +55,7 @@ class Profile extends React.Component {
     this.props.navigation.navigate('SubirImagen');
   }
 
-  updateInfo() {
+  toUpdate = async () => {
     this.props.navigation.navigate('EditarPerfil');
   }
 
@@ -73,14 +77,14 @@ class Profile extends React.Component {
             <Image source={require('./assets/profile.jpg')} style={{ borderRadius: 50, width: 100, height: 100 }} />
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
-            <Text style={{ color: 'white' }}>{this.state.nombre}</Text>
+            <Text style={{ color: 'white' }}>{this.state.nombre} {this.state.apellido}</Text>
             <Text style={{ color: 'white' }}>{this.state.ubicacion}</Text>
             <Text style={{ color: 'white' }}>{this.state.descripcion}</Text>
           </View>
 
           <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-around', height: 40 }}>
             <View style={{ width: 150 }}>
-              <Button title="EDITAR PERFIL" color="#330D5A" onPress={this.updateInfo()}></Button>
+              <Button text="EDITAR PERFIL" color="#330D5A" onPress={this.toUpdate}/>
             </View>
             <View style={{
               width: 40, height: 40, borderRadius: 50,
@@ -120,7 +124,6 @@ const styles = StyleSheet.create({
     height: 360,
     borderRadius: 20,
     marginLeft: 5,
-    marginBottom: 160,
+    marginBottom: 25,
   }
 });
-

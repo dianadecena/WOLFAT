@@ -67,9 +67,9 @@ class Login extends Component {
                         value={this.state.password}
                     />
                 </View>
-                <View style={{ marginTop: 40 }}>
+                <View style={{ marginTop: 40 }} onStartShouldSetResponder={() => this.login()}>
                     <Button
-                        text="SIGN UP" background="#330D5A" color="white" onPress={this.login}
+                        text="LOGIN" background="#330D5A" color="white" onPress={this.login}
                     />
                 </View>
 
