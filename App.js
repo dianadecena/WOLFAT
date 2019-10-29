@@ -10,6 +10,7 @@ import SubirImagen from './views/SubirImagen';
 import ImageDetails from './views/ImageDetails';
 import SignUp from './views/SignUp'
 import Login from './views/Login'
+import EditarPerfil from './views/EditarPerfil'
 
 import {createSwitchNavigator} from 'react-navigation';
 import firebase from 'firebase';
@@ -91,6 +92,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   Login:{
     screen: Login
+  },
+  EditarPerfil:{
+    screen: EditarPerfil
   }
 })
 
