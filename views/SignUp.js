@@ -38,8 +38,9 @@ class SignUp extends Component {
             password: password
           }
           db.firestore().collection('Usuario').doc(response.user.uid).set(user)
-          this.props.navigation.navigate('Dashboard')
+          
         }
+        this.props.navigation.navigate('Dashboard')
       } catch (e) {
         alert(e)
       }

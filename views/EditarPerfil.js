@@ -4,7 +4,8 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Alert
+  Alert,
+  Image
 } from "react-native";
 import Button from './components/Button';
 
@@ -32,28 +33,28 @@ class EditarPerfil extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log(user.uid);
-        
+
         db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
           if (doc.exists) {
-              id = doc.data().uid
-              nombre = doc.data().Nombre
-              apellido = doc.data().Apellido
-              username = doc.data().displayName
-              email = doc.data().email
-              ubicacion = doc.data().Ubicacion
-              this.setState({id})
-              this.setState({nombre})
-              this.setState({apellido})
-              this.setState({username})
-              this.setState({email})
-              this.setState({ubicacion})
+            id = doc.data().uid
+            nombre = doc.data().Nombre
+            apellido = doc.data().Apellido
+            username = doc.data().displayName
+            email = doc.data().email
+            ubicacion = doc.data().Ubicacion
+            this.setState({ id })
+            this.setState({ nombre })
+            this.setState({ apellido })
+            this.setState({ username })
+            this.setState({ email })
+            this.setState({ ubicacion })
           } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
           }
-      }).catch((error) => {
+        }).catch((error) => {
           console.log("Error getting document:", error);
-      });
+        });
       } else {
         // No user is signed in.
       }
@@ -66,9 +67,9 @@ class EditarPerfil extends Component {
     if (this.state.nombre != '' && this.state.apellido != '' && this.state.username != '' && this.state.password != '' && this.state.email != '' && this.state.ubicacion != '') {
       try {
 
-          db.firestore().collection('Usuario').doc(id).update({Nombre:nombre, Apellido:apellido,Ubicacion:ubicacion})
-          this.props.navigation.navigate('Profile')
-        
+        db.firestore().collection('Usuario').doc(id).update({ Nombre: nombre, Apellido: apellido, Ubicacion: ubicacion })
+        this.props.navigation.navigate('Profile')
+
       } catch (e) {
         alert(e)
       }
@@ -130,9 +131,9 @@ class EditarPerfil extends Component {
           />
         </View>
 
-        <View style={{marginLeft: 20}} onStartShouldSetResponder={() => this.volverPerfil()}>
-              <Image source={back} style={{width: 26, height: 26}}></Image>
-          </View>
+        <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.volverPerfil()}>
+          <Image source={back} style={{ width: 26, height: 26 }}></Image>
+        </View>
       </View>
     );
   }
