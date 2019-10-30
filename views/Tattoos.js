@@ -5,8 +5,13 @@ import firebase from 'firebase';
 import db from '../config';
 
 var id, imagesUser = [];
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 class Tattoos extends React.Component {
+
+  _isMounted = false;
 
   state = {
     fontLoaded: false, imagesUser, id
@@ -18,48 +23,40 @@ class Tattoos extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
-  /*db.firestore().collection('Posts').get().then(snapshot => {
+  componentDidMount() {
+    this._isMounted = true;
+ 
+  db.firestore().collection('Posts').get().then(snapshot => {
             snapshot.forEach(doc => {
-              imagesUser = doc.data().image
-              this.setState({ imagesUser })
-              console.log(imagesUser)
+              if (this._isMounted) {
+                imagesUser = doc.data().image
+                this.setState({ imagesUser })
+                console.log(imagesUser)
+              }
             });
           }).catch(err => {
             console.log('Error getting documents', err);
-          });*/
+          });
+  }
 
-  componentDidMount() {
-    this._isMounted = true;
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user.uid);
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
-        db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
-          if (doc.exists) {
-            imagesUser = doc.data().images
-            this.setState({ imagesUser })
-            console.log(imagesUser)
-          } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-          }
-        }).catch((error) => {
-          console.log("Error getting document:", error);
-        });
-      } else {
-        // No user is signed in.
-      }
-    });
+  sleep = async () => {
+    await sleep(10000)
   }
 
   render() {
-    const images = ['one', 'two'];
-    console.log(images)
     const items = []
-    console.log(this.state.imagesUser)
+    if (Array.isArray(imagesUser) && imagesUser.length) {
+      this.sleep()
+      // array exists and is not empty
+      console.log(this.state.imagesUser)
     for (const [index, image] of this.state.imagesUser.entries()) {
       items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
     }
+  }
 
     return (
       <View style={styles.backgroundContainer}>

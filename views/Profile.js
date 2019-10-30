@@ -61,16 +61,15 @@ class Profile extends React.Component {
 
   render() {
 
-    const images = ['one', 'two'];
-    console.log(images)
     const items = []
-    console.log(this.state.imagesUser)
+    if (Array.isArray(imagesUser) && imagesUser.length) {
     for (const [index, image] of this.state.imagesUser.entries()) {
       items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
     }
+  }
 
     return (
-      <ScrollView style={styles.backgroundContainer} decelerationRate={0.5}>
+      <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}>
         <View>
           <Image source={require('./assets/header.jpg')} style={{ height: 200 }} />
           <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }}>
