@@ -11,6 +11,7 @@ import ImageDetails from './views/ImageDetails';
 import SignUp from './views/SignUp'
 import Login from './views/Login'
 import EditarPerfil from './views/EditarPerfil'
+import FotoPerfil from './views/FotoPerfil'
 
 import {createSwitchNavigator} from 'react-navigation';
 import firebase from 'firebase';
@@ -98,6 +99,9 @@ const LoginSwitch = createSwitchNavigator({
   },
   Profile:{
     screen: Profile
+  },
+  FotoPerfil:{
+    screen: FotoPerfil
   }
 })
 
