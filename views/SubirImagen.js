@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -15,16 +15,18 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
+var imageResult, uploadResult
+
 class SubirImagen extends React.Component {
 
   state = {
-    image: null,
+    image: null
   };
 
-  
+
 
   toProfile = async () => {
-    await sleep(2000)
+    //await sleep(2000)
     this.props.navigation.navigate('Profile');
   }
 
@@ -33,17 +35,22 @@ class SubirImagen extends React.Component {
 
     return (
       <View style={styles.backgroundContainer}>
-        <Button
-          text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
-        />
+        <View onStartShouldSetResponder={() => this.chooseImage()}>
+          <Button
+            text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
+          />
+        </View>
         {image && <Image source={{ uri: image }} style={styles.card} />}
-        <Button
-          text="Upload" background="#330D5A" color="white" onPress={() => this.uploadImage(image) && this.toProfile()}
-        />
+        <View onStartShouldSetResponder={() => this.uploadImage(image)}>
+          <Button
+            text="Upload" background="#330D5A" color="white" disabled={false} onPress={() => this.uploadImage(image)}
+          />
+        </View>
 
-        <View style={{marginLeft: 20}} onStartShouldSetResponder={() => this.toProfile()}>
-              <Image source={back} style={{width: 26, height: 26}}></Image>
-          </View>
+
+        <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.toProfile()}>
+          <Image source={back} style={{ width: 26, height: 26 }}></Image>
+        </View>
       </View>
     );
   }
@@ -72,37 +79,45 @@ class SubirImagen extends React.Component {
 
     if (!result.cancelled) {
       this.setState({ image: result.uri });
+      imageResult = true
     }
   };
 
   uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    let filename = uri.split('/').pop();
-    var storageRef = db.storage().ref().child('images/' + filename);
-    storageRef.put(blob).then(function (snapshot) {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-    }).then(function () {
-      // Upload completed successfully, now we can get the download URL
-      storageRef.getDownloadURL().then(function (downloadURL) {
-        console.log('File available at', downloadURL);
-        firebase.auth().onAuthStateChanged(function (user) {
-          if (user) {
-            var usuarios = db.firestore().collection('Usuario').doc(user.uid);
-            console.log(user.uid);
-            usuarios.update({
-              images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
-            });
-            db.firestore().collection('Posts').add({
-              image: downloadURL,
-              uid: user.uid
-            });
-          }
+    if (imageResult) {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      let filename = uri.split('/').pop();
+      var storageRef = db.storage().ref().child('images/' + filename);
+      storageRef.put(blob).then(function (snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+      }).then(function () {
+        // Upload completed successfully, now we can get the download URL
+        storageRef.getDownloadURL().then(function (downloadURL) {
+          console.log('File available at', downloadURL);
+          firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+              var usuarios = db.firestore().collection('Usuario').doc(user.uid);
+              console.log(user.uid);
+              usuarios.update({
+                images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
+              });
+              db.firestore().collection('Posts').add({
+                image: downloadURL,
+                uid: user.uid
+              });
+
+            }
+          });
         });
       });
-    });
+      this.props.navigation.navigate('Profile');
+    } else {
+      Alert.alert('Error', 'No ha seleccionado ninguna foto')
+    }
+
   }
 };
 

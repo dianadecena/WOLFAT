@@ -19,7 +19,7 @@ class Loading extends Component {
                 this.props.navigation.navigate('Dashboard');
             }
             else{
-                this.props.navigation.navigate('Home');
+                this.props.navigation.navigate('Init');
             }
         }.bind(this))
     }

@@ -125,7 +125,7 @@ class EditarPerfil extends Component {
           value={this.state.ubicacion}
           clearTextOnFocus={true}
         />
-        <View style={{ marginTop: 40 }}>
+        <View style={{ marginTop: 40 }} onStartShouldSetResponder={() => this.update()}>
           <Button
             text="UPDATE" background="#330D5A" color="white" onPress={this.update}
           />

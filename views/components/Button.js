@@ -9,7 +9,7 @@ export default class Button extends React.Component {
     render() {
         const {
             onPress,
-          } = this.props;
+          } = this.props; 
     return (
         <View style={[styles.wrapper, {backgroundColor: this.props.background}]}>
           <TouchableNativeFeedback

@@ -106,7 +106,7 @@ class SignUp extends Component {
           onChangeText={(ubicacion) => this.setState({ ubicacion })}
           value={this.state.ubicacion}
         />
-        <View style={{ marginTop: 40 }}>
+        <View style={{ marginTop: 40 }} onStartShouldSetResponder={() => this.register()}>
           <Button
             text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
           />
