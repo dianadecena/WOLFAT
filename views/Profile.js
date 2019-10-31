@@ -7,7 +7,7 @@ import Button from './components/Button';
 import header from './assets/header.jpg'
 import profile from './assets/profile.png'
 
-var nombre, apellido, ubicacion, descripcion, imagesUser = [];
+var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [];
 
 class Profile extends React.Component {
 
@@ -18,7 +18,8 @@ class Profile extends React.Component {
     apellido,
     ubicacion,
     descripcion,
-    imagesUser
+    imagesUser,
+    fotoPerfil
   }
 
   componentDidMount() {
@@ -34,12 +35,13 @@ class Profile extends React.Component {
             ubicacion = doc.data().Ubicacion
             descripcion = doc.data().Descripcion
             imagesUser = doc.data().images
+            fotoPerfil = doc.data().profileImage
             this.setState({ nombre })
             this.setState({ apellido })
             this.setState({ ubicacion })
             this.setState({ descripcion })
             this.setState({ imagesUser })
-            console.log(imagesUser)
+            this.setState({ fotoPerfil })
           } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -80,7 +82,7 @@ class Profile extends React.Component {
           <Image source={header} style={{ height: 200 }} />
           <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }} 
           onStartShouldSetResponder={() => this.changeProfilePic()}>
-            <Image source={profile} style={{ borderRadius: 50, width: 100, height: 100, backgroundColor: 'white' }} />
+          <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100}} />
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
             <Text style={{ color: 'white' }}>{this.state.nombre} {this.state.apellido}</Text>

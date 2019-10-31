@@ -19,7 +19,7 @@ class ImageDetails extends React.Component {
   render() {
     const image = this.props.navigation.getParam('image', 'NO-ID')
     return (
-      <ImageBackground source={image} 
+      <ImageBackground source={{uri: image.toString()}} 
       style={styles.backgroundContainer}>
           <View style={{marginLeft: 300}} onStartShouldSetResponder={() => this.closeImage()}>
               <Image source={close} style={{width: 26, height: 26}}></Image>
