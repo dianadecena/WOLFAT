@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
-import Button from './components/Button';
-import firebase from 'firebase';
 import db from '../config';
+import Card from './components/Card';
 
-var id, imagesUser = [];
+var id, tattoos = [];
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
@@ -14,8 +13,9 @@ class Tattoos extends React.Component {
   _isMounted = false;
 
   state = {
-    fontLoaded: false, imagesUser, id
+    fontLoaded: false, tattoos, id
   }
+
   async componentWillMount() {
     await Expo.Font.loadAsync({
       'old-london': require('./assets/fonts/OldLondon.ttf'),
@@ -25,18 +25,14 @@ class Tattoos extends React.Component {
 
   componentDidMount() {
     this._isMounted = true;
- 
-  db.firestore().collection('Posts').get().then(snapshot => {
-            snapshot.forEach(doc => {
-              if (this._isMounted) {
-                imagesUser = doc.data().image
-                this.setState({ imagesUser })
-                console.log(imagesUser)
-              }
-            });
-          }).catch(err => {
-            console.log('Error getting documents', err);
-          });
+
+    db.firestore().collection('Posts').get()
+      .then(querySnapshot => {
+        querySnapshot.docs.forEach(doc => {
+        tattoos.push(doc.data().image);
+        this.setState({ tattoos })
+      });
+    });
   }
 
   componentWillUnmount() {
@@ -49,12 +45,9 @@ class Tattoos extends React.Component {
 
   render() {
     const items = []
-    if (Array.isArray(imagesUser) && imagesUser.length) {
-      this.sleep()
-      // array exists and is not empty
-      console.log(this.state.imagesUser)
-    for (const [index, image] of this.state.imagesUser.entries()) {
-      items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
+    if (Array.isArray(tattoos) && tattoos.length) {
+    for (const [index, image] of this.state.tattoos.entries()) {
+      items.push(<Card key={index} imageUri={image}/>)
     }
   }
 
@@ -68,12 +61,8 @@ class Tattoos extends React.Component {
         </View>
 
         <View style={styles.cardContainer}>
-          <ScrollView decelerationRate={0.5}>
-
-            <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
+          <ScrollView decelerationRate={'fast'}>
               {items}
-
-            </View>
           </ScrollView>
         </View>
       </View>
