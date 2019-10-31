@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Alert } from 'react-native';
+import { Image, View, StyleSheet, Alert, Picker } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -8,6 +8,7 @@ import firebase from 'firebase'
 import db from '../config';
 import back from './assets/back.png';
 import Button from './components/Button';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
@@ -19,11 +20,16 @@ var imageResult, uploadResult
 
 class SubirImagen extends React.Component {
 
+  constructor(props){
+    super(props);
+    this.state={
+      pickerSelection: 'Default value'
+    }
+  }
+
   state = {
     image: null
   };
-
-
 
   toProfile = async () => {
     //await sleep(2000)
@@ -40,11 +46,29 @@ class SubirImagen extends React.Component {
             text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
           />
         </View>
+       
+        
         {image && <Image source={{ uri: image }} style={styles.card} />}
+        
+       
+        
         <View onStartShouldSetResponder={() => this.uploadImage(image)}>
           <Button
             text="Upload" background="#330D5A" color="white" disabled={false} onPress={() => this.uploadImage(image)}
           />
+        </View>
+
+        <View onStartShouldSetResponder={() => this.chooseImage()}> 
+        <Picker
+         selectedValue={this.state.pickerSelection}
+         style={{bottom: 0, left:0, right:0, borderWidth:1, borderColor: TouchableWithoutFeedback, height: 50, width: 100}}
+         onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})
+          }>
+            <Picker.Item label="Tattoo" value="tattoo" />
+            <Picker.Item label="Estetica" value="estetica" />
+            <Picker.Item label="Piercing" value="piercing" />
+            <Picker.Item label="Make-up" value="makeup" />
+        </Picker>
         </View>
 
 
@@ -82,6 +106,7 @@ class SubirImagen extends React.Component {
       imageResult = true
     }
   };
+  
 
   uploadImage = async (uri) => {
     if (imageResult) {
@@ -144,6 +169,7 @@ const styles = StyleSheet.create({
     shadowColor: 'white',
     marginLeft: 5,
     shadowOpacity: 1.0,
-    marginTop: 30,
+    marginTop: 20,
+    marginBottom: 10,
   }
 });

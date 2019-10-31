@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableNativeFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableNativeFeedback, Platform, TouchableHighlight} from 'react-native';
 import PropTypes from 'prop-types';
 
 export default class Button extends React.Component {
@@ -11,15 +11,20 @@ export default class Button extends React.Component {
             onPress,
           } = this.props; 
     return (
+      
         <View style={[styles.wrapper, {backgroundColor: this.props.background}]}>
-          <TouchableNativeFeedback
-            useForeground={true}
+        
+          
+            <TouchableHighlight 
+               useForeground={true}
             onPress={onPress}
           >
             <View style={styles.buttonText}>
-              <Text style={{color: this.props.color}}>{this.props.text}</Text>
+              <Text style={{color:this.props.color}}>{this.props.text}</Text>
             </View>
-          </TouchableNativeFeedback>
+            </TouchableHighlight> 
+          
+         
         </View>
     );
   }
