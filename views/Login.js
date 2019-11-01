@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Image } from 'react-native';
+import back from './assets/back.png';
+import { withNavigation } from 'react-navigation';
 import {
     View,
     Text,
@@ -20,6 +23,11 @@ class Login extends Component {
     onChangeText = (key, val) => {
         this.setState({ [key]: val })
     }
+
+    toProfile = async () => {
+        //await sleep(2000)
+        this.props.navigation.navigate('Init');
+      }
 
     login = async () => {
         const { email, password } = this.state
@@ -73,7 +81,12 @@ class Login extends Component {
                     />
                 </View>
 
-            </View>
+                <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.toProfile()}>
+                    <Image source={back} style={{ width: 26, height: 26 }}></Image>
+                </View>
+      </View>
+
+          
 
         );
     }

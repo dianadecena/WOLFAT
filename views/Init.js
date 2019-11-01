@@ -40,7 +40,7 @@ class Init extends React.Component {
           ) : null }
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: '#E7E7E7', fontSize: 20}}>ARE YOU AN ARTIST OR A CLIENT?</Text>
+      <Text style={{color: '#E7E7E7', fontSize: 20}}>WELCOME TO WOLFAT</Text>
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
       <View onStartShouldSetResponder={() => this.onLogIn()}>

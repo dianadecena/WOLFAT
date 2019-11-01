@@ -88,25 +88,6 @@ class Home extends React.Component {
     }.bind(this));
   }
 
-  signInWithGoogleAsync = async () => {
-    try {
-      const result = await Google.logInAsync({
-        androidClientId: "176101755908-9d2fdp71uctqg0fjl5evi2lpprnkt7hk.apps.googleusercontent.com",
-        iosClientId: "176101755908-9ci6pgfcjfcbck5adciov9iustnf5aot.apps.googleusercontent.com",
-        scopes: ['profile', 'email'],
-      });
-
-      if (result.type === 'success') {
-        this.onSignIn(result);
-        return result.accessToken;
-      } else {
-        return { cancelled: true };
-      }
-    } catch (e) {
-      return { error: true };
-    }
-  }
-
   render() {
     return (
       <ImageBackground source={bgImage} style={styles.backgroundContainer}>

@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { Image } from 'react-native';
+import back from './assets/back.png';
+import { withNavigation } from 'react-navigation';
 import {
   View,
   Text,
@@ -15,6 +18,11 @@ class SignUp extends Component {
 
   state = {
     nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: ''
+  }
+
+  toProfile = async () => {
+    //await sleep(2000)
+    this.props.navigation.navigate('Init');
   }
 
   onChangeText = (key, val) => {
@@ -111,6 +119,10 @@ class SignUp extends Component {
             text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
           />
         </View>
+        <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.toProfile()}>
+                    <Image source={back} style={{ width: 26, height: 26 }}></Image>
+        </View>
+
       </View>
     );
   }
