@@ -5,8 +5,6 @@ import { Dimensions } from "react-native";
 import Button from './components/Button';
 import { withNavigation } from 'react-navigation';
 
-//hay que volarse esta vista
-
 var width = Dimensions.get('window').width;
 
 class Init extends React.Component {
@@ -40,7 +38,7 @@ class Init extends React.Component {
           ) : null }
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: '#E7E7E7', fontSize: 20}}>WELCOME TO WOLFAT</Text>
+      <Text style={{color: '#E7E7E7', fontSize: 20}}>WELCOME</Text>
       </View>
       <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
       <View onStartShouldSetResponder={() => this.onLogIn()}>

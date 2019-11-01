@@ -4,15 +4,12 @@ import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
 import Button from './components/Button';
-import header from './assets/header.jpg'
-import profile from './assets/profile.png'
+import header from './assets/header.jpg';
+
 
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [];
 
 class Profile extends React.Component {
-
-  _isMounted = false;
-
   state = {
     nombre,
     apellido,
@@ -21,6 +18,9 @@ class Profile extends React.Component {
     imagesUser,
     fotoPerfil
   }
+
+
+  _isMounted = false;
 
   componentDidMount() {
     this._isMounted = true;
@@ -63,6 +63,11 @@ class Profile extends React.Component {
     this.props.navigation.navigate('EditarPerfil');
   }
 
+  toProfile = async () => {
+
+    this.props.navigation.navigate('Dashboard');
+  }
+
   changeProfilePic() {
     this.props.navigation.navigate('FotoPerfil');
   }
@@ -89,13 +94,18 @@ class Profile extends React.Component {
             <Text style={{ color: 'white' }}>{this.state.ubicacion}</Text>
             <Text style={{ color: 'white' }}>{this.state.descripcion}</Text>
           </View>
-
-          <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-around', height: 40 }}>
-            <View style={{ width: 150 }}>
-              <Button text="EDITAR PERFIL" color="#330D5A" onPress={this.toUpdate}/>
+          <View style={{ flexDirection: 'row', marginTop: 10, justifyContent:'space-between' , height: 40}}>
+            <View style={{
+              width: 40, height: 40, borderRadius: 50, marginTop: 10, marginLeft: 20,
+              backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',
+            }}
+            onStartShouldSetResponder={() => this.toProfile()}
+            >
+                   <Image style={{ resizeMode: 'cover' }}
+                source={require('./assets/camera.png')} />
             </View>
             <View style={{
-              width: 40, height: 40, borderRadius: 50,
+              width: 40, height: 40, borderRadius: 50, marginTop: 10, marginRight: 20,
               backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'
             }}
               onStartShouldSetResponder={() => this.uploadImage()}
@@ -103,12 +113,15 @@ class Profile extends React.Component {
               <Image style={{ resizeMode: 'cover' }}
                 source={require('./assets/camera.png')} />
             </View>
-
           </View>
-
+          <View style={{ width: 215,  marginTop: -45, marginLeft: 75, marginRight: 180}}>
+              <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
+          </View>
+        
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
             {items}
           </View>
+
         </View>
       </ScrollView>
     );
