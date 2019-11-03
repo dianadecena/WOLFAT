@@ -29,10 +29,10 @@ class Tattoos extends React.Component {
     db.firestore().collection('Posts').where('tipo', '==', 1).get()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(doc => {
-        tattoos.push(doc.data().image);
-        this.setState({ tattoos })
+          tattoos.push(doc.data().image);
+          this.setState({ tattoos })
+        });
       });
-    });
   }
 
   componentWillUnmount() {
@@ -46,10 +46,10 @@ class Tattoos extends React.Component {
   render() {
     const items = []
     if (Array.isArray(tattoos) && tattoos.length) {
-    for (const [index, image] of this.state.tattoos.entries()) {
-      items.push(<Card key={index} imageUri={image}/>)
+      for (const [index, image] of this.state.tattoos.entries()) {
+        items.push(<Card key={index} imageUri={image} />)
+      }
     }
-  }
 
     return (
       <View style={styles.backgroundContainer}>
@@ -62,7 +62,7 @@ class Tattoos extends React.Component {
 
         <View style={styles.cardContainer}>
           <ScrollView decelerationRate={'fast'}>
-              {items}
+            {items}
           </ScrollView>
         </View>
       </View>
