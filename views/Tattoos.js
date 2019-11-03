@@ -26,7 +26,7 @@ class Tattoos extends React.Component {
   componentDidMount() {
     this._isMounted = true;
 
-    db.firestore().collection('Posts').get()
+    db.firestore().collection('Posts').where('tipo', '==', 1).get()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(doc => {
         tattoos.push(doc.data().image);
