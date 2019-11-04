@@ -20,10 +20,10 @@ var imageResult, uploadResult
 
 class SubirImagen extends React.Component {
 
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      pickerSelection: 'Default value'
+    this.state = {
+      pickerSelection: 'tattoo'
     }
   }
 
@@ -46,29 +46,29 @@ class SubirImagen extends React.Component {
             text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
           />
         </View>
-       
-        
+
+
         {image && <Image source={{ uri: image }} style={styles.card} />}
-        
-       
-        
+
+
+
         <View onStartShouldSetResponder={() => this.uploadImage(image)}>
           <Button
-            text="Upload" background="#330D5A" color="white" disabled={false} onPress={() => this.uploadImage(image)}
+            text="Upload" background="#330D5A" color="white" onPress={() => this.uploadImage(image)}
           />
         </View>
 
-        <View onStartShouldSetResponder={() => this.chooseImage()}> 
-        <Picker
-         selectedValue={this.state.pickerSelection}
-         style={{bottom: 0, left:0, right:0, borderWidth:1, borderColor: TouchableWithoutFeedback, height: 50, width: 100}}
-         onValueChange={(itemValue, itemIndex) => this.setState({language: itemValue})
-          }>
+        <View>
+          <Picker
+            selectedValue={this.state.pickerSelection}
+            style={{ bottom: 0, left: 0, right: 0, borderWidth: 1, borderColor: TouchableWithoutFeedback, height: 50, width: 100 }}
+            onValueChange={(itemValue, itemIndex) => this.setState({pickerSelection: itemValue })
+            }>
             <Picker.Item label="Tattoo" value="tattoo" />
             <Picker.Item label="Estetica" value="estetica" />
             <Picker.Item label="Piercing" value="piercing" />
             <Picker.Item label="Make-up" value="makeup" />
-        </Picker>
+          </Picker>
         </View>
 
 
@@ -106,9 +106,10 @@ class SubirImagen extends React.Component {
       imageResult = true
     }
   };
-  
+
 
   uploadImage = async (uri) => {
+    var value = this.state.pickerSelection;
     if (imageResult) {
       const response = await fetch(uri);
       const blob = await response.blob();
@@ -129,10 +130,41 @@ class SubirImagen extends React.Component {
               usuarios.update({
                 images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
               });
-              db.firestore().collection('Posts').add({
-                image: downloadURL,
-                uid: user.uid
-              });
+              if (value == 'tattoo') {
+                console.log(value)
+                console.log("Es tattoo el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 1
+                });
+              } else if (value == 'estetica') {
+                console.log(value)
+                console.log("Es estetica el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 2
+                });
+              }
+              else if (value == 'piercing') {
+                console.log(value)
+                console.log("Es piercing el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 3
+                });
+              } else {
+                console.log(value)
+                console.log("Es makeup el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 4
+                });
+              }
+              
 
             }
           });
