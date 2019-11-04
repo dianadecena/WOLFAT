@@ -4,7 +4,7 @@ import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
 import Button from './components/Button';
-import header from './assets/header.jpg';
+import header from './assets/wolfat2.jpg';
 
 
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username;
@@ -106,7 +106,7 @@ class Profile extends React.Component {
             onStartShouldSetResponder={() => this.toProfile()}
             >
                    <Image style={{ resizeMode: 'cover' }}
-                source={require('./assets/camera.png')} />
+                source={require('./assets/home.png')} />
             </View>
             <View style={{
               width: 40, height: 40, borderRadius: 50, marginTop: 10, marginRight: 20,

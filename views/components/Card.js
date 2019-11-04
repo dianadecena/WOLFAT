@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, ImageBackground, Image } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import add from '../assets/plus.png'
+import add from '../assets/profile.png'
 
 class Card extends React.Component {
 
