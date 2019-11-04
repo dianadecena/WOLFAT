@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 40,
     marginBottom: 15,
-    
     height: 60,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    width: 250,
   },
   buttonText: {
     display: 'flex',

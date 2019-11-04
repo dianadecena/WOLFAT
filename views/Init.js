@@ -45,7 +45,7 @@ class Init extends React.Component {
       <Button text="Log In" background="black" color="white" onPress={this.onLogIn} />
       </View>
       <View onStartShouldSetResponder={() => this.onSignUp()}>
-      <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp}/>
+      <Button  text="SIGN UP" background="white" color="black" onPress={this.onSignUp}/>
       </View>
       </View>
     </ImageBackground>
@@ -60,5 +60,5 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-  }
+  },
 });

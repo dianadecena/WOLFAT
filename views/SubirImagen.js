@@ -42,7 +42,7 @@ class SubirImagen extends React.Component {
     return (
       <View style={styles.backgroundContainer}>
         <View onStartShouldSetResponder={() => this.chooseImage()}>
-          <Button
+          <Button 
             text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
           />
         </View>

@@ -7,7 +7,7 @@ import Button from './components/Button';
 import header from './assets/header.jpg';
 
 
-var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [];
+var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username;
 
 class Profile extends React.Component {
   state = {
@@ -16,7 +16,8 @@ class Profile extends React.Component {
     ubicacion,
     descripcion,
     imagesUser,
-    fotoPerfil
+    fotoPerfil,
+    username
   }
 
 
@@ -36,12 +37,14 @@ class Profile extends React.Component {
             descripcion = doc.data().Descripcion
             imagesUser = doc.data().images
             fotoPerfil = doc.data().profileImage
+            username = doc.data().displayName
             this.setState({ nombre })
             this.setState({ apellido })
             this.setState({ ubicacion })
             this.setState({ descripcion })
             this.setState({ imagesUser })
             this.setState({ fotoPerfil })
+            this.setState({ username })
           } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -90,6 +93,7 @@ class Profile extends React.Component {
           <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100}} />
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
+            <Text style={{ color: 'white' }}>@{this.state.username}</Text>
             <Text style={{ color: 'white' }}>{this.state.nombre} {this.state.apellido}</Text>
             <Text style={{ color: 'white' }}>{this.state.ubicacion}</Text>
             <Text style={{ color: 'white' }}>{this.state.descripcion}</Text>
@@ -114,7 +118,7 @@ class Profile extends React.Component {
                 source={require('./assets/camera.png')} />
             </View>
           </View>
-          <View style={{ width: 215,  marginTop: -45, marginLeft: 75, marginRight: 180}}>
+          <View style={{ width: 215,  marginTop: -45, marginLeft: 63, marginRight: 180}}>
               <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
           </View>
         
