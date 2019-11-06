@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, 
+ActivityIndicator, Dimensions, FlatList, SafeAreaView } from 'react-native';
 import db from '../config';
 import Card from './components/Card';
 
@@ -10,11 +11,20 @@ const sleep = (milliseconds) => {
 
 class Tattoos extends React.Component {
 
-  _isMounted = false;
-
-  state = {
-    fontLoaded: false, tattoos, id
+  constructor(props) {
+    super(props);
+    this.state = {
+      tattoos: [],
+      limit: 9,
+      lastVisible: null,
+      loading: false,
+      refreshing: false,
+      fontLoaded: false, 
+      id,
+    };
   }
+
+  _isMounted = false;
 
   async componentWillMount() {
     await Expo.Font.loadAsync({
@@ -23,36 +33,46 @@ class Tattoos extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
-  componentDidMount() {
-    this._isMounted = true;
+  componentDidMount = () => {
+    try {
+      // Cloud Firestore: Initial Query
+      this.retrieveData();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
 
-    db.firestore().collection('Posts').where('tipo', '==', 1).get()
+   retrieveData = async () => {
+    try {
+      this.setState({
+        loading: true,
+      });
+      await db.firestore().collection('Posts').where('tipo', '==', 1).get()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(doc => {
           tattoos.push(doc.data().image);
-          this.setState({ tattoos })
+          this.setState({ tattoos, loading: false, })
         });
       });
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
-  }
-
-  sleep = async () => {
-    await sleep(10000)
-  }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
 
   render() {
-    const items = []
-    if (Array.isArray(tattoos) && tattoos.length) {
-      for (const [index, image] of this.state.tattoos.entries()) {
-        items.push(<Card key={index} imageUri={image} />)
-      }
-    }
+    /*if(!this.state.loading){
+      return(
+        <View style={styles.container}>
+            <ActivityIndicator size='large'/>
+        </View>
+      );
+    }*/
 
     return (
-      <View style={styles.backgroundContainer}>
+      <ScrollView decelerationRate={'fast'}>
+      <SafeAreaView style={styles.backgroundContainer}>
         <View style={{ marginTop: 3, marginLeft: 20 }}>
           {this.state.fontLoaded ? (
             <Text style={{ fontFamily: 'old-london', fontSize: 50, color: 'white' }}>
@@ -61,11 +81,22 @@ class Tattoos extends React.Component {
         </View>
 
         <View style={styles.cardContainer}>
-          <ScrollView decelerationRate={'fast'}>
-            {items}
-          </ScrollView>
+        <FlatList
+          // Data
+          data={this.state.tattoos}
+          // Render Items
+                    horizontal={false}
+          numColumns={2}
+          backgroundColor={'#141414'}
+          renderItem={({ item }) => (
+            <Card imageUri={item} />
+          )}
+          // Item Key
+          keyExtractor={(item, index) => String(index)}
+        />
         </View>
-      </View>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
 }
@@ -73,6 +104,11 @@ class Tattoos extends React.Component {
 export default Tattoos;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   backgroundContainer: {
     flex: 1,
     backgroundColor: '#141414',
@@ -81,7 +117,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   card: {
     resizeMode: 'cover',
