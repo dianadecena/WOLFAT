@@ -118,7 +118,7 @@ class Profile extends React.Component {
                 source={require('./assets/camera.png')} />
             </View>
           </View>
-          <View style={{ width: 215,  marginTop: -45, marginLeft: 63, marginRight: 180}}>
+          <View style={{ width: 215,  marginTop: -45, marginLeft: 85, marginRight: 85}}>
               <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
           </View>
         
