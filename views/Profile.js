@@ -7,7 +7,7 @@ import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
 
 
-var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username;
+var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username, result;
 
 class Profile extends React.Component {
   state = {
@@ -17,7 +17,8 @@ class Profile extends React.Component {
     descripcion,
     imagesUser,
     fotoPerfil,
-    username
+    username,
+    result
   }
 
 
@@ -57,6 +58,21 @@ class Profile extends React.Component {
       }
     });
   }
+
+  signOut() {
+    firebase.auth().signOut().then(function () {
+      console.log('Sesion Cerrada')
+
+    }).catch(function (error) {
+      console.log(error)
+    });
+  }
+
+
+
+cerrarSesion(){
+  this.props.navigation.navigate('Init');
+}
 
   uploadImage() {
     this.props.navigation.navigate('SubirImagen');
@@ -103,10 +119,10 @@ class Profile extends React.Component {
               width: 40, height: 40, borderRadius: 50, marginTop: 10, marginLeft: 20,
               backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',
             }}
-            onStartShouldSetResponder={() => this.toProfile()}
+            onStartShouldSetResponder={() => this.signOut()}
             >
                    <Image style={{ resizeMode: 'cover' }}
-                source={require('./assets/home.png')} />
+                source={require('./assets/logout.png')} />
             </View>
             <View style={{
               width: 40, height: 40, borderRadius: 50, marginTop: 10, marginRight: 20,
@@ -118,7 +134,7 @@ class Profile extends React.Component {
                 source={require('./assets/camera.png')} />
             </View>
           </View>
-          <View style={{ width: 215,  marginTop: -45, marginLeft: 85, marginRight: 85}}>
+          <View style={{ width: 215,  marginTop: -45, marginLeft: 85, marginRight: 80}}>
               <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
           </View>
         

@@ -71,11 +71,11 @@ const BottomTab = createBottomTabNavigator({
 const StackNavigator  = createStackNavigator({BottomTab}, {headerMode: "none"});
 
 const LoginSwitch = createSwitchNavigator({
-  Init:{
-    screen: Init
-  },
   Loading:{
     screen: Loading
+  },
+  Init:{
+    screen: Init
   },
   Home:{
     screen: Home
