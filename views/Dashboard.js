@@ -57,11 +57,11 @@ export default createMaterialTopTabNavigator({
         fontSize: 7,
       },
       style: {
-        height: 60,
+        height: 55,
         backgroundColor: '#151515',
         blurRadius: 1,
         borderTopWidth: 0,
-        marginTop: StatusBar.currentHeight
+        marginTop: StatusBar.currentHeight,
       }
     }
   })

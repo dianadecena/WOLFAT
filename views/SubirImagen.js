@@ -16,7 +16,8 @@ const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-var imageResult, uploadResult
+var imageResult, uploadResult;
+var userName;
 
 class SubirImagen extends React.Component {
 
@@ -110,6 +111,7 @@ class SubirImagen extends React.Component {
 
   uploadImage = async (uri) => {
     var value = this.state.pickerSelection;
+    var that = this;
     if (imageResult) {
       const response = await fetch(uri);
       const blob = await response.blob();
@@ -125,8 +127,7 @@ class SubirImagen extends React.Component {
           console.log('File available at', downloadURL);
           firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-              var usuarios = db.firestore().collection('Usuario').doc(user.uid);
-              console.log(user.uid);
+              const usuarios = db.firestore().collection('Usuario').doc(user.uid);        
               usuarios.update({
                 images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
               });

@@ -1,30 +1,81 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image } from 'react-native';
+import { StyleSheet, View, ImageBackground, Image, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import nolike from '../assets/no-like.png';
 import like from '../assets/like.png';
 import more from '../assets/more.png';
+import db from '../../config';
+
+
 
 class Card extends React.Component {
 
+  _isMounted = false;
+  
+  state = {
+    name: '',
+    profileImage: null,
+    loading: false
+  }
+
+  componentDidMount () {
+    this._isMounted = true;
+
+    try {
+      this.getUsernames();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+  
   imageDetails(image){
     this.props.navigation.navigate('ImageDetails', {
       image: image,
     });
   }
 
+  getUsernames() {
+    this.setState({
+      loading: true,
+    });
+    db.firestore().collection('Usuario').doc(this.props.uid).get()
+    .then(doc => {
+      if (this._isMounted) {
+        this.setState({ 
+        name: doc.data().displayName,
+        profileImage: doc.data().profileImage,
+        loading: false
+        })
+      }
+    });
+  }
+  catch (error) {
+    console.log(error);
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
+  
   render() {
+    if(!this.state.loading) {
     return (
         <View style={styles.card}>
         <View onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}>
         </View> 
         <Image source={{uri: this.props.imageUri.toString()}} style={styles.topCard}/>
         <View style={styles.bottomCard}>
-        <View>
-        </View>  
+        <Image source={{ uri: this.state.profileImage}} style={{ borderRadius: 15, width: 30, height: 30,
+        marginLeft: 10, marginTop: 5}} />
+        <Text onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}
+        style={{color: 'white', marginLeft: 47, marginTop: -25}}>{this.state.name}</Text>  
         </View>
         </View>
     );
+    } else {
+      return null 
+    }
   }
 }
 
@@ -49,7 +100,7 @@ const styles = StyleSheet.create({
   bottomCard: {
     backgroundColor: '#330D5A',
     width: 160,
-    height: 36,
+    height: 40,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20, 
     shadowOffset: { width: 0, height: 2, },

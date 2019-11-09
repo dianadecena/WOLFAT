@@ -1,26 +1,27 @@
 import React from 'react';
 import { StyleSheet, View, ScrollView, Text, 
-ActivityIndicator, Dimensions, FlatList, SafeAreaView } from 'react-native';
+ActivityIndicator, Dimensions, FlatList, SafeAreaView, RefreshControl } from 'react-native';
 import db from '../config';
 import Card from './components/Card';
 
 var id, tattoos = [];
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
+var users, usersids = [];
+var nombre;
 class Tattoos extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       tattoos: [],
+      usersids: [],
+      users: [],
       limit: 9,
       lastVisible: null,
       loading: false,
       refreshing: false,
       fontLoaded: false, 
       id,
+      nombre,
     };
   }
 
@@ -32,33 +33,44 @@ class Tattoos extends React.Component {
     });
     this.setState({ fontLoaded: true });
   }
-
+  
   componentDidMount = () => {
     try {
-      // Cloud Firestore: Initial Query
-      this.retrieveData();
+      if(!this.state.tattoos.length) {
+        console.log(this.state.tattoos.length)
+        this.retrieveData();
+      } else {
+        this.setState({ tattoos: null });
+        console.log('entrooo')
+        this.retrieveData();
+      }
     }
     catch (error) {
       console.log(error);
     }
   };
 
-   retrieveData = async () => {
+  retrieveData = async () => {
     try {
       this.setState({
         loading: true,
       });
-      await db.firestore().collection('Posts').where('tipo', '==', 1).get()
+     
+    await db.firestore().collection('Posts').where('tipo', '==', 1).get()
       .then(querySnapshot => {
         querySnapshot.docs.forEach(doc => {
-          tattoos.push(doc.data().image);
-          this.setState({ tattoos, loading: false, })
+          tattoos.push(doc.data());
+          this.setState({ tattoos })
         });
-      });
+      })
     }
     catch (error) {
       console.log(error);
     }
+  };
+
+  _handleRefresh = () => {
+
   };
 
   render() {
@@ -71,8 +83,8 @@ class Tattoos extends React.Component {
     }*/
 
     return (
-      <ScrollView decelerationRate={'fast'}>
       <SafeAreaView style={styles.backgroundContainer}>
+      <ScrollView decelerationRate={'fast'}>
         <View style={{ marginTop: 3, marginLeft: 20 }}>
           {this.state.fontLoaded ? (
             <Text style={{ fontFamily: 'old-london', fontSize: 50, color: 'white' }}>
@@ -80,23 +92,22 @@ class Tattoos extends React.Component {
       </Text>) : null}
         </View>
 
-        <View style={styles.cardContainer}>
+        <View style={styles.cardContainer}> 
         <FlatList
-          // Data
           data={this.state.tattoos}
-          // Render Items
-                    horizontal={false}
+          onRefresh={() => this._handleRefresh()}
+          refreshing={false}
+          horizontal={false}
           numColumns={2}
           backgroundColor={'#141414'}
-          renderItem={({ item }) => (
-            <Card imageUri={item} />
+          keyExtractor={(item, index) => index}
+          renderItem={({ item, index }) => (
+            <Card imageUri={item.image} uid={item.uid}/>
           )}
-          // Item Key
-          keyExtractor={(item, index) => String(index)}
         />
         </View>
-        </SafeAreaView>
       </ScrollView>
+      </SafeAreaView>
     );
   }
 }
