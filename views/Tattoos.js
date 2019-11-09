@@ -4,17 +4,17 @@ ActivityIndicator, Dimensions, FlatList, SafeAreaView, RefreshControl } from 're
 import db from '../config';
 import Card from './components/Card';
 
-var id, tattoos = [];
+var id;
 var users, usersids = [];
 var nombre;
+
 class Tattoos extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       tattoos: [],
-      usersids: [],
-      users: [],
+      unsubscribe: null,
       limit: 9,
       lastVisible: null,
       loading: false,
@@ -23,6 +23,7 @@ class Tattoos extends React.Component {
       id,
       nombre,
     };
+    this.retrieveData = this.retrieveData.bind(this);
   }
 
   _isMounted = false;
@@ -36,14 +37,7 @@ class Tattoos extends React.Component {
   
   componentDidMount = () => {
     try {
-      if(!this.state.tattoos.length) {
-        console.log(this.state.tattoos.length)
         this.retrieveData();
-      } else {
-        this.setState({ tattoos: null });
-        console.log('entrooo')
-        this.retrieveData();
-      }
     }
     catch (error) {
       console.log(error);
@@ -55,19 +49,28 @@ class Tattoos extends React.Component {
       this.setState({
         loading: true,
       });
-     
-    await db.firestore().collection('Posts').where('tipo', '==', 1).get()
+
+      const postsRef = db.firestore().collection("Posts");
+      const that = this;
+
+      this.unsubscribe = postsRef.where('tipo', '==', 1).get()
       .then(querySnapshot => {
+        var tattoosArray = [];
         querySnapshot.docs.forEach(doc => {
-          tattoos.push(doc.data());
-          this.setState({ tattoos })
+          tattoosArray.push(doc.data());
         });
-      })
+        that.setState({ tattoos: tattoosArray })
+      });
+    
     }
     catch (error) {
       console.log(error);
     }
   };
+
+  componentWillUnmount(){
+    this.unsubscribe();
+  }
 
   _handleRefresh = () => {
 
