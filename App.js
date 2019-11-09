@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, Image } from 'react-native';
 
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import Home from './views/Home';
 import Profile from './views/Profile';
 import Loading from './views/Loading';
 import Init from './views/Init';
@@ -13,27 +12,51 @@ import Login from './views/Login'
 import EditarPerfil from './views/EditarPerfil'
 import FotoPerfil from './views/FotoPerfil'
 
-import {createSwitchNavigator} from 'react-navigation';
-import firebase from 'firebase';
-import {firebaseConfig} from './config';
+import { createSwitchNavigator } from 'react-navigation';
+
 import Dashboard from './views/Dashboard';
 
 import ignoreWarnings from 'react-native-ignore-warnings';
 ignoreWarnings('Setting a timer');
 
 class App extends React.Component {
-  render() { 
+  render() {
     return (
-      <AppContainer/>
+      <AppContainer />
     );
   }
 }
 export default App;
 
+const DashboardStack = createStackNavigator({
+  Dashboard: {
+    screen: Dashboard//StackNavigator
+  },
+  ImageDetails: {
+    screen: ImageDetails
+  },
+},
+{ headerMode: "none" })
+
+const ProfileStack = createStackNavigator({
+  Profile: {
+    screen: Profile
+  },
+  SubirImagen: {
+    screen: SubirImagen
+  },
+  EditarPerfil: {
+    screen: EditarPerfil
+  },
+  FotoPerfil: {
+    screen: FotoPerfil
+  }
+},
+{ headerMode: "none" })
 
 const BottomTab = createBottomTabNavigator({
-  Dashboard: {
-    screen: Dashboard,
+  DashboardStack: {
+    screen: DashboardStack,
     navigationOptions: {
       tabBarLabel: 'DASHBOARD',
       tabBarIcon: ({ tintColor }) => (
@@ -41,8 +64,8 @@ const BottomTab = createBottomTabNavigator({
       )
     }
   },
-  Profile: {
-    screen: Profile,
+  ProfileStack: {
+    screen: ProfileStack,
     navigationOptions: {
       tabBarLabel: 'PROFILE',
       tabBarIcon: ({ tintColor }) => (
@@ -58,61 +81,48 @@ const BottomTab = createBottomTabNavigator({
       backgroundColor: 'black',
       borderTopWidth: 0,
       borderTopLeftRadius: 20,
-      borderTopRightRadius: 20, 
+      borderTopRightRadius: 20,
       alignSelf: "stretch",
       position: 'absolute',
-			left: 0,
-			right: 0,
+      left: 0,
+      right: 0,
       bottom: 0,
     }
   }
 })
 
-const StackNavigator  = createStackNavigator({BottomTab}, {headerMode: "none"});
+const StackNavigator = createStackNavigator({ BottomTab }, { headerMode: "none" });
 
-const LoginSwitch = createSwitchNavigator({
-  Init:{
-    screen: Init
-  },
-  Loading:{
+const LoginStack = createStackNavigator({
+  Loading: {
     screen: Loading
   },
-  Home:{
-    screen: Home
+  Init: {
+    screen: Init
   },
-  Dashboard:{
-    screen: StackNavigator
-  },
-  ImageDetails:{
-    screen: ImageDetails
-  },
-  SubirImagen:{
-    screen: SubirImagen
-  },
-  SignUp:{
+  SignUp: {
     screen: SignUp
   },
-  Login:{
+  Login: {
     screen: Login
-  },
-  EditarPerfil:{
-    screen: EditarPerfil
-  },
-  Profile:{
-    screen: Profile
-  },
-  FotoPerfil:{
-    screen: FotoPerfil
   }
+},
+{ headerMode: "none" })
+
+const AppStack = createStackNavigator({
+  screen: BottomTab
+},
+{ headerMode: "none" })
+
+const AppSwitch = createSwitchNavigator({
+  Login: {
+    screen: LoginStack
+  },
+  App: {
+    screen: AppStack
+  }
+
+
 })
 
-const AppContainer = createAppContainer(LoginSwitch);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#141414',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const AppContainer = createAppContainer(AppSwitch);

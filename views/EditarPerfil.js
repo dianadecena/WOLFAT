@@ -77,8 +77,6 @@ class EditarPerfil extends Component {
     } else {
       Alert.alert('Error', 'No se pueden dejar campos en blanco')
     }
-
-
   }
 
   render() {
