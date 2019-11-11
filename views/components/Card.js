@@ -29,9 +29,9 @@ class Card extends React.Component {
     }
   };
   
-  imageDetails(image){
-    this.props.navigation.navigate('ImageDetails', {
-      image: image,
+  viewProfile(uid){
+    this.props.navigation.navigate('ViewProfile', {
+      uid: uid,
     });
   }
 
@@ -69,7 +69,7 @@ class Card extends React.Component {
         <View style={styles.bottomCard}>
         <Image source={{ uri: this.state.profileImage}} style={{ borderRadius: 15, width: 30, height: 30,
         marginLeft: 10, marginTop: 5}} />
-        <Text onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}
+        <Text onStartShouldSetResponder={() => this.viewProfile(this.props.uid)}
         style={{color: 'white', marginLeft: 47, marginTop: -25}}>{this.state.name}</Text>  
         </View>
         </View>

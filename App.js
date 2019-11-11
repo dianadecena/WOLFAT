@@ -7,6 +7,7 @@ import Loading from './views/Loading';
 import Init from './views/Init';
 import SubirImagen from './views/SubirImagen';
 import ImageDetails from './views/ImageDetails';
+import ViewProfile from './views/ViewProfile';
 import SignUp from './views/SignUp'
 import Login from './views/Login'
 import EditarPerfil from './views/EditarPerfil'
@@ -32,8 +33,8 @@ const DashboardStack = createStackNavigator({
   Dashboard: {
     screen: Dashboard//StackNavigator
   },
-  ImageDetails: {
-    screen: ImageDetails
+  ViewProfile: {
+    screen: ViewProfile
   },
 },
 { headerMode: "none" })

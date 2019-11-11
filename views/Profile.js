@@ -166,5 +166,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginLeft: 5,
     marginBottom: 25,
+  },
+  bottomCard: {
+    backgroundColor: '#330D5A',
+    width: 160,
+    height: 40,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20, 
+    shadowOffset: { width: 0, height: 2, },
+    shadowColor: 'white',
+    marginLeft: 0,
+    shadowOpacity: 1.0,
+    marginTop: 0,
+    opacity: .7
   }
 });
