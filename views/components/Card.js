@@ -5,7 +5,7 @@ import nolike from '../assets/no-like.png';
 import like from '../assets/like.png';
 import more from '../assets/more.png';
 import db from '../../config';
-
+import moment from "moment";
 
 
 class Card extends React.Component {
@@ -62,6 +62,7 @@ class Card extends React.Component {
     if(!this.state.loading) {
     return (
         <View style={styles.card}>
+        <Text style={{color: 'white'}}>{moment(this.props.timestamp).fromNow()}</Text>
         <View onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}>
         </View> 
         <Image source={{uri: this.props.imageUri.toString()}} style={styles.topCard}/>

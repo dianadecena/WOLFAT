@@ -137,7 +137,8 @@ class SubirImagen extends React.Component {
                 db.firestore().collection('Posts').add({
                   image: downloadURL,
                   uid: user.uid,
-                  tipo: 1
+                  tipo: 1,
+                  timestamp: Date.now()
                 });
               } else if (value == 'estetica') {
                 console.log(value)
