@@ -10,20 +10,20 @@ var nombre;
 
 class Tattoos extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.page = 1;
-    this.state = {
-      tattoos: [],
-      unsubscribe: null,
-      limit: 9,
-      lastVisible: null,
-      loading: false,
-      refreshing: false,
-      fontLoaded: false
-    };
-    this.retrieveData = this.retrieveData.bind(this);
-  }
+    constructor(props) {
+      super(props);
+      this.page = 1;
+      this.state = {
+        tattoos: [],
+        unsubscribe: null,
+        limit: 9,
+        lastVisible: null,
+        loading: false,
+        refreshing: false,
+        fontLoaded: false
+      };
+      this.retrieveData = this.retrieveData.bind(this);
+    }
 
   _isMounted = false;
 

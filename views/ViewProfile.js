@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshControl } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
@@ -10,7 +10,11 @@ import header from './assets/wolfat2.jpg';
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username, result;
 
 class ViewProfile extends React.Component {
-  state = {
+
+  constructor(props) {
+    super(props);
+    this.page = 1;
+    this.state = {
     nombre,
     apellido,
     ubicacion,
@@ -18,16 +22,35 @@ class ViewProfile extends React.Component {
     imagesUser,
     fotoPerfil,
     username,
-    result
+    result,
+    loading: false
+    };
+    this.retrieveData = this.retrieveData.bind(this);
   }
-
 
   _isMounted = false;
 
-  componentDidMount() {
+  componentDidMount = () => {
+    try {
+        this.retrieveData();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
+  retrieveData = async () => {
+    try {
+      this.setState({
+        loading: true,
+      });
+
     this._isMounted = true;
     const uid = this.props.navigation.getParam('uid', 'NO-ID')
-    db.firestore().collection('Usuario').doc(uid).get().then((doc) => {
+    const userRef = db.firestore().collection("Usuario");
+    const that = this;
+    if(this._isMounted){
+      userRef.doc(uid).get().then((doc) => {
         if (doc.exists) {
           nombre = doc.data().Nombre
           apellido = doc.data().Apellido
@@ -36,13 +59,14 @@ class ViewProfile extends React.Component {
           imagesUser = doc.data().images
           fotoPerfil = doc.data().profileImage
           username = doc.data().displayName
-          this.setState({ nombre })
-          this.setState({ apellido })
-          this.setState({ ubicacion })
-          this.setState({ descripcion })
-          this.setState({ imagesUser })
-          this.setState({ fotoPerfil })
-          this.setState({ username })
+          that.setState({ nombre })
+          that.setState({ apellido })
+          that.setState({ ubicacion })
+          that.setState({ descripcion })
+          that.setState({ imagesUser })
+          that.setState({ fotoPerfil })
+          that.setState({ username })
+          that.setState({ loading: false })
         } else {
           // doc.data() will be undefined in this case
           console.log("No such document!");
@@ -50,8 +74,17 @@ class ViewProfile extends React.Component {
       }).catch((error) => {
         console.log("Error getting document:", error);
       });
-  }
+    }
+    
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
 
+  componentWillUnmount(){
+    this._isMounted = false;
+  }
 
   render() {
 
@@ -62,8 +95,21 @@ class ViewProfile extends React.Component {
     }
   }
 
+    if(this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size='large'/>
+        </View>
+      );
+    }
+
     return (
-      <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}>
+      <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}
+      refreshControl={
+        <RefreshControl
+        refreshing={this.state.loading}
+        />
+        }>
         <View>
           <Image source={header} style={{ height: 200 }} />
           <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }}>
@@ -89,6 +135,12 @@ class ViewProfile extends React.Component {
 export default withNavigation(ViewProfile);
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#141414'
+  },
   backgroundContainer: {
     backgroundColor: '#141414',
     width: null,

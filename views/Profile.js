@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, FlatList } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
@@ -18,45 +18,56 @@ class Profile extends React.Component {
     imagesUser,
     fotoPerfil,
     username,
-    result
+    result,
+    loading: false
   }
 
 
   _isMounted = false;
 
   componentDidMount() {
-    this._isMounted = true;
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log(user.uid);
-
-        db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
-          if (doc.exists) {
-            nombre = doc.data().Nombre
-            apellido = doc.data().Apellido
-            ubicacion = doc.data().Ubicacion
-            descripcion = doc.data().Descripcion
-            imagesUser = doc.data().images
-            fotoPerfil = doc.data().profileImage
-            username = doc.data().displayName
-            this.setState({ nombre })
-            this.setState({ apellido })
-            this.setState({ ubicacion })
-            this.setState({ descripcion })
-            this.setState({ imagesUser })
-            this.setState({ fotoPerfil })
-            this.setState({ username })
-          } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-          }
-        }).catch((error) => {
-          console.log("Error getting document:", error);
-        });
-      } else {
-        // No user is signed in.
-      }
-    });
+    try {
+      this.setState({
+        loading: true,
+      });
+      
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log(user.uid);
+  
+          db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+              nombre = doc.data().Nombre
+              apellido = doc.data().Apellido
+              ubicacion = doc.data().Ubicacion
+              descripcion = doc.data().Descripcion
+              imagesUser = doc.data().images
+              fotoPerfil = doc.data().profileImage
+              username = doc.data().displayName
+              this.setState({ nombre })
+              this.setState({ apellido })
+              this.setState({ ubicacion })
+              this.setState({ descripcion })
+              this.setState({ imagesUser })
+              this.setState({ fotoPerfil })
+              this.setState({ username })
+              this.setState({ loading: false })
+            } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+            }
+          }).catch((error) => {
+            console.log("Error getting document:", error);
+          });
+        } else {
+          // No user is signed in.
+        }
+      });
+  
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
 
   signOut() {
@@ -98,6 +109,14 @@ cerrarSesion(){
     for (const [index, image] of this.state.imagesUser.entries()) {
       items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
     }
+  }
+
+  if(this.state.loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size='large'/>
+      </View>
+    );
   }
 
     return (
@@ -151,6 +170,12 @@ cerrarSesion(){
 export default withNavigation(Profile);
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#141414'
+  },
   backgroundContainer: {
     backgroundColor: '#141414',
     width: null,
