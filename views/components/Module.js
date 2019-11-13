@@ -48,8 +48,7 @@ class Module extends React.Component {
       const postsRef = db.firestore().collection("Posts");
       const that = this;
 
-      this.unsubscribe = postsRef.where('tipo', '==', this.props.tipo).get()
-      .then(querySnapshot => {
+      this.unsubscribe = postsRef.where('tipo', '==', this.props.tipo).orderBy("timestamp", "desc").get().then(querySnapshot => {
         var tattoosArray = [];
         querySnapshot.docs.forEach(doc => {
           tattoosArray.push(doc.data());

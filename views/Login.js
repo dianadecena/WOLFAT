@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image } from 'react-native';
+import { Image, ImageBackground } from 'react-native';
 import back from './assets/back.png';
 import { withNavigation } from 'react-navigation';
 import {
@@ -10,6 +10,7 @@ import {
     Alert
 } from "react-native";
 import Button from './components/Button';
+import bg from './assets/loginbg.jpg';
 
 import firebase from 'firebase';
 import db from '../config';
@@ -55,6 +56,7 @@ class Login extends Component {
 
     render() {
         return (
+            <ImageBackground source={bg} style={styles.backgroundContainer}>
             <View style={styles.container}>
                 <View style={{ marginTop: 40 }}>
                     <TextInput
@@ -85,7 +87,7 @@ class Login extends Component {
                     <Image source={back} style={{ width: 26, height: 26 }}></Image>
                 </View>
       </View>
-
+      </ImageBackground>
           
 
         );
@@ -94,6 +96,11 @@ class Login extends Component {
 export default Login
 
 const styles = StyleSheet.create({
+    backgroundContainer: {
+        flex: 1,
+        width: null,
+        height: null,
+      },
     input: {
         width: 300,
         height: 50,
@@ -106,7 +113,6 @@ const styles = StyleSheet.create({
         fontWeight: '300'
     },
     container: {
-        backgroundColor: '#141414',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'

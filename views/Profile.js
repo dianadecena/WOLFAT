@@ -5,9 +5,11 @@ import firebase from 'firebase';
 import db from '../config';
 import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
-import Card from './components/Card';
+import papelera from './assets/delete.png';
+import profile from './assets/profile.jpg';
+import Card from './Card';
 
-var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username, result, uid, timestamp;
+var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
 class Profile extends React.Component {
   state = {
@@ -16,6 +18,7 @@ class Profile extends React.Component {
     ubicacion,
     descripcion,
     imagesUser,
+    savedImages,
     fotoPerfil,
     username,
     result,
@@ -53,7 +56,7 @@ class Profile extends React.Component {
               ubicacion = doc.data().Ubicacion
               descripcion = doc.data().Descripcion
               imagesUser = doc.data().images
-              fotoPerfil = doc.data().profileImage
+              savedImages = doc.data().savedImages
               username = doc.data().displayName
               uid = doc.data().uid
               timestamp = doc.data().timestamp
@@ -61,9 +64,21 @@ class Profile extends React.Component {
               this.setState({ apellido })
               this.setState({ ubicacion })
               this.setState({ descripcion })
-              var new_images = imagesUser.reverse()
-              this.setState({ imagesUser: new_images })
-              this.setState({ fotoPerfil })
+              if(new_images != null) {
+                var new_images = imagesUser.reverse()
+                this.setState({ imagesUser: new_images })
+              }
+              if(savedImages != null) {
+                var savedImages = savedImages.reverse()
+                this.setState({ savedImages: savedImages })
+              }
+              if(fotoPerfil != null) {
+                fotoPerfil = doc.data().profileImage
+                this.setState({ fotoPerfil })
+              } else {
+                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+                this.setState({ fotoPerfil })
+              }
               this.setState({ username })
               this.setState({ uid })
               this.setState({ timestamp })

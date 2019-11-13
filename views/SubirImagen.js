@@ -146,7 +146,8 @@ class SubirImagen extends React.Component {
                 db.firestore().collection('Posts').add({
                   image: downloadURL,
                   uid: user.uid,
-                  tipo: 2
+                  tipo: 2,
+                  timestamp: Date.now()
                 });
               }
               else if (value == 'piercing') {
@@ -155,7 +156,8 @@ class SubirImagen extends React.Component {
                 db.firestore().collection('Posts').add({
                   image: downloadURL,
                   uid: user.uid,
-                  tipo: 3
+                  tipo: 3,
+                  timestamp: Date.now()
                 });
               } else {
                 console.log(value)
@@ -163,7 +165,8 @@ class SubirImagen extends React.Component {
                 db.firestore().collection('Posts').add({
                   image: downloadURL,
                   uid: user.uid,
-                  tipo: 4
+                  tipo: 4,
+                  timestamp: Date.now()
                 });
               }
               

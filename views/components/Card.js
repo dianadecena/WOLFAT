@@ -32,6 +32,18 @@ class Card extends React.Component {
     });
   }
 
+  imageDetails(image){
+    this.props.navigation.navigate('ImageDetails', {
+      image: image, 
+    });
+  }
+
+  saveImage(image){
+    db.firestore().collection('Usuario').add({
+      saveImages: image
+    });
+  }
+
   getUsernames() {
     this.setState({
       loading: true,
