@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import Button from './components/Button';
 import bg from './assets/loginbg.jpg';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import firebase from 'firebase';
 import db from '../config';
@@ -28,7 +29,7 @@ class Login extends Component {
     toProfile = async () => {
         //await sleep(2000)
         this.props.navigation.navigate('Init');
-      }
+    }
 
     login = async () => {
         const { email, password } = this.state
@@ -58,7 +59,7 @@ class Login extends Component {
         return (
             <ImageBackground source={bg} style={styles.backgroundContainer}>
             <View style={styles.container}>
-                <View style={{ marginTop: 40 }}>
+                <View style={{ marginTop: hp('20%') }}>
                     <TextInput
                         style={styles.input}
                         placeholder='Username'
@@ -69,7 +70,7 @@ class Login extends Component {
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder='password'
+                        placeholder='Password'
                         secureTextEntry={true}
                         autoCapitalize="none"
                         placeholderTextColor='black'
@@ -77,14 +78,14 @@ class Login extends Component {
                         value={this.state.password}
                     />
                 </View>
-                <View style={{ marginTop: 40 }} onStartShouldSetResponder={this.login}>
+                <View style={styles.buttonWrapper} onStartShouldSetResponder={this.login}>
                     <Button
                         text="LOGIN" background="#330D5A" color="white" onPress={this.login}
                     />
                 </View>
 
-                <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.toProfile()}>
-                    <Image source={back} style={{ width: 26, height: 26 }}></Image>
+                <View style={{ marginLeft: wp('7%'), marginTop: hp('2%') }} onStartShouldSetResponder={() => this.toProfile()}>
+                    <Image source={back} style={{ width: wp('10%'), height: hp('5%') }}></Image>
                 </View>
       </View>
       </ImageBackground>
@@ -102,19 +103,26 @@ const styles = StyleSheet.create({
         height: null,
       },
     input: {
-        width: 300,
-        height: 50,
+        width: wp('90%'),
+        height: hp('8%'),
         backgroundColor: 'white',
-        margin: 10,
-        padding: 12,
+        margin: '2.5%',
+        padding: '2.5%',
         color: 'black',
         borderRadius: 20,
-        fontSize: 18,
+        fontSize: hp('2.5%'),
         fontWeight: '300'
     },
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    buttonWrapper: {
+        overflow: 'hidden',
+        marginBottom: hp('2.5%'),
+        height: hp('10%'),
+        width: wp('70%'),
+        marginTop: hp('5%')
     }
 });

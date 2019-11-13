@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableNativeFeedback, Platform, TouchableHighlight} from 'react-native';
 import PropTypes from 'prop-types';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class Button extends React.Component {
 
@@ -32,20 +33,18 @@ export default class Button extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    overflow: 'hidden',
+    //overflow: 'hidden',
     borderRadius: 40,
-    marginBottom: 15,
-    height: 60,
+    //marginBottom: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 210,
   },
   buttonText: {
     display: 'flex',
-    paddingLeft: 20,
-    paddingRight: 20,
-    padding: 12,
-    paddingBottom: 12,
+    paddingLeft: wp('5%'),
+    paddingRight: wp('5%'),
+    paddingTop: hp('3%'),
+    paddingBottom: hp('3%'),
     alignItems: 'center',
   }
 });

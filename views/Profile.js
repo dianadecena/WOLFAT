@@ -7,7 +7,7 @@ import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
 import papelera from './assets/delete.png';
 import profile from './assets/profile.jpg';
-import Card from './Card';
+import Card from './components/Card';
 
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 

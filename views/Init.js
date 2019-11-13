@@ -5,18 +5,19 @@ import { Dimensions } from "react-native";
 import Button from './components/Button';
 import { withNavigation } from 'react-navigation';
 import bg from './assets/init1.jpeg';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 var width = Dimensions.get('window').width;
 
 class Init extends React.Component {
 
-    onSignUp = () => {
-      this.props.navigation.navigate('SignUp');
-    }
+  onSignUp = () => {
+    this.props.navigation.navigate('SignUp');
+  }
 
-    onLogIn = () => {
-      this.props.navigation.navigate('Login');
-    }
+  onLogIn = () => {
+    this.props.navigation.navigate('Login');
+  }
 
   state = {
     fontLoaded: false,
@@ -31,25 +32,25 @@ class Init extends React.Component {
   render() {
     return (
       <ImageBackground source={bg} style={styles.backgroundContainer}>
-      <View style={{marginTop: 60, padding: 20}}> 
-      { this.state.fontLoaded ? (
-            <Text style={{ fontFamily: 'old-london', fontSize: 100, color: '#ccff00' }}>
+        <View style={{ marginTop: hp('10%'), paddingLeft: '10%' }}>
+          {this.state.fontLoaded ? (
+            <Text style={{ fontFamily: 'old-london', fontSize: hp('18%'), color: '#ccff00', alignItems: 'center' }}>
               wolfat
             </Text>
-          ) : null }
-      </View>
-      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>WELCOME</Text>
-      </View>
-      <View style={{marginTop: 20, alignItems: 'center', justifyContent: 'center'}}>
-      <View onStartShouldSetResponder={() => this.onLogIn()}>
-      <Button text="Log In" background="black" color="white" onPress={this.onLogIn} />
-      </View>
-      <View onStartShouldSetResponder={() => this.onSignUp()}>
-      <Button  text="SIGN UP" background="white" color="black" onPress={this.onSignUp}/>
-      </View>
-      </View>
-    </ImageBackground>
+          ) : null}
+        </View>
+        <View style={{ marginTop: hp('5%'), alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ color: '#ccff00', fontSize: hp('3.5%'), fontWeight: 'bold'}}>WELCOME</Text>
+        </View>
+        <View style={{marginTop: hp('7.5%'), alignItems: 'center', justifyContent: 'center' }}>
+          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.onLogIn()}>
+            <Button text="LOG IN" background="black" color="white" onPress={this.onLogIn} />
+          </View>
+          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.onSignUp()}>
+            <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp} />
+          </View>
+        </View>
+      </ImageBackground>
     );
   }
 }
@@ -61,5 +62,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
+  },
+  buttonWrapper: {
+    overflow: 'hidden',
+    marginBottom: hp('1%'),
+    height: hp('15%'),
+    width: wp('70%'),
   },
 });
