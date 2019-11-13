@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshControl } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
 import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
+import Card from './components/Card';
 
-
-var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username, result;
+var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], username, result, uid, timestamp;
 
 class Profile extends React.Component {
   state = {
@@ -19,13 +19,24 @@ class Profile extends React.Component {
     fotoPerfil,
     username,
     result,
+    uid,
+    timestamp,
     loading: false
   }
 
 
   _isMounted = false;
 
-  componentDidMount() {
+  componentDidMount = () => {
+    try {
+        this.retrieveData();
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
+  retrieveData = async () => {
     try {
       this.setState({
         loading: true,
@@ -44,13 +55,18 @@ class Profile extends React.Component {
               imagesUser = doc.data().images
               fotoPerfil = doc.data().profileImage
               username = doc.data().displayName
+              uid = doc.data().uid
+              timestamp = doc.data().timestamp
               this.setState({ nombre })
               this.setState({ apellido })
               this.setState({ ubicacion })
               this.setState({ descripcion })
-              this.setState({ imagesUser })
+              var new_images = imagesUser.reverse()
+              this.setState({ imagesUser: new_images })
               this.setState({ fotoPerfil })
               this.setState({ username })
+              this.setState({ uid })
+              this.setState({ timestamp })
               this.setState({ loading: false })
             } else {
               // doc.data() will be undefined in this case
@@ -107,7 +123,7 @@ cerrarSesion(){
     const items = []
     if (Array.isArray(imagesUser) && imagesUser.length) {
     for (const [index, image] of this.state.imagesUser.entries()) {
-      items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
+      items.push(<Card imageUri={image} uid={this.state.uid} timestamp={this.state.timestamp} key={index}/>)
     }
   }
 
@@ -120,7 +136,13 @@ cerrarSesion(){
   }
 
     return (
-      <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}>
+      <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}
+      refreshControl={
+        <RefreshControl
+        refreshing={this.state.loading}
+        onRefresh={this.retrieveData}
+        />
+        }>
         <View>
           <Image source={header} style={{ height: 200 }} />
           <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }} 
