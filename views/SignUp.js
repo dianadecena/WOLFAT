@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Image } from 'react-native';
+import { Image, SafeAreaView, ScrollView } from 'react-native';
 import back from './assets/back.png';
-import { withNavigation } from 'react-navigation';
 import {
   View,
   Text,
@@ -13,6 +12,7 @@ import Button from './components/Button';
 
 import firebase from 'firebase';
 import db from '../config';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class SignUp extends Component {
 
@@ -46,7 +46,7 @@ class SignUp extends Component {
             password: password
           }
           db.firestore().collection('Usuario').doc(response.user.uid).set(user)
-          
+
         }
         this.props.navigation.navigate('Dashboard')
       } catch (e) {
@@ -63,65 +63,62 @@ class SignUp extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={{ marginTop: 40 }}>
-          <TextInput
-            style={styles.input}
-            placeholder='nombre'
-            autoCapitalize="none"
-            placeholderTextColor='black'
-            onChangeText={(nombre) => this.setState({ nombre })}
-            value={this.state.nombre}
-          />
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder='apellido'
-          autoCapitalize="none"
-          placeholderTextColor='black'
-          onChangeText={(apellido) => this.setState({ apellido })}
-          value={this.state.apellido}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='username'
-          autoCapitalize="none"
-          placeholderTextColor='black'
-          onChangeText={(username) => this.setState({ username })}
-          value={this.state.username}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='password'
-          secureTextEntry={true}
-          autoCapitalize="none"
-          placeholderTextColor='black'
-          onChangeText={(password) => this.setState({ password })}
-          value={this.state.password}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='email'
-          autoCapitalize="none"
-          placeholderTextColor='black'
-          onChangeText={(email) => this.setState({ email })}
-          value={this.state.email}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='ubicacion'
-          autoCapitalize="none"
-          placeholderTextColor='black'
-          onChangeText={(ubicacion) => this.setState({ ubicacion })}
-          value={this.state.ubicacion}
-        />
-        <View style={{ marginTop: 40 }} onStartShouldSetResponder={() => this.register()}>
-          <Button
-            text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
-          />
-        </View>
-        <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.toProfile()}>
-                    <Image source={back} style={{ width: 26, height: 26 }}></Image>
-        </View>
+            <View style={{ marginTop: hp('5%') }}>
+              <TextInput
+                style={styles.input}
+                placeholder='nombre'
+                autoCapitalize="none"
+                placeholderTextColor='black'
+                onChangeText={(nombre) => this.setState({ nombre })}
+                value={this.state.nombre}
+              />
+            </View>
+            <TextInput
+              style={styles.input}
+              placeholder='apellido'
+              autoCapitalize="none"
+              placeholderTextColor='black'
+              onChangeText={(apellido) => this.setState({ apellido })}
+              value={this.state.apellido}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder='username'
+              autoCapitalize="none"
+              placeholderTextColor='black'
+              onChangeText={(username) => this.setState({ username })}
+              value={this.state.username}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder='password'
+              secureTextEntry={true}
+              autoCapitalize="none"
+              placeholderTextColor='black'
+              onChangeText={(password) => this.setState({ password })}
+              value={this.state.password}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder='email'
+              autoCapitalize="none"
+              placeholderTextColor='black'
+              onChangeText={(email) => this.setState({ email })}
+              value={this.state.email}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder='ubicacion'
+              autoCapitalize="none"
+              placeholderTextColor='black'
+              onChangeText={(ubicacion) => this.setState({ ubicacion })}
+              value={this.state.ubicacion}
+            />
+            <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.register()}>
+              <Button
+                text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
+              />
+            </View>
 
       </View>
     );
@@ -131,14 +128,14 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   input: {
-    width: 300,
-    height: 50,
+    width: wp('90%'),
+    height: hp('7.5%'),
     backgroundColor: 'white',
-    margin: 10,
-    padding: 12,
+    margin: '5%',
+    padding: '5%',
     color: 'black',
     borderRadius: 20,
-    fontSize: 18,
+    fontSize: hp('2.5%'),
     fontWeight: '300'
   },
   container: {
@@ -146,5 +143,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  buttonWrapper: {
+    overflow: 'hidden',
+    marginBottom: hp('2.5%'),
+    height: hp('10%'),
+    width: wp('70%'),
+    marginTop: hp('3.5%')
+  },
 });
