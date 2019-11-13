@@ -1,9 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, ImageBackground, Image, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import nolike from '../assets/no-like.png';
-import like from '../assets/like.png';
-import more from '../assets/more.png';
 import db from '../../config';
 import moment from "moment";
 
