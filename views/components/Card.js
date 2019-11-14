@@ -70,13 +70,15 @@ class Card extends React.Component {
     var user = firebase.auth().currentUser;
     db.firestore().collection('Usuario').doc(this.props.uid).get()
     .then(doc => {
-      var saved = [];
       if (this._isMounted) {
         this.setState({ 
         name: doc.data().displayName,
         profileImage: doc.data().profileImage,
         loading: false
         });
+      }
+    });
+
     db.firestore().collection('Usuario').doc(user.uid).get()
     .then(doc => {
       var saved = [];
@@ -85,8 +87,6 @@ class Card extends React.Component {
         if(saved != null && saved.includes(this.props.imageUri)) {
           this.setState({ imageSaved: guardado })
         }
-      }
-    });
       }
     });
   }
