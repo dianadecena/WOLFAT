@@ -3,11 +3,10 @@ import { StyleSheet, View, ImageBackground, Image, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import db from '../../config';
 import moment from "moment";
+import papelera from '../assets/delete.png';
 import firebase from 'firebase'
-import noGuardado from '../assets/no-save.png';
-import guardado from '../assets/saved.png';
 
-class Card extends React.Component {
+class CardProfile extends React.Component {
 
   _isMounted = false;
   
@@ -15,7 +14,7 @@ class Card extends React.Component {
     name: '',
     profileImage: null,
     loading: false,
-    imageSaved: noGuardado
+    imageID: null,
   }
 
   componentDidMount () {
@@ -29,66 +28,41 @@ class Card extends React.Component {
     }
   };
   
-  viewProfile(uid){
-    this.props.navigation.navigate('ViewProfile', {
-      uid: uid,
-    });
-  }
-
   imageDetails(image){
-    this.setState({ imageSaved: guardado })
     this.props.navigation.navigate('ImageDetails', {
       image: image, 
     });
-  }
-
-  saveImage(image){
-    var user = firebase.auth().currentUser;
-
-      if (user) {
-        const usuario = db.firestore().collection('Usuario').doc(user.uid);     
-        if(this.state.imageSaved == noGuardado) {   
-          usuario.update({
-            saveImages: firebase.firestore.FieldValue.arrayUnion(image)
-          });
-        this.setState({ imageSaved: guardado })
-        } else if(this.state.imageSaved == guardado) {
-          usuario.update({
-            saveImages: firebase.firestore.FieldValue.arrayRemove(image)
-          });
-          this.setState({ imageSaved: noGuardado })
-        }
-      } else {
-      // No user is signed in.
-      }
   }
 
   getUsernames() {
     this.setState({
       loading: true,
     });
-    var user = firebase.auth().currentUser;
-    db.firestore().collection('Usuario').doc(this.props.uid).get()
-    .then(doc => {
-      var saved = [];
+    if(this.props.opcion === 'VER SUBIDAS') {
+      var user = firebase.auth().currentUser;
+      db.firestore().collection('Usuario').doc(user.uid).get()
+      .then(doc => {
       if (this._isMounted) {
         this.setState({ 
         name: doc.data().displayName,
         profileImage: doc.data().profileImage,
         loading: false
-        });
-    db.firestore().collection('Usuario').doc(user.uid).get()
-    .then(doc => {
-      var saved = [];
+        })
+      }
+    });
+    } else if(this.props.opcion === 'VER GUARDADAS') {
+      db.firestore().collection('Usuario').doc(this.props.uid).get()
+      .then(doc => {
       if (this._isMounted) {
-        saved = doc.data().saveImages
-        if(saved != null && saved.includes(this.props.imageUri)) {
-          this.setState({ imageSaved: guardado })
-        }
+        this.setState({ 
+        name: doc.data().displayName,
+        profileImage: doc.data().profileImage,
+        loading: false
+        })
       }
     });
-      }
-    });
+    }
+
   }
   catch (error) {
     console.log(error);
@@ -97,20 +71,47 @@ class Card extends React.Component {
   componentWillUnmount() {
     this._isMounted = false;
   }
+
+  deleteImage(image, uid){
+    const usuario = db.firestore().collection('Usuario').doc(uid);    
+      usuario.update({
+        images: firebase.firestore.FieldValue.arrayRemove(image)
+      });
+      const postsRef = db.firestore().collection("Posts");
+
+      postsRef.get().then(querySnapshot => {
+        querySnapshot.docs.forEach(doc => {
+          if(doc.data().image === this.props.imageUri) {
+            var ID = doc.id;
+            this.setState({ imageID: ID})
+            this.deleteID();
+          }
+        });
+      });
+    }
+
+    deleteID() {
+        const postsRef = db.firestore().collection("Posts");
+        postsRef.doc(this.state.imageID).delete().then(function() {
+            console.log("Document successfully deleted!");
+            }).catch(function(error) {
+            console.error("Error removing document: ", error);
+        });
+    }
   
   render() {
     if(!this.state.loading) {
     return (
         <View style={styles.card}>
-        <Text style={{color: 'white'}}>{moment(this.props.timestamp).fromNow()}</Text>
+        <View onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri)}>
+        </View> 
         <Image source={{uri: this.props.imageUri.toString()}} style={styles.topCard}/>
         <View style={styles.bottomCard}>
         <Image source={{ uri: this.state.profileImage}} style={{ borderRadius: 15, width: 30, height: 30,
-        marginLeft: 5, marginTop: 5}} />
-        <Text onStartShouldSetResponder={() => this.viewProfile(this.props.uid)}
-        style={{color: 'white', marginLeft: 40, marginTop: -25}}>{this.state.name}</Text>  
-        <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)}>
-        <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: 130, marginTop: -25}}/>
+        marginLeft: 10, marginTop: 5}} />
+        <Text style={{color: 'white', marginLeft: 47, marginTop: -25}}>{this.state.name}</Text>  
+        <View onStartShouldSetResponder={() => this.deleteImage(this.props.imageUri, this.props.uid)}>
+        <Image source={papelera} style={{ width: 26, height: 26, marginLeft: 265, marginTop: -25}}/>
         </View>
         </View>
         </View>
@@ -121,7 +122,7 @@ class Card extends React.Component {
   }
 }
 
-export default withNavigation(Card);
+export default withNavigation(CardProfile);
 
 const styles = StyleSheet.create({
   topCard: {
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
-    width: 160,
+    width: 300,
     height: 240,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create({
   },
   bottomCard: {
     backgroundColor: '#330D5A',
-    width: 160,
+    width: 300,
     height: 40,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20, 
@@ -156,4 +157,3 @@ const styles = StyleSheet.create({
     padding: 6,
   }
 });
-

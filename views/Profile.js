@@ -7,7 +7,8 @@ import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
 import papelera from './assets/delete.png';
 import profile from './assets/profile.jpg';
-import Card from './components/Card';
+import Card from './components/CardProfile';
+import CardProfile from './components/CardProfile';
 
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
@@ -19,7 +20,8 @@ class Profile extends React.Component {
     descripcion,
     imagesUser,
     savedImages,
-    fotoPerfil,
+    fotoPerfil: null,
+    opcion: 'VER GUARDADAS',
     username,
     result,
     uid,
@@ -56,32 +58,90 @@ class Profile extends React.Component {
               ubicacion = doc.data().Ubicacion
               descripcion = doc.data().Descripcion
               imagesUser = doc.data().images
-              savedImages = doc.data().savedImages
+              //savedImages = doc.data().savedImages
+              fotoPerfil = doc.data().profileImage
+              console.log(fotoPerfil)
               username = doc.data().displayName
               uid = doc.data().uid
-              timestamp = doc.data().timestamp
               this.setState({ nombre })
               this.setState({ apellido })
               this.setState({ ubicacion })
               this.setState({ descripcion })
-              if(new_images != null) {
+              if(imagesUser!= null) {
                 var new_images = imagesUser.reverse()
                 this.setState({ imagesUser: new_images })
               }
-              if(savedImages != null) {
+              /*if(savedImages.length != null) {
                 var savedImages = savedImages.reverse()
                 this.setState({ savedImages: savedImages })
-              }
-              if(fotoPerfil != null) {
-                fotoPerfil = doc.data().profileImage
+              }*/
+              if(fotoPerfil == null) {
+                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
                 this.setState({ fotoPerfil })
               } else {
-                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+                fotoPerfil = doc.data().profileImage
                 this.setState({ fotoPerfil })
               }
               this.setState({ username })
               this.setState({ uid })
-              this.setState({ timestamp })
+              this.setState({ opcion: 'VER GUARDADAS' })
+              this.setState({ loading: false })
+            } else {
+              // doc.data() will be undefined in this case
+              console.log("No such document!");
+            }
+          }).catch((error) => {
+            console.log("Error getting document:", error);
+          });
+        } else {
+          // No user is signed in.
+        }
+      });
+  
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
+
+  retrieveSaved = async () => {
+    try {
+      this.setState({
+        loading: true,
+      });
+      
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log(user.uid);
+  
+          db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
+            if (doc.exists) {
+              nombre = doc.data().Nombre
+              apellido = doc.data().Apellido
+              ubicacion = doc.data().Ubicacion
+              descripcion = doc.data().Descripcion
+              savedImages = doc.data().saveImages
+              fotoPerfil = doc.data().profileImage
+              username = doc.data().displayName
+              uid = doc.data().uid
+              this.setState({ nombre })
+              this.setState({ apellido })
+              this.setState({ ubicacion })
+              this.setState({ descripcion })
+              if(savedImages != null) {
+                var saved = savedImages.reverse()
+                this.setState({ imagesUser: saved })
+                this.setState({ opcion: 'VER SUBIDAS' })
+              }
+              if(fotoPerfil == null) {
+                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+                this.setState({ fotoPerfil })
+              } else {
+                fotoPerfil = doc.data().profileImage
+                this.setState({ fotoPerfil })
+              }
+              this.setState({ username })
+              this.setState({ uid })
               this.setState({ loading: false })
             } else {
               // doc.data() will be undefined in this case
@@ -133,12 +193,22 @@ cerrarSesion(){
     this.props.navigation.navigate('FotoPerfil');
   }
 
+  verGuardadas() {  
+    console.log(this.state.opcion)
+        if(this.state.opcion === 'VER GUARDADAS') {  
+          console.log('entro') 
+          this.retrieveSaved()
+        } else if(this.state.opcion === 'VER SUBIDAS') {
+          this.retrieveData()
+        }
+  }
+
   render() {
 
     const items = []
     if (Array.isArray(imagesUser) && imagesUser.length) {
     for (const [index, image] of this.state.imagesUser.entries()) {
-      items.push(<Card imageUri={image} uid={this.state.uid} timestamp={this.state.timestamp} key={index}/>)
+      items.push(<CardProfile imageUri={image} uid={this.state.uid} opcion={this.state.opcion} key={index}/>)
     }
   }
 
@@ -192,6 +262,11 @@ cerrarSesion(){
           </View>
           <View style={{ width: 215,  marginTop: -45, marginLeft: 85, marginRight: 80}}>
               <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
+          </View>
+
+          <View style={{ width: 215, marginTop: 10, marginLeft: 85, marginRight: 80}}>
+          <Text onStartShouldSetResponder={() => this.verGuardadas()} 
+          style={{color: 'white'}}>{this.state.opcion}</Text>
           </View>
         
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>

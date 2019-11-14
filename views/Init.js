@@ -4,7 +4,7 @@ import bgImage from './assets/background.png';
 import { Dimensions } from "react-native";
 import Button from './components/Button';
 import { withNavigation } from 'react-navigation';
-import bg from './assets/init1.jpeg';
+import bg from './assets/init3.jpg';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 var width = Dimensions.get('window').width;

@@ -1,17 +1,18 @@
 import React, { Component } from "react";
-import { Image, SafeAreaView, ScrollView } from 'react-native';
 import back from './assets/back.png';
 import {
   View,
   Text,
   StyleSheet,
   TextInput,
-  Alert
+  Alert,
+  ImageBackground
 } from "react-native";
 import Button from './components/Button';
 
 import firebase from 'firebase';
 import db from '../config';
+import bg from './assets/makeup1.jpg';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 class SignUp extends Component {
@@ -62,13 +63,14 @@ class SignUp extends Component {
   render() {
 
     return (
+      <ImageBackground source={bg} style={styles.backgroundContainer}>
       <View style={styles.container}>
             <View style={{ marginTop: hp('5%') }}>
               <TextInput
                 style={styles.input}
                 placeholder='Nombre'
                 autoCapitalize="none"
-                placeholderTextColor='black'
+                placeholderTextColor='white'
                 onChangeText={(nombre) => this.setState({ nombre })}
                 value={this.state.nombre}
               />
@@ -77,7 +79,7 @@ class SignUp extends Component {
               style={styles.input}
               placeholder='Apellido'
               autoCapitalize="none"
-              placeholderTextColor='black'
+              placeholderTextColor='white'
               onChangeText={(apellido) => this.setState({ apellido })}
               value={this.state.apellido}
             />
@@ -85,7 +87,7 @@ class SignUp extends Component {
               style={styles.input}
               placeholder='Username'
               autoCapitalize="none"
-              placeholderTextColor='black'
+              placeholderTextColor='white'
               onChangeText={(username) => this.setState({ username })}
               value={this.state.username}
             />
@@ -94,7 +96,7 @@ class SignUp extends Component {
               placeholder='Password'
               secureTextEntry={true}
               autoCapitalize="none"
-              placeholderTextColor='black'
+              placeholderTextColor='white'
               onChangeText={(password) => this.setState({ password })}
               value={this.state.password}
             />
@@ -102,7 +104,7 @@ class SignUp extends Component {
               style={styles.input}
               placeholder='Email'
               autoCapitalize="none"
-              placeholderTextColor='black'
+              placeholderTextColor='white'
               onChangeText={(email) => this.setState({ email })}
               value={this.state.email}
             />
@@ -110,7 +112,7 @@ class SignUp extends Component {
               style={styles.input}
               placeholder='Ubicacion'
               autoCapitalize="none"
-              placeholderTextColor='black'
+              placeholderTextColor='white'
               onChangeText={(ubicacion) => this.setState({ ubicacion })}
               value={this.state.ubicacion}
             />
@@ -121,25 +123,32 @@ class SignUp extends Component {
             </View>
 
       </View>
+      </ImageBackground>
     );
   }
 }
 export default SignUp;
 
 const styles = StyleSheet.create({
+  backgroundContainer: {
+    flex: 1,
+    width: null,
+    height: null,
+  },
   input: {
     width: wp('90%'),
     height: hp('7.5%'),
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     margin: '2.5%',
     padding: '2.5%',
-    color: 'black',
+    color: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
     borderRadius: 20,
     fontSize: hp('2.5%'),
     fontWeight: '300'
   },
   container: {
-    backgroundColor: '#141414',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'

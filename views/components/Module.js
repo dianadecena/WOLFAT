@@ -53,7 +53,7 @@ class Module extends React.Component {
         querySnapshot.docs.forEach(doc => {
           tattoosArray.push(doc.data());
         });
-        that.setState({ loading: false, tattoos: tattoosArray })
+        that.setState({ loading: false, tattoos: tattoosArray})
       });
     
     }
@@ -92,7 +92,7 @@ class Module extends React.Component {
           backgroundColor={'#141414'}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => (
-            <Card imageUri={item.image} uid={item.uid} timestamp={item.timestamp} width={160}/>
+            <Card imageUri={item.image} uid={item.uid} timestamp={item.timestamp}/>
           )}
           //ListFooterComponent={this.renderFooter}
           //onEndReached={this.retrieveMore}

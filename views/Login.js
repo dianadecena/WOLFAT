@@ -10,7 +10,7 @@ import {
     Alert
 } from "react-native";
 import Button from './components/Button';
-import bg from './assets/loginbg.jpg';
+import bg from './assets/login1.jpg';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import firebase from 'firebase';
@@ -62,18 +62,18 @@ class Login extends Component {
                 <View style={{ marginTop: hp('20%') }}>
                     <TextInput
                         style={styles.input}
-                        placeholder='Username'
+                        placeholder='email'
                         autoCapitalize="none"
-                        placeholderTextColor='black'
+                        placeholderTextColor='white'
                         onChangeText={(email) => this.setState({ email })}
                         value={this.state.nombre}
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder='Password'
+                        placeholder='password'
                         secureTextEntry={true}
                         autoCapitalize="none"
-                        placeholderTextColor='black'
+                        placeholderTextColor='white'
                         onChangeText={(password) => this.setState({ password })}
                         value={this.state.password}
                     />
@@ -105,10 +105,12 @@ const styles = StyleSheet.create({
     input: {
         width: wp('90%'),
         height: hp('8%'),
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         margin: '2.5%',
         padding: '2.5%',
         color: 'black',
+        borderColor: 'black',
+        borderWidth: 1,
         borderRadius: 20,
         fontSize: hp('2.5%'),
         fontWeight: '300'
