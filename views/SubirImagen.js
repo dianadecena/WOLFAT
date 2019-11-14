@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Alert, Picker } from 'react-native';
+import { Image, View, StyleSheet, Alert, Picker, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -9,6 +9,7 @@ import db from '../config';
 import back from './assets/back.png';
 import Button from './components/Button';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
@@ -37,13 +38,49 @@ class SubirImagen extends React.Component {
     this.props.navigation.navigate('Profile');
   }
 
+  showPicker() {
+    if (Platform.OS === 'ios') {
+      return (
+
+        <Picker
+          style={{ bottom: -50, left: 0, right: 0, borderColor: TouchableWithoutFeedback, height: 50, width: 400, borderRadius: 10, borderWidth: 1 }}
+          selectedValue={this.state.pickerSelection}
+          onValueChange={(itemValue, itemIndex) => this.setState({ pickerSelection: itemValue })
+          }>
+          <Picker.Item label="Tattoo" color="white" value="tattoo" />
+          <Picker.Item label="Estetica" color="white" value="estetica" />
+          <Picker.Item label="Piercing" color="white" value="piercing" />
+          <Picker.Item label="Make-up" color="white" value="makeup" />
+        </Picker>
+
+
+
+      )
+    } else {
+      return (
+        <View style={{ borderRadius: 20, overflow: 'hidden', width: 100 }}>
+          <Picker
+            selectedValue={this.state.pickerSelection}
+            style={{ bottom: 0, left: 0, right: 0, borderWidth: 1, borderColor: TouchableWithoutFeedback, height: 50, width: 100, backgroundColor: 'white' }}
+            onValueChange={(itemValue, itemIndex) => this.setState({ pickerSelection: itemValue })
+            }>
+            <Picker.Item label="Tattoo" value="tattoo" />
+            <Picker.Item label="Estetica" value="estetica" />
+            <Picker.Item label="Piercing" value="piercing" />
+            <Picker.Item label="Make-up" value="makeup" />
+          </Picker>
+        </View >
+      )
+    }
+  }
+
   render() {
     let { image } = this.state;
 
     return (
       <View style={styles.backgroundContainer}>
-        <View onStartShouldSetResponder={() => this.chooseImage()}>
-          <Button 
+        <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.chooseImage()}>
+          <Button
             text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
           />
         </View>
@@ -53,28 +90,14 @@ class SubirImagen extends React.Component {
 
 
 
-        <View onStartShouldSetResponder={() => this.uploadImage(image)}>
+        <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.uploadImage(image)}>
           <Button
             text="Upload" background="#330D5A" color="white" onPress={() => this.uploadImage(image)}
           />
         </View>
 
         <View>
-          <Picker
-            selectedValue={this.state.pickerSelection}
-            style={{ bottom: 0, left: 0, right: 0, borderWidth: 1, borderColor: TouchableWithoutFeedback, height: 50, width: 100 }}
-            onValueChange={(itemValue, itemIndex) => this.setState({pickerSelection: itemValue })
-            }>
-            <Picker.Item label="Tattoo" value="tattoo" />
-            <Picker.Item label="Estetica" value="estetica" />
-            <Picker.Item label="Piercing" value="piercing" />
-            <Picker.Item label="Make-up" value="makeup" />
-          </Picker>
-        </View>
-
-
-        <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.toProfile()}>
-          <Image source={back} style={{ width: 26, height: 26 }}></Image>
+          {this.showPicker()}
         </View>
       </View>
     );
@@ -127,7 +150,7 @@ class SubirImagen extends React.Component {
           console.log('File available at', downloadURL);
           firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-              const usuarios = db.firestore().collection('Usuario').doc(user.uid);        
+              const usuarios = db.firestore().collection('Usuario').doc(user.uid);
               usuarios.update({
                 images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
               });
@@ -169,7 +192,7 @@ class SubirImagen extends React.Component {
                   timestamp: Date.now()
                 });
               }
-              
+
 
             }
           });
@@ -200,7 +223,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
     width: 260,
-    height: 360,
+    height: 330,
     borderRadius: 20,
     shadowOffset: { width: 0, height: 2, },
     shadowColor: 'white',
@@ -208,5 +231,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 1.0,
     marginTop: 20,
     marginBottom: 10,
+  },
+  buttonWrapper: {
+    overflow: 'hidden',
+    marginBottom: hp('1.5%'),
+    height: hp('10%'),
+    width: wp('70%'),
+    marginTop: hp('5%')
   }
 });
