@@ -125,6 +125,7 @@ class Profile extends React.Component {
               fotoPerfil = doc.data().profileImage
               username = doc.data().displayName
               uid = doc.data().uid
+              console.log(uid)
               this.setState({ nombre })
               this.setState({ apellido })
               this.setState({ ubicacion })
