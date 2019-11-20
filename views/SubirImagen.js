@@ -41,20 +41,21 @@ class SubirImagen extends React.Component {
   showPicker() {
     if (Platform.OS === 'ios') {
       return (
-
-        <Picker
-          style={{ bottom: -50, left: 0, right: 0, borderColor: TouchableWithoutFeedback, height: 50, width: 400, borderRadius: 10, borderWidth: 1 }}
-          selectedValue={this.state.pickerSelection}
-          onValueChange={(itemValue, itemIndex) => this.setState({ pickerSelection: itemValue })
-          }>
-          <Picker.Item label="Tattoo" color="white" value="tattoo" />
-          <Picker.Item label="Estetica" color="white" value="estetica" />
-          <Picker.Item label="Piercing" color="white" value="piercing" />
-          <Picker.Item label="Make-up" color="white" value="makeup" />
-        </Picker>
-
-
-
+        <View>
+          <View style={{ marginLeft: 190, marginTop: 10, marginRight: 80 }} onStartShouldSetResponder={() => this.toProfile()}>
+            <Image source={back} style={{ width: wp('10%'), height: hp('5%') }}></Image>
+          </View>
+          <Picker
+            style={{ bottom: 0, left: 0, right: 0, borderColor: TouchableWithoutFeedback, height: 50, width: 400 }}
+            selectedValue={this.state.pickerSelection}
+            onValueChange={(itemValue, itemIndex) => this.setState({ pickerSelection: itemValue })
+            }>
+            <Picker.Item label="Tattoo" color="white" value="tattoo" />
+            <Picker.Item label="Estetica" color="white" value="estetica" />
+            <Picker.Item label="Piercing" color="white" value="piercing" />
+            <Picker.Item label="Make-up" color="white" value="makeup" />
+          </Picker>
+        </View>
       )
     } else {
       return (
@@ -65,7 +66,7 @@ class SubirImagen extends React.Component {
             onValueChange={(itemValue, itemIndex) => this.setState({ pickerSelection: itemValue })
             }>
             <Picker.Item label="Tattoo" value="tattoo" />
-            <Picker.Item label="Estetica" value="estetica" />
+            <Picker.Item label="Hair" value="estetica" />
             <Picker.Item label="Piercing" value="piercing" />
             <Picker.Item label="Make-up" value="makeup" />
           </Picker>

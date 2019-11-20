@@ -11,7 +11,7 @@ const TopNav = createMaterialTopTabNavigator({
   Tatuajes: {
     screen: Tattoos,
     navigationOptions: {
-      tabBarLabel: 'tatuajes',
+      tabBarLabel: 'Tattoo',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/tattoo-machine.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
@@ -20,7 +20,7 @@ const TopNav = createMaterialTopTabNavigator({
   Salon: {
     screen: Estetica,
     navigationOptions: {
-      tabBarLabel: 'estética',
+      tabBarLabel: 'Hair',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/salon.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
@@ -29,7 +29,7 @@ const TopNav = createMaterialTopTabNavigator({
   Piercings: {
     screen: Piercings,
     navigationOptions: {
-      tabBarLabel: 'perforaciones',
+      tabBarLabel: 'Piercings',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/piercing.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )
@@ -38,7 +38,7 @@ const TopNav = createMaterialTopTabNavigator({
   Maquillaje: {
     screen: Makeup,
     navigationOptions: {
-      tabBarLabel: 'maquillaje',
+      tabBarLabel: 'Makeup',
       tabBarIcon: ({ tintColor }) => (
         <Image source={require('./assets/cosmetics.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
       )

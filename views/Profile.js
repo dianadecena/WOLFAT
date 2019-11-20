@@ -9,6 +9,7 @@ import papelera from './assets/delete.png';
 import profile from './assets/profile.jpg';
 import Card from './components/CardProfile';
 import CardProfile from './components/CardProfile';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
@@ -269,11 +270,11 @@ cerrarSesion(){
                 source={require('./assets/camera.png')} />
             </View>
           </View>
-          <View style={{ width: 215,  marginTop: -45, marginLeft: 85, marginRight: 80}}>
-              <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
+          <View style={{ width: 215,  marginTop: -45, marginLeft: 75, marginRight: 80}}>
+              <Button  text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
           </View>
 
-          <View style={{ width: 215, marginTop: 10, marginLeft: 85, marginRight: 80}}>
+          <View style={{ width: 215, marginTop: 20, marginLeft: 130, marginRight: 80}}>
           <Text onStartShouldSetResponder={() => this.verGuardadas()} 
           style={{color: 'white'}}>{this.state.opcion}</Text>
           </View>
