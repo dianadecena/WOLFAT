@@ -10,7 +10,7 @@ class Module extends React.Component {
       super(props);
       this.page = 1;
       this.state = {
-        tattoos: [],
+        posts: [],
         unsubscribe: null,
         limit: 9,
         lastVisible: null,
@@ -53,7 +53,7 @@ class Module extends React.Component {
         querySnapshot.docs.forEach(doc => {
           tattoosArray.push(doc.data());
         });
-        that.setState({ loading: false, tattoos: tattoosArray})
+        that.setState({ loading: false, posts: tattoosArray})
       });
     
     }
@@ -68,6 +68,15 @@ class Module extends React.Component {
 
   render() {
     LayoutAnimation.easeInEaseOut();
+
+    if(this.state.posts == null) {
+      return (
+        <View style={styles.container}>
+          <Text>NO POSTS YET</Text>
+        </View>
+      );
+    }
+
     return (
       <SafeAreaView style={styles.backgroundContainer}>
       <ScrollView decelerationRate={'fast'}
@@ -86,7 +95,7 @@ class Module extends React.Component {
 
         <View style={styles.cardContainer}> 
         <FlatList
-          data={this.state.tattoos}
+          data={this.state.posts}
           horizontal={false}
           numColumns={2}
           backgroundColor={'#141414'}

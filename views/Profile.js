@@ -18,7 +18,7 @@ class Profile extends React.Component {
     apellido,
     ubicacion,
     descripcion,
-    imagesUser,
+    imagesUser: null,
     savedImages,
     fotoPerfil: null,
     opcion: 'VER GUARDADAS',
@@ -217,6 +217,14 @@ cerrarSesion(){
     return (
       <View style={styles.container}>
         <ActivityIndicator size='large'/>
+      </View>
+    );
+  }
+
+  if(this.state.imagesUser == null) {
+    return (
+      <View style={styles.container}>
+        <Text>NO POSTS YET</Text>
       </View>
     );
   }
