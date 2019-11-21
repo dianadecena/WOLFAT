@@ -101,7 +101,7 @@ class Module extends React.Component {
           backgroundColor={'#141414'}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => (
-            <Card imageUri={item.image} uid={item.uid} timestamp={item.timestamp}/>
+            <Card imageUri={item.image} descripcion={item.descripcion} uid={item.uid} timestamp={item.timestamp}/>
           )}
           //ListFooterComponent={this.renderFooter}
           //onEndReached={this.retrieveMore}

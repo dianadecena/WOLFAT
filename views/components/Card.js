@@ -13,6 +13,8 @@ class Card extends React.Component {
   
   state = {
     name: '',
+    nombre: '',
+    apellido: '',
     profileImage: null,
     loading: false,
     imageSaved: noGuardado
@@ -35,10 +37,13 @@ class Card extends React.Component {
     });
   }
 
-  imageDetails(image){
-    this.setState({ imageSaved: guardado })
+  imageDetails(image, descripcion){
+    //this.setState({ imageSaved: guardado })
     this.props.navigation.navigate('ImageDetails', {
       image: image, 
+      descripcion: descripcion,
+      nombre: this.state.nombre,
+      apellido: this.state.apellido
     });
   }
 
@@ -73,6 +78,8 @@ class Card extends React.Component {
       if (this._isMounted) {
         this.setState({ 
         name: doc.data().displayName,
+        nombre: doc.data().Nombre,
+        apellido: doc.data().Apellido,
         profileImage: doc.data().profileImage,
         loading: false
         });
@@ -103,7 +110,9 @@ class Card extends React.Component {
     return (
         <View style={styles.card}>
         <Text style={{color: 'white'}}>{moment(this.props.timestamp).fromNow()}</Text>
-        <Image source={{uri: this.props.imageUri.toString()}} style={styles.topCard}/>
+        <Image source={{uri: this.props.imageUri.toString()}} 
+        onStartShouldSetResponder={() => this.imageDetails(this.props.imageUri, this.props.descripcion)} 
+        style={styles.topCard}/>
         <View style={styles.bottomCard}>
         <Image source={{ uri: this.state.profileImage}} style={{ borderRadius: 15, width: 30, height: 30,
         marginLeft: 5, marginTop: 5}} />

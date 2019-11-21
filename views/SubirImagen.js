@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Alert, Picker, Platform } from 'react-native';
+import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -30,8 +30,13 @@ class SubirImagen extends React.Component {
   }
 
   state = {
-    image: null
+    image: null,
+    descripcion: ''
   };
+
+  onChangeText = (key, val) => {
+    this.setState({ [key]: val })
+  }
 
   toProfile = async () => {
     //await sleep(2000)
@@ -79,6 +84,7 @@ class SubirImagen extends React.Component {
     let { image } = this.state;
 
     return (
+      <ScrollView style={styles.container}>
       <View style={styles.backgroundContainer}>
         <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.chooseImage()}>
           <Button
@@ -90,6 +96,18 @@ class SubirImagen extends React.Component {
         {image && <Image source={{ uri: image }} style={styles.card} />}
 
 
+        <TextInput
+              style={styles.input}
+              placeholder='Descripcion'
+              autoCapitalize="none"
+              placeholderTextColor='white'
+              onChangeText={(descripcion) => this.setState({ descripcion })}
+              value={this.state.descripcion}
+        />
+
+        <View>
+          {this.showPicker()}
+        </View>
 
         <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.uploadImage(image)}>
           <Button
@@ -97,10 +115,8 @@ class SubirImagen extends React.Component {
           />
         </View>
 
-        <View>
-          {this.showPicker()}
-        </View>
       </View>
+      </ScrollView>
     );
   }
 
@@ -135,6 +151,7 @@ class SubirImagen extends React.Component {
 
   uploadImage = async (uri) => {
     var value = this.state.pickerSelection;
+    var descrip = this.state.descripcion;
     var that = this;
     if (imageResult) {
       const response = await fetch(uri);
@@ -162,7 +179,9 @@ class SubirImagen extends React.Component {
                   image: downloadURL,
                   uid: user.uid,
                   tipo: 1,
-                  timestamp: Date.now()
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
                 });
               } else if (value == 'estetica') {
                 console.log(value)
@@ -210,6 +229,12 @@ class SubirImagen extends React.Component {
 export default withNavigation(SubirImagen);
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#141414',
+    width: null,
+    height: null,
+  },
   backgroundContainer: {
     flex: 1,
     backgroundColor: '#141414',
@@ -217,6 +242,19 @@ const styles = StyleSheet.create({
     height: null,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  input: {
+    width: wp('90%'),
+    height: hp('7.5%'),
+    backgroundColor: 'transparent',
+    margin: '2.5%',
+    padding: '2.5%',
+    color: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 20,
+    fontSize: hp('2.5%'),
+    fontWeight: '300'
   },
   card: {
     resizeMode: 'cover',

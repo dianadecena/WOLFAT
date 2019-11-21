@@ -19,7 +19,7 @@ class Profile extends React.Component {
     apellido,
     ubicacion,
     descripcion,
-    imagesUser: null,
+    imagesUser,
     savedImages,
     fotoPerfil: null,
     opcion: 'VER GUARDADAS',
@@ -42,7 +42,7 @@ class Profile extends React.Component {
     }
   };
 
-  retrieveData = async () => {
+  static retrieveData = async () => {
     try {
       this.setState({
         loading: true,
@@ -71,7 +71,7 @@ class Profile extends React.Component {
               if(imagesUser!= null) {
                 var new_images = imagesUser.reverse()
                 this.setState({ imagesUser: new_images })
-              }
+              } 
               /*if(savedImages.length != null) {
                 var savedImages = savedImages.reverse()
                 this.setState({ savedImages: savedImages })
@@ -174,9 +174,9 @@ class Profile extends React.Component {
 
 
 
-cerrarSesion(){
+/*cerrarSesion(){
   this.props.navigation.navigate('Init');
-}
+}*/
 
   uploadImage() {
     this.props.navigation.navigate('SubirImagen');
@@ -222,13 +222,13 @@ cerrarSesion(){
     );
   }
 
-  if(this.state.imagesUser == null) {
+  /*if(this.state.imagesUser == null) {
     return (
       <View style={styles.container}>
         <Text>NO POSTS YET</Text>
       </View>
     );
-  }
+  }*/
 
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}

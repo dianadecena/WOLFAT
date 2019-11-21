@@ -5,6 +5,7 @@ import db from '../../config';
 import moment from "moment";
 import papelera from '../assets/delete.png';
 import firebase from 'firebase'
+import profile from '../Profile';
 
 class CardProfile extends React.Component {
 

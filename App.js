@@ -33,6 +33,9 @@ const DashboardStack = createStackNavigator({
   Dashboard: {
     screen: Dashboard//StackNavigator
   },
+  ImageDetails: {
+    screen: ImageDetails
+  },
   ViewProfile: {
     screen: ViewProfile
   },
