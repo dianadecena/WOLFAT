@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, SafeAreaView, ScrollView, Dimensions, StatusBar} from 'react-native';
+import { StyleSheet, Image, SafeAreaView, ScrollView, Dimensions, StatusBar } from 'react-native';
 
 import { createBottomTabNavigator, createAppContainer, createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import Profile from './views/Profile';
@@ -21,7 +21,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { createSwitchNavigator } from 'react-navigation';
 
 import Dashboard from './views/Dashboard';
-import Icon from '@expo/vector-icons/Ionicons';
+import { Icon, Container, Header, Content, Left } from 'native-base'
 
 import ignoreWarnings from 'react-native-ignore-warnings';
 import { View } from 'native-base';
@@ -59,9 +59,12 @@ const ProfileStack = createStackNavigator({
     screen: Profile,
     navigationOptions: ({ navigation }) => {
       return {
+        headerStyle: {
+          backgroundColor: '#000000'
+        },
         headerLeft: (
           <View onStartShouldSetResponder={() => navigation.openDrawer()}>
-            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+            <Icon style={{ marginLeft: 15, color: '#ffffff'}} onPress={() => navigation.openDrawer()} name="md-menu" size={35} />
           </View>
         )
       };
@@ -69,6 +72,7 @@ const ProfileStack = createStackNavigator({
   },
   SubirImagen: {
     screen: SubirImagen,
+
     navigationOptions: {
       header: null
     }
@@ -99,31 +103,51 @@ const ProfileStack = createStackNavigator({
 const ProfileDrawerNavigation = createDrawerNavigator({
   Profile: {
     screen: ProfileStack,
+    navigationOptions: {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="person" size={30} style={{ color: tintColor }} />
+      )
+    }
     /*navigationOptions: {
       drawerLabel: () => null
     }*/
   },
   VerGuardadas: {
     screen: SavedImages,
-    navigationOptions : {
-      drawerIcon: ({tintColor}) => (
-       <Icon name="bookmark" style={{fontSize:24, color: tintColor}}/>
+    navigationOptions: {
+      drawerLabel: 'Imagenes Guardadas',
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="bookmark" size={30} style={{ color: tintColor }} />
       )
     }
   },
   VerLikes: {
-    screen: LikedImages
+    screen: LikedImages,
+    navigationOptions: {
+      drawerLabel: 'Imagenes Que Te Gustaron',
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="heart" size={30} style={{ color: tintColor }} />
+      )
+    }
   },
   CerrarSesion: {
-    screen: Init
+    screen: Init,
+    navigationOptions: {
+      drawerIcon: ({ tintColor }) => (
+        <Icon name="log-out" size={30} style={{ color: tintColor }} />
+      )
+    }
   }
 }, {
   contentComponent: DrawerNav,
   contentOptions: {
-    activeTintColor: '#ccff00'
+    activeTintColor: '#ccff00',
+    inactiveTintColor: '#ffffff',
   },
   style: {
-    marginTop: StatusBar.currentHeight
+    marginTop: StatusBar.currentHeight,
+    backgroundColor: '#000000',
+    tintColor: '#ffffff',
   }
 })
 
