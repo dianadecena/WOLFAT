@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, SafeAreaView, ScrollView, Dimensions, StatusBar } from 'react-native';
 
-import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { createBottomTabNavigator, createAppContainer, createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import Profile from './views/Profile';
 import Loading from './views/Loading';
 import Init from './views/Init';
@@ -12,12 +12,16 @@ import SignUp from './views/SignUp'
 import Login from './views/Login'
 import EditarPerfil from './views/EditarPerfil'
 import FotoPerfil from './views/FotoPerfil'
+import LikedImages from "./views/LikedImages";
+import SavedImages from "./views/SavedImages";
 
 import { createSwitchNavigator } from 'react-navigation';
 
 import Dashboard from './views/Dashboard';
+import Icon from '@expo/vector-icons/Ionicons';
 
 import ignoreWarnings from 'react-native-ignore-warnings';
+import { View } from 'native-base';
 ignoreWarnings('Setting a timer');
 
 class App extends React.Component {
@@ -29,6 +33,14 @@ class App extends React.Component {
 }
 export default App;
 
+const DrawerNav = (props) => (
+  <SafeAreaView style={{ flex: 1 }}>
+    <ScrollView>
+      <DrawerItems {...props} />
+    </ScrollView>
+  </SafeAreaView>
+)
+
 const DashboardStack = createStackNavigator({
   Dashboard: {
     screen: Dashboard//StackNavigator
@@ -37,23 +49,75 @@ const DashboardStack = createStackNavigator({
     screen: ViewProfile
   },
 },
-{ headerMode: "none" })
+  { headerMode: "none" })
 
 const ProfileStack = createStackNavigator({
   Profile: {
-    screen: Profile
+    screen: Profile,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerLeft: (
+          <View onStartShouldSetResponder={() => navigation.openDrawer()}>
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          </View>
+        )
+      };
+    }
   },
   SubirImagen: {
-    screen: SubirImagen
+    screen: SubirImagen,
+    navigationOptions: {
+      header: null
+    }
   },
   EditarPerfil: {
-    screen: EditarPerfil
+    screen: EditarPerfil,
+    navigationOptions: {
+      header: null
+    }
   },
   FotoPerfil: {
-    screen: FotoPerfil
+    screen: FotoPerfil,
+    navigationOptions: {
+      header: null
+    }
+  },
+  VerGuardadas: {
+    screen: SavedImages,
+  },
+  VerLikes: {
+    screen: LikedImages
+  },
+  CerrarSesion: {
+    screen: Init
   }
-},
-{ headerMode: "none" })
+});
+
+const ProfileDrawerNavigation = createDrawerNavigator({
+  Profile: {
+    screen: ProfileStack,
+    /*navigationOptions: {
+      drawerLabel: () => null
+    }*/
+  },
+  VerGuardadas: {
+    screen: SavedImages,
+  },
+  VerLikes: {
+    screen: LikedImages
+  },
+  CerrarSesion: {
+    screen: Init
+  }
+}, {
+  contentComponent: DrawerNav,
+  contentOptions: {
+    activeTintColor: '#ccff00'
+  },
+  style: {
+    marginTop: StatusBar.currentHeight
+  }
+})
 
 const BottomTab = createBottomTabNavigator({
   DashboardStack: {
@@ -66,7 +130,7 @@ const BottomTab = createBottomTabNavigator({
     }
   },
   ProfileStack: {
-    screen: ProfileStack,
+    screen: ProfileDrawerNavigation,
     navigationOptions: {
       tabBarLabel: 'PROFILE',
       tabBarIcon: ({ tintColor }) => (
@@ -108,12 +172,12 @@ const LoginStack = createStackNavigator({
     screen: Login
   }
 },
-{ headerMode: "none" })
+  { headerMode: "none" })
 
 const AppStack = createStackNavigator({
   screen: BottomTab
 },
-{ headerMode: "none" })
+  { headerMode: "none" })
 
 const AppSwitch = createSwitchNavigator({
   Login: {

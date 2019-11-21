@@ -7,18 +7,18 @@ import {
 
 import {Icon,Container,Header, Content} from 'native-base'
 
-class SavedImages extends Component {
+class LikedImages extends Component {
     render() {
         return (
             <Container>
                 <Content contentContainerStyle={{flex: 1, alignItems: "center", justifyContent: 'center'}}>
-                    <Text>SavedImages</Text>
+                    <Text>LikedImages</Text>
                 </Content>
             </Container>
         );
     }
 }
-export default SavedImages;
+export default LikedImages;
 
 const styles = StyleSheet.create({
     container: {

@@ -10,7 +10,7 @@ import profile from './assets/profile.jpg';
 import Card from './components/CardProfile';
 import CardProfile from './components/CardProfile';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import { Icon, Container, Header, Content, Left} from 'native-base'
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
 class Profile extends React.Component {
@@ -19,9 +19,9 @@ class Profile extends React.Component {
     apellido,
     ubicacion,
     descripcion,
-    imagesUser: null,
+    imagesUser,
     savedImages,
-    fotoPerfil: null,
+    fotoPerfil,
     opcion: 'VER GUARDADAS',
     username,
     result,
@@ -35,7 +35,7 @@ class Profile extends React.Component {
 
   componentDidMount = () => {
     try {
-        this.retrieveData();
+      this.retrieveData();
     }
     catch (error) {
       console.log(error);
@@ -47,11 +47,11 @@ class Profile extends React.Component {
       this.setState({
         loading: true,
       });
-      
+
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           console.log(user.uid);
-  
+
           db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
             if (doc.exists) {
               nombre = doc.data().Nombre
@@ -68,7 +68,7 @@ class Profile extends React.Component {
               this.setState({ apellido })
               this.setState({ ubicacion })
               this.setState({ descripcion })
-              if(imagesUser!= null) {
+              if (imagesUser != null) {
                 var new_images = imagesUser.reverse()
                 this.setState({ imagesUser: new_images })
               }
@@ -76,7 +76,7 @@ class Profile extends React.Component {
                 var savedImages = savedImages.reverse()
                 this.setState({ savedImages: savedImages })
               }*/
-              if(fotoPerfil == null) {
+              if (fotoPerfil == null) {
                 fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
                 this.setState({ fotoPerfil })
               } else {
@@ -98,7 +98,7 @@ class Profile extends React.Component {
           // No user is signed in.
         }
       });
-  
+
     }
     catch (error) {
       console.log(error);
@@ -110,11 +110,11 @@ class Profile extends React.Component {
       this.setState({
         loading: true,
       });
-      
+
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           console.log(user.uid);
-  
+
           db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
             if (doc.exists) {
               nombre = doc.data().Nombre
@@ -130,12 +130,12 @@ class Profile extends React.Component {
               this.setState({ apellido })
               this.setState({ ubicacion })
               this.setState({ descripcion })
-              if(savedImages != null) {
+              if (savedImages != null) {
                 var saved = savedImages.reverse()
                 this.setState({ imagesUser: saved })
                 this.setState({ opcion: 'VER SUBIDAS' })
               }
-              if(fotoPerfil == null) {
+              if (fotoPerfil == null) {
                 fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
                 this.setState({ fotoPerfil })
               } else {
@@ -156,7 +156,7 @@ class Profile extends React.Component {
           // No user is signed in.
         }
       });
-  
+
     }
     catch (error) {
       console.log(error);
@@ -174,9 +174,9 @@ class Profile extends React.Component {
 
 
 
-cerrarSesion(){
-  this.props.navigation.navigate('Init');
-}
+  cerrarSesion() {
+    this.props.navigation.navigate('Init');
+  }
 
   uploadImage() {
     this.props.navigation.navigate('SubirImagen');
@@ -195,54 +195,54 @@ cerrarSesion(){
     this.props.navigation.navigate('FotoPerfil');
   }
 
-  verGuardadas() {  
+  verGuardadas() {
     console.log(this.state.opcion)
-        if(this.state.opcion === 'VER GUARDADAS') {  
-          console.log('entro') 
-          this.retrieveSaved()
-        } else if(this.state.opcion === 'VER SUBIDAS') {
-          this.retrieveData()
-        }
+    if (this.state.opcion === 'VER GUARDADAS') {
+      console.log('entro')
+      this.retrieveSaved()
+    } else if (this.state.opcion === 'VER SUBIDAS') {
+      this.retrieveData()
+    }
   }
 
   render() {
 
     const items = []
     if (Array.isArray(imagesUser) && imagesUser.length) {
-    for (const [index, image] of this.state.imagesUser.entries()) {
-      items.push(<CardProfile imageUri={image} uid={this.state.uid} opcion={this.state.opcion} key={index}/>)
+      for (const [index, image] of this.state.imagesUser.entries()) {
+        items.push(<CardProfile imageUri={image} uid={this.state.uid} opcion={this.state.opcion} key={index} />)
+      }
     }
-  }
 
-  if(this.state.loading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size='large'/>
-      </View>
-    );
-  }
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size='large' />
+        </View>
+      );
+    }
 
-  if(this.state.imagesUser == null) {
-    return (
-      <View style={styles.container}>
-        <Text>NO POSTS YET</Text>
-      </View>
-    );
-  }
+    if (this.state.imagesUser == null) {
+      return (
+        <View style={styles.container}>
+          <Text>NO POSTS YET</Text>
+        </View>
+      );
+    }
 
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}
-      refreshControl={
-        <RefreshControl
-        refreshing={this.state.loading}
-        onRefresh={this.retrieveData}
-        />
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.loading}
+            onRefresh={this.retrieveData}
+          />
         }>
         <View>
           <Image source={header} style={{ height: 200 }} />
-          <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }} 
-          onStartShouldSetResponder={() => this.changeProfilePic()}>
-          <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100}} />
+          <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }}
+            onStartShouldSetResponder={() => this.changeProfilePic()}>
+            <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100 }} />
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
             <Text style={{ color: 'white' }}>@{this.state.username}</Text>
@@ -250,14 +250,14 @@ cerrarSesion(){
             <Text style={{ color: 'white' }}>{this.state.ubicacion}</Text>
             <Text style={{ color: 'white' }}>{this.state.descripcion}</Text>
           </View>
-          <View style={{ flexDirection: 'row', marginTop: 10, justifyContent:'space-between' , height: 40}}>
+          <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', height: 40 }}>
             <View style={{
               width: 40, height: 40, borderRadius: 50, marginTop: 10, marginLeft: 20,
               backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',
             }}
-            onStartShouldSetResponder={() => this.signOut()}
+              onStartShouldSetResponder={() => this.signOut()}
             >
-                   <Image style={{ resizeMode: 'cover' }}
+              <Image style={{ resizeMode: 'cover' }}
                 source={require('./assets/logout.png')} />
             </View>
             <View style={{
@@ -270,15 +270,15 @@ cerrarSesion(){
                 source={require('./assets/camera.png')} />
             </View>
           </View>
-          <View style={{ width: 215,  marginTop: -45, marginLeft: 75, marginRight: 80}}>
-              <Button  text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate}/>
+          <View onStartShouldSetResponder={() => this.toUpdate()} style={{ width: 215, marginTop: -45, marginLeft: 75, marginRight: 80 }}>
+            <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate} />
           </View>
 
-          <View style={{ width: 215, marginTop: 20, marginLeft: 130, marginRight: 80}}>
-          <Text onStartShouldSetResponder={() => this.verGuardadas()} 
-          style={{color: 'white'}}>{this.state.opcion}</Text>
+          <View style={{ width: 215, marginTop: 20, marginLeft: 130, marginRight: 80 }}>
+            <Text onStartShouldSetResponder={() => this.verGuardadas()}
+              style={{ color: 'white' }}>{this.state.opcion}</Text>
           </View>
-        
+
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
             {items}
           </View>
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
     width: 160,
     height: 40,
     borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20, 
+    borderBottomRightRadius: 20,
     shadowOffset: { width: 0, height: 2, },
     shadowColor: 'white',
     marginLeft: 0,
