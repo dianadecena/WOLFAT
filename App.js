@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, SafeAreaView, ScrollView, Dimensions, StatusBar } from 'react-native';
+import { StyleSheet, Image, SafeAreaView, ScrollView, Dimensions, StatusBar} from 'react-native';
 
 import { createBottomTabNavigator, createAppContainer, createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import Profile from './views/Profile';
@@ -14,7 +14,10 @@ import EditarPerfil from './views/EditarPerfil'
 import FotoPerfil from './views/FotoPerfil'
 import LikedImages from "./views/LikedImages";
 import SavedImages from "./views/SavedImages";
+import LikeImage from "./views/assets/like.png"
 
+
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { createSwitchNavigator } from 'react-navigation';
 
 import Dashboard from './views/Dashboard';
@@ -102,6 +105,11 @@ const ProfileDrawerNavigation = createDrawerNavigator({
   },
   VerGuardadas: {
     screen: SavedImages,
+    navigationOptions : {
+      drawerIcon: ({tintColor}) => (
+       <Icon name="bookmark" style={{fontSize:24, color: tintColor}}/>
+      )
+    }
   },
   VerLikes: {
     screen: LikedImages
