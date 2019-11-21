@@ -94,9 +94,21 @@ const ProfileStack = createStackNavigator({
   },
   VerGuardadas: {
     screen: SavedImages,
+    navigationOptions: {
+      title: 'Imagenes Guardadas',
+      headerTitleStyle: {
+        fontSize: hp('2.5%')
+      },
+    }
   },
   VerLikes: {
-    screen: LikedImages
+    screen: LikedImages,
+    navigationOptions: {
+      title: 'Imagenes Que Te Gustaron',
+      headerTitleStyle: {
+        fontSize: hp('2.5%')
+      },
+    }
   },
   CerrarSesion: {
     screen: Init
