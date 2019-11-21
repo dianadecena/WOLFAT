@@ -26,16 +26,19 @@ class ImageDetails extends React.Component {
     }
 
     likePost(image) {
-      if(this.state.isLiked == noLiked) {
-        this.setState({ isLiked: liked })
+      let that = this;
+
+      if(that.state.isLiked == noLiked) {
+        that.setState({ isLiked: liked })
         db.firestore().collection('Posts').where('image', '==', image).get().then(function (querySnapshot) {
           querySnapshot.forEach(function (doc) {
-            this.setState({ id: doc.id, likes: doc.data().likes + 1});
-            this.updatePost();
+            console.log(doc.data().like)
+            that.setState({ id: doc.id, likes: doc.data().like + 1});
+            that.updatePost();
           });
       });
       } else {
-        this.setState({ isLiked: noLiked })
+        that.setState({ isLiked: noLiked })
       }
     }
 
