@@ -14,7 +14,7 @@ import EditarPerfil from './views/EditarPerfil'
 import FotoPerfil from './views/FotoPerfil'
 import LikedImages from "./views/LikedImages";
 import SavedImages from "./views/SavedImages";
-import LikeImage from "./views/assets/like.png"
+import Settings from "./views/Settings";
 
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -67,7 +67,7 @@ const ProfileStack = createStackNavigator({
         },
         headerLeft: (
           <View onStartShouldSetResponder={() => navigation.openDrawer()}>
-            <Icon style={{ marginLeft: 15, color: '#ffffff'}} onPress={() => navigation.openDrawer()} name="md-menu" size={35} />
+            <Icon style={{ marginLeft: 15, color: '#ffffff' }} onPress={() => navigation.openDrawer()} name="md-menu" size={35} />
           </View>
         )
       };
@@ -110,8 +110,14 @@ const ProfileStack = createStackNavigator({
       },
     }
   },
-  CerrarSesion: {
-    screen: Init
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      title: 'Configuración',
+      headerTitleStyle: {
+        fontSize: hp('2.5%')
+      },
+    }
   }
 });
 
@@ -145,11 +151,12 @@ const ProfileDrawerNavigation = createDrawerNavigator({
       )
     }
   },
-  CerrarSesion: {
-    screen: Init,
+  Settings: {
+    screen: Settings,
     navigationOptions: {
+      drawerLabel: 'Configuración',
       drawerIcon: ({ tintColor }) => (
-        <Icon name="log-out" size={30} style={{ color: tintColor }} />
+        <Icon name="settings" size={30} style={{ color: tintColor }} />
       )
     }
   }
@@ -185,25 +192,24 @@ const BottomTab = createBottomTabNavigator({
       )
     }
   }
-}, {
-  tabBarOptions: {
-    activeTintColor: '#8D3FDC',
-    inactiveTintColor: 'grey',
-    style: {
-      backgroundColor: 'black',
-      borderTopWidth: 0,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-      alignSelf: "stretch",
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
+}, 
+  {
+    tabBarOptions: {
+      activeTintColor: '#8D3FDC',
+      inactiveTintColor: 'grey',
+      style: {
+        backgroundColor: 'black',
+        borderTopWidth: 0,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        alignSelf: "stretch",
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+      }
     }
-  }
-})
-
-const StackNavigator = createStackNavigator({ BottomTab }, { headerMode: "none" });
+  })
 
 const LoginStack = createStackNavigator({
   Loading: {
