@@ -6,7 +6,8 @@ import {
   StyleSheet,
   TextInput,
   Alert,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import Button from './components/Button';
 
@@ -18,7 +19,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 class SignUp extends Component {
 
   state = {
-    nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: ''
+    nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: '', loading: false 
   }
 
   toProfile = async () => {
@@ -31,6 +32,10 @@ class SignUp extends Component {
   }
 
   dbRedister = async () => {
+    const that = this;
+      that.setState({
+        loading: true,
+      });
     const { nombre, apellido, username, email, password, ubicacion } = this.state
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
 
@@ -45,15 +50,22 @@ class SignUp extends Component {
         password: password
       }
       db.firestore().collection('Usuario').doc(response.user.uid).set(user)
+      that.setState({
+        loading: false,
+      });
 
     }
     this.props.navigation.navigate('Dashboard')
-  }
+    }
 
   register = async () => {
+    const that = this;
     const { nombre, apellido, username, email, password, ubicacion } = this.state
     if (this.state.nombre != '' && this.state.apellido != '' && this.state.username != '' && this.state.password != '' && this.state.email != '' && this.state.ubicacion != '') {
       try {
+        that.setState({
+          loading: true,
+        });
         db.firestore().collection('Usuario').where('displayName', '==', username).get()
           .then((snapshot) => {
             if (snapshot.empty) {
@@ -61,6 +73,9 @@ class SignUp extends Component {
             }
             else {
               Alert.alert('Error', 'El usuario ya está en uso')
+              that.setState({
+                loading: false,
+              });
             }
           })
           .catch((err) => {
@@ -82,6 +97,14 @@ class SignUp extends Component {
   }
 
   render() {
+
+    if (this.state.loading) {
+      return (
+        <View style={styles.loading}>
+          <ActivityIndicator size='large' />
+        </View>
+      );
+    }
 
     return (
       <ImageBackground source={bg} style={styles.backgroundContainer}>
@@ -151,6 +174,12 @@ class SignUp extends Component {
 export default SignUp;
 
 const styles = StyleSheet.create({
+  loading: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#141414',
+  },
   backgroundContainer: {
     flex: 1,
     width: null,
