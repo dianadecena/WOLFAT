@@ -30,26 +30,47 @@ class SignUp extends Component {
     this.setState({ [key]: val })
   }
 
+  dbRedister = async () => {
+    const { nombre, apellido, username, email, password, ubicacion } = this.state
+    const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
+
+    if (response.user.uid) {
+      const user = {
+        uid: response.user.uid,
+        Nombre: nombre,
+        Apellido: apellido,
+        Ubicacion: ubicacion,
+        displayName: username,
+        email: email,
+        password: password
+      }
+      db.firestore().collection('Usuario').doc(response.user.uid).set(user)
+
+    }
+    this.props.navigation.navigate('Dashboard')
+  }
+
   register = async () => {
     const { nombre, apellido, username, email, password, ubicacion } = this.state
-
     if (this.state.nombre != '' && this.state.apellido != '' && this.state.username != '' && this.state.password != '' && this.state.email != '' && this.state.ubicacion != '') {
       try {
-        const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
-        if (response.user.uid) {
-          const user = {
-            uid: response.user.uid,
-            Nombre: nombre,
-            Apellido: apellido,
-            Ubicacion: ubicacion,
-            displayName: username,
-            email: email,
-            password: password
-          }
-          db.firestore().collection('Usuario').doc(response.user.uid).set(user)
+        db.firestore().collection('Usuario').where('displayName', '==', username).get()
+          .then((snapshot) => {
+            if (snapshot.empty) {
+              this.dbRedister()
+            }
+            else {
+              Alert.alert('Error', 'El usuario ya está en uso')
+            }
+          })
+          .catch((err) => {
+            console.log('Error getting documents', err);
+          });
 
-        }
-        this.props.navigation.navigate('Dashboard')
+
+
+
+
       } catch (e) {
         alert(e)
       }
@@ -64,65 +85,65 @@ class SignUp extends Component {
 
     return (
       <ImageBackground source={bg} style={styles.backgroundContainer}>
-      <View style={styles.container}>
-            <View style={{ marginTop: hp('5%') }}>
-              <TextInput
-                style={styles.input}
-                placeholder='Nombre'
-                autoCapitalize="none"
-                placeholderTextColor='white'
-                onChangeText={(nombre) => this.setState({ nombre })}
-                value={this.state.nombre}
-              />
-            </View>
+        <View style={styles.container}>
+          <View style={{ marginTop: hp('5%') }}>
             <TextInput
               style={styles.input}
-              placeholder='Apellido'
+              placeholder='Nombre'
               autoCapitalize="none"
               placeholderTextColor='white'
-              onChangeText={(apellido) => this.setState({ apellido })}
-              value={this.state.apellido}
+              onChangeText={(nombre) => this.setState({ nombre })}
+              value={this.state.nombre}
             />
-            <TextInput
-              style={styles.input}
-              placeholder='Username'
-              autoCapitalize="none"
-              placeholderTextColor='white'
-              onChangeText={(username) => this.setState({ username })}
-              value={this.state.username}
+          </View>
+          <TextInput
+            style={styles.input}
+            placeholder='Apellido'
+            autoCapitalize="none"
+            placeholderTextColor='white'
+            onChangeText={(apellido) => this.setState({ apellido })}
+            value={this.state.apellido}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Username'
+            autoCapitalize="none"
+            placeholderTextColor='white'
+            onChangeText={(username) => this.setState({ username })}
+            value={this.state.username}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Password'
+            secureTextEntry={true}
+            autoCapitalize="none"
+            placeholderTextColor='white'
+            onChangeText={(password) => this.setState({ password })}
+            value={this.state.password}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Email'
+            autoCapitalize="none"
+            placeholderTextColor='white'
+            onChangeText={(email) => this.setState({ email })}
+            value={this.state.email}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Ubicacion'
+            autoCapitalize="none"
+            placeholderTextColor='white'
+            onChangeText={(ubicacion) => this.setState({ ubicacion })}
+            value={this.state.ubicacion}
+          />
+          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.register()}>
+            <Button
+              text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
             />
-            <TextInput
-              style={styles.input}
-              placeholder='Password'
-              secureTextEntry={true}
-              autoCapitalize="none"
-              placeholderTextColor='white'
-              onChangeText={(password) => this.setState({ password })}
-              value={this.state.password}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder='Email'
-              autoCapitalize="none"
-              placeholderTextColor='white'
-              onChangeText={(email) => this.setState({ email })}
-              value={this.state.email}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder='Ubicacion'
-              autoCapitalize="none"
-              placeholderTextColor='white'
-              onChangeText={(ubicacion) => this.setState({ ubicacion })}
-              value={this.state.ubicacion}
-            />
-            <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.register()}>
-              <Button
-                text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
-              />
-            </View>
+          </View>
 
-      </View>
+        </View>
       </ImageBackground>
     );
   }
