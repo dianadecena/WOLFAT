@@ -34,7 +34,7 @@ class Login extends Component {
     login = async () => {
         const { email, password } = this.state
         if (this.state.email != '' && this.state.password != '') {
-            firebase.auth().signInWithEmailAndPassword(email, password)
+            //firebase.auth().signInWithEmailAndPassword(email, password)
             db.firestore().collection('Usuario').where('email', '==', email).where('password', '==', password).get()
                 .then((snapshot) => {
                     if (snapshot.empty) {

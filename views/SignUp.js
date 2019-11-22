@@ -19,7 +19,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 class SignUp extends Component {
 
   state = {
-    nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: '', loading: false 
+    nombre: '', apellido: '', username: '', password: '', email: '', ubicacion: '', loading: false
   }
 
   toProfile = async () => {
@@ -31,11 +31,11 @@ class SignUp extends Component {
     this.setState({ [key]: val })
   }
 
-  dbRedister = async () => {
+  dbRegister = async () => {
     const that = this;
-      that.setState({
-        loading: true,
-      });
+    that.setState({
+      loading: true,
+    });
     const { nombre, apellido, username, email, password, ubicacion } = this.state
     const response = await firebase.auth().createUserWithEmailAndPassword(email, password)
 
@@ -56,7 +56,7 @@ class SignUp extends Component {
 
     }
     this.props.navigation.navigate('Dashboard')
-    }
+  }
 
   register = async () => {
     const that = this;
@@ -69,13 +69,25 @@ class SignUp extends Component {
         db.firestore().collection('Usuario').where('displayName', '==', username).get()
           .then((snapshot) => {
             if (snapshot.empty) {
-              this.dbRedister()
+              db.firestore().collection('Usuario').where('email', '==', email).get().then((snapshot) => {
+                if (snapshot.empty) {
+                  this.dbRegister()
+                } else {
+                  that.setState({
+                    loading: false,
+                  });
+                  Alert.alert('Error', 'El email ya está en uso')
+                }
+              }).catch((err) => {
+                console.log('Error getting documents', err);
+              });
+
             }
             else {
-              Alert.alert('Error', 'El usuario ya está en uso')
               that.setState({
                 loading: false,
               });
+              Alert.alert('Error', 'El usuario ya está en uso')
             }
           })
           .catch((err) => {
