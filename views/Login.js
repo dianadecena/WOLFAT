@@ -34,7 +34,6 @@ class Login extends Component {
     login = async () => {
         const { email, password } = this.state
         if (this.state.email != '' && this.state.password != '') {
-            //firebase.auth().signInWithEmailAndPassword(email, password)
             db.firestore().collection('Usuario').where('email', '==', email).where('password', '==', password).get()
                 .then((snapshot) => {
                     if (snapshot.empty) {
@@ -43,6 +42,7 @@ class Login extends Component {
                     }
                     else {
                         console.log('Si existe');
+                        firebase.auth().signInWithEmailAndPassword(email, password)
                         this.props.navigation.navigate('Dashboard');
                     }
                 })
@@ -82,10 +82,6 @@ class Login extends Component {
                     <Button
                         text="LOGIN" background="#330D5A" color="white" onPress={this.login}
                     />
-                </View>
-
-                <View style={{ marginLeft: wp('7%'), marginTop: hp('2%') }} onStartShouldSetResponder={() => this.toProfile()}>
-                    <Image source={back} style={{ width: wp('10%'), height: hp('5%') }}></Image>
                 </View>
       </View>
       </ImageBackground>

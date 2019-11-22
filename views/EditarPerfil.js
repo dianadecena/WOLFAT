@@ -130,9 +130,7 @@ class EditarPerfil extends Component {
           />
         </View>
 
-        <View style={{ marginLeft: 20 }} onStartShouldSetResponder={() => this.volverPerfil()}>
-          <Image source={back} style={{ width: 26, height: 26 }}></Image>
-        </View>
+      
       </View>
     );
   }

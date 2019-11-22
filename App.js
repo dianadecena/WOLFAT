@@ -75,15 +75,20 @@ const ProfileStack = createStackNavigator({
   },
   SubirImagen: {
     screen: SubirImagen,
-
     navigationOptions: {
-      header: null
+      headerStyle: {
+        backgroundColor: '#000000'
+      },
+      headerTintColor: '#fff'
     }
   },
   EditarPerfil: {
     screen: EditarPerfil,
     navigationOptions: {
-      header: null
+      headerStyle: {
+        backgroundColor: '#000000'
+      },
+      headerTintColor: '#fff'
     }
   },
   FotoPerfil: {
@@ -192,7 +197,7 @@ const BottomTab = createBottomTabNavigator({
       )
     }
   }
-}, 
+},
   {
     tabBarOptions: {
       activeTintColor: '#8D3FDC',
@@ -203,7 +208,7 @@ const BottomTab = createBottomTabNavigator({
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignSelf: "stretch",
-        position: 'absolute',
+        position: 'relative',
         left: 0,
         right: 0,
         bottom: 0,
@@ -216,16 +221,31 @@ const LoginStack = createStackNavigator({
     screen: Loading
   },
   Init: {
-    screen: Init
+    screen: Init,
+    navigationOptions: {
+      header: null
+    }
+
   },
   SignUp: {
-    screen: SignUp
+    screen: SignUp,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#fff'
+      },
+      headerTintColor: '#000000'
+    }
   },
   Login: {
-    screen: Login
+    screen: Login,
+    navigationOptions: {
+      headerStyle: {
+        backgroundColor: '#000000'
+      },
+      headerTintColor: '#fff'
+    }
   }
-},
-  { headerMode: "none" })
+})
 
 const AppStack = createStackNavigator({
   screen: BottomTab
