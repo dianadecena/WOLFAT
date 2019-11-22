@@ -42,7 +42,7 @@ class Profile extends React.Component {
     }
   };
 
-  static retrieveData = async () => {
+  retrieveData = async () => {
     try {
       this.setState({
         loading: true,
