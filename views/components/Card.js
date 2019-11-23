@@ -86,7 +86,7 @@ class Card extends React.Component {
         }
       });
 
-    db.firestore().collection('Usuario').doc(user.uid).get()
+    /*db.firestore().collection('Usuario').doc(user.uid).get()
       .then(doc => {
         var saved = [];
         if (this._isMounted) {
@@ -95,7 +95,7 @@ class Card extends React.Component {
             this.setState({ imageSaved: guardado })
           }
         }
-      });
+      });*/
   }
   catch(error) {
     console.log(error);
