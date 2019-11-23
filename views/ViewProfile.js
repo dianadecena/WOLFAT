@@ -15,15 +15,15 @@ class ViewProfile extends React.Component {
     super(props);
     this.page = 1;
     this.state = {
-    nombre,
-    apellido,
-    ubicacion,
-    descripcion,
-    imagesUser,
-    fotoPerfil,
-    username,
-    result,
-    loading: false
+      nombre,
+      apellido,
+      ubicacion,
+      descripcion,
+      imagesUser,
+      fotoPerfil,
+      username,
+      result,
+      loading: false
     };
     this.retrieveData = this.retrieveData.bind(this);
   }
@@ -32,7 +32,7 @@ class ViewProfile extends React.Component {
 
   componentDidMount = () => {
     try {
-        this.retrieveData();
+      this.retrieveData();
     }
     catch (error) {
       console.log(error);
@@ -45,44 +45,51 @@ class ViewProfile extends React.Component {
         loading: true,
       });
 
-    this._isMounted = true;
-    const uid = this.props.navigation.getParam('uid', 'NO-ID')
-    const userRef = db.firestore().collection("Usuario");
-    const that = this;
-    if(this._isMounted){
-      userRef.doc(uid).get().then((doc) => {
-        if (doc.exists) {
-          nombre = doc.data().Nombre
-          apellido = doc.data().Apellido
-          ubicacion = doc.data().Ubicacion
-          descripcion = doc.data().Descripcion
-          imagesUser = doc.data().images
-          fotoPerfil = doc.data().profileImage
-          username = doc.data().displayName
-          that.setState({ nombre })
-          that.setState({ apellido })
-          that.setState({ ubicacion })
-          that.setState({ descripcion })
-          that.setState({ imagesUser })
-          that.setState({ fotoPerfil })
-          that.setState({ username })
-          that.setState({ loading: false })
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      }).catch((error) => {
-        console.log("Error getting document:", error);
-      });
-    }
-    
+      this._isMounted = true;
+      const uid = this.props.navigation.getParam('uid', 'NO-ID')
+      const userRef = db.firestore().collection("Usuario");
+      const that = this;
+      if (this._isMounted) {
+        userRef.doc(uid).get().then((doc) => {
+          if (doc.exists) {
+            nombre = doc.data().Nombre
+            apellido = doc.data().Apellido
+            ubicacion = doc.data().Ubicacion
+            descripcion = doc.data().Descripcion
+            imagesUser = doc.data().images
+            fotoPerfil = doc.data().profileImage
+            if (fotoPerfil == null) {
+              fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+              this.setState({ fotoPerfil })
+            } else {
+              fotoPerfil = doc.data().profileImage
+              this.setState({ fotoPerfil })
+            }
+            username = doc.data().displayName
+            that.setState({ nombre })
+            that.setState({ apellido })
+            that.setState({ ubicacion })
+            that.setState({ descripcion })
+            that.setState({ imagesUser })
+            that.setState({ fotoPerfil })
+            that.setState({ username })
+            that.setState({ loading: false })
+          } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+          }
+        }).catch((error) => {
+          console.log("Error getting document:", error);
+        });
+      }
+
     }
     catch (error) {
       console.log(error);
     }
   };
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this._isMounted = false;
   }
 
@@ -90,30 +97,30 @@ class ViewProfile extends React.Component {
 
     const items = []
     if (Array.isArray(imagesUser) && imagesUser.length) {
-    for (const [index, image] of this.state.imagesUser.entries()) {
-      items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
+      for (const [index, image] of this.state.imagesUser.entries()) {
+        items.push(<Image source={{ uri: image }} key={index} style={styles.card} />)
+      }
     }
-  }
 
-    if(this.state.loading) {
+    if (this.state.loading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size='large'/>
+          <ActivityIndicator size='large' />
         </View>
       );
     }
 
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}
-      refreshControl={
-        <RefreshControl
-        refreshing={this.state.loading}
-        />
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.loading}
+          />
         }>
         <View>
           <Image source={header} style={{ height: 200 }} />
           <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }}>
-          <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100}} />
+            <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100 }} />
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
             <Text style={{ color: 'white' }}>@{this.state.username}</Text>
@@ -121,7 +128,7 @@ class ViewProfile extends React.Component {
             <Text style={{ color: 'white' }}>{this.state.ubicacion}</Text>
             <Text style={{ color: 'white' }}>{this.state.descripcion}</Text>
           </View>
-        
+
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
             {items}
           </View>

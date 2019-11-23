@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, ImageBackground } from 'react-native';
+import { Image, ImageBackground, TouchableHighlight } from 'react-native';
 import back from './assets/back.png';
 import { withNavigation } from 'react-navigation';
 import {
@@ -58,34 +58,36 @@ class Login extends Component {
     render() {
         return (
             <ImageBackground source={bg} style={styles.backgroundContainer}>
-            <View style={styles.container}>
-                <View style={{ marginTop: hp('20%') }}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder='email'
-                        autoCapitalize="none"
-                        placeholderTextColor='white'
-                        onChangeText={(email) => this.setState({ email })}
-                        value={this.state.nombre}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder='password'
-                        secureTextEntry={true}
-                        autoCapitalize="none"
-                        placeholderTextColor='white'
-                        onChangeText={(password) => this.setState({ password })}
-                        value={this.state.password}
-                    />
+                <View style={styles.container}>
+                    <View style={{ marginTop: hp('20%') }}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='email'
+                            autoCapitalize="none"
+                            placeholderTextColor='white'
+                            onChangeText={(email) => this.setState({ email })}
+                            value={this.state.nombre}
+                        />
+                        <TextInput
+                            style={styles.input}
+                            placeholder='password'
+                            secureTextEntry={true}
+                            autoCapitalize="none"
+                            placeholderTextColor='white'
+                            onChangeText={(password) => this.setState({ password })}
+                            value={this.state.password}
+                        />
+                    </View>
+                    <View style={styles.buttonWrapper}>
+                        <TouchableHighlight onPress={this.login}>
+                            <Button
+                                text="LOGIN" background="#330D5A" color="white" onPress={this.login}
+                            />
+                        </TouchableHighlight>
+                    </View>
                 </View>
-                <View style={styles.buttonWrapper} onStartShouldSetResponder={this.login}>
-                    <Button
-                        text="LOGIN" background="#330D5A" color="white" onPress={this.login}
-                    />
-                </View>
-      </View>
-      </ImageBackground>
-          
+            </ImageBackground>
+
 
         );
     }
@@ -97,14 +99,14 @@ const styles = StyleSheet.create({
         flex: 1,
         width: null,
         height: null,
-      },
+    },
     input: {
         width: wp('90%'),
         height: hp('8%'),
         backgroundColor: 'transparent',
         margin: '2.5%',
         padding: '2.5%',
-        color: 'black',
+        color: 'white',
         borderColor: 'black',
         borderWidth: 1,
         borderRadius: 20,

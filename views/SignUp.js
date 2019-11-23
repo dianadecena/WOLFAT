@@ -7,7 +7,8 @@ import {
   TextInput,
   Alert,
   ImageBackground,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableHighlight
 } from "react-native";
 import Button from './components/Button';
 
@@ -172,10 +173,12 @@ class SignUp extends Component {
             onChangeText={(ubicacion) => this.setState({ ubicacion })}
             value={this.state.ubicacion}
           />
-          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.register()}>
-            <Button
-              text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
-            />
+          <View style={styles.buttonWrapper}>
+            <TouchableHighlight onPress={() => this.register()}>
+              <Button
+                text="SIGN UP" background="#330D5A" color="white" onPress={this.register}
+              />
+            </TouchableHighlight>
           </View>
 
         </View>
