@@ -205,8 +205,6 @@ const BottomTab = createBottomTabNavigator({
       style: {
         backgroundColor: 'black',
         borderTopWidth: 0,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
         alignSelf: "stretch",
         position: 'relative',
         left: 0,

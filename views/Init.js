@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, Text } from 'react-native';
+import { StyleSheet, View, ImageBackground, Image, Text, TouchableHighlight } from 'react-native';
 import bgImage from './assets/background.png';
 import { Dimensions } from "react-native";
 import Button from './components/Button';
@@ -40,14 +40,18 @@ class Init extends React.Component {
           ) : null}
         </View>
         <View style={{ marginTop: hp('5%'), alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: '#ccff00', fontSize: hp('3.5%'), fontWeight: 'bold'}}>WELCOME</Text>
+          <Text style={{ color: '#ccff00', fontSize: hp('3.5%'), fontWeight: 'bold' }}>WELCOME</Text>
         </View>
-        <View style={{marginTop: hp('7.5%'), alignItems: 'center', justifyContent: 'center' }}>
-          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.onLogIn()}>
-            <Button text="LOG IN" background="black" color="white" onPress={this.onLogIn} />
+        <View style={{ marginTop: hp('7.5%'), alignItems: 'center', justifyContent: 'center' }}>
+          <View style={styles.buttonWrapper}>
+            <TouchableHighlight onPress={() => this.onLogIn()} >
+              <Button text="LOG IN" background="black" color="white" onPress={this.onLogIn} />
+            </TouchableHighlight>
           </View>
           <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.onSignUp()}>
-            <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp} />
+            <TouchableHighlight onPress={() => this.onSignUp()}>
+              <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp} />
+            </TouchableHighlight>
           </View>
         </View>
       </ImageBackground>

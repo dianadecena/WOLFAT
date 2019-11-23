@@ -112,16 +112,18 @@ class Card extends React.Component {
           <Text style={{ color: 'white' }}>{moment(this.props.timestamp).fromNow()}</Text>
           <TouchableHighlight onPress={() => this.imageDetails(this.props.imageUri, this.props.descripcion)} >
             <Image source={{ uri: this.props.imageUri.toString() }}
-              
               style={styles.topCard} />
           </TouchableHighlight>
           <View style={styles.bottomCard}>
-            <Image source={{ uri: this.state.profileImage }} style={{
-              borderRadius: 15, width: 30, height: 30,
-              marginLeft: 5, marginTop: 5
-            }} />
-            <Text onStartShouldSetResponder={() => this.viewProfile(this.props.uid)}
+            <TouchableHighlight onPress={() => this.viewProfile(this.props.uid)} >
+              <Image source={{ uri: this.state.profileImage }} style={{
+                borderRadius: 15, width: 30, height: 30,
+                marginLeft: 5, marginTop: 5
+              }} />
+            </TouchableHighlight>
+            <Text onPress={() => this.viewProfile(this.props.uid)}
               style={{ color: 'white', marginLeft: 40, marginTop: -25 }}>{this.state.name}</Text>
+
             <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)}>
               <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: 130, marginTop: -25 }} />
             </View>

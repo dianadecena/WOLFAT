@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshControl } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshControl, TouchableHighlight } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
@@ -10,7 +10,7 @@ import profile from './assets/profile.jpg';
 import Card from './components/CardProfile';
 import CardProfile from './components/CardProfile';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon, Container, Header, Content, Left} from 'native-base'
+import { Icon, Container, Header, Content, Left } from 'native-base'
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
 class Profile extends React.Component {
@@ -71,7 +71,7 @@ class Profile extends React.Component {
               if (imagesUser != null) {
                 var new_images = imagesUser.reverse()
                 this.setState({ imagesUser: new_images })
-              } 
+              }
               /*if(savedImages.length != null) {
                 var savedImages = savedImages.reverse()
                 this.setState({ savedImages: savedImages })
@@ -238,9 +238,11 @@ class Profile extends React.Component {
         }>
         <View>
           <Image source={header} style={{ height: 200 }} />
-          <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }}
-            onStartShouldSetResponder={() => this.changeProfilePic()}>
-            <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100 }} />
+          <View style={{ marginTop: -50, alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableHighlight onPress={() => this.changeProfilePic()}>
+              <Image source={{ uri: fotoPerfil }} style={{ borderRadius: 50, width: 100, height: 100 }} />
+            </TouchableHighlight>
+
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 10 }}>
             <Text style={{ color: 'white' }}>@{this.state.username}</Text>
@@ -252,28 +254,32 @@ class Profile extends React.Component {
             <View style={{
               width: 40, height: 40, borderRadius: 50, marginTop: 10, marginLeft: 20,
               backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',
-            }}
-              onStartShouldSetResponder={() => this.signOut()}
-            >
-              <Image style={{ resizeMode: 'cover' }}
-                source={require('./assets/logout.png')} />
+            }}>
+              <TouchableHighlight onPress={() => this.signOut()}>
+                <Image style={{ resizeMode: 'cover' }}
+                  source={require('./assets/logout.png')} />
+              </TouchableHighlight>
+
             </View>
             <View style={{
               width: 40, height: 40, borderRadius: 50, marginTop: 10, marginRight: 20,
               backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'
-            }}
-              onStartShouldSetResponder={() => this.uploadImage()}
-            >
-              <Image style={{ resizeMode: 'cover' }}
-                source={require('./assets/camera.png')} />
+            }}>
+              <TouchableHighlight onPress={() => this.uploadImage()}>
+                <Image style={{ resizeMode: 'cover' }}
+                  source={require('./assets/camera.png')} />
+              </TouchableHighlight>
+
             </View>
           </View>
-          <View onStartShouldSetResponder={() => this.toUpdate()} style={{ width: 215, marginTop: -45, marginLeft: 75, marginRight: 80 }}>
-            <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate} />
+          <View style={{ width: 215, marginTop: -45, marginLeft: 75, marginRight: 80 }}>
+            <TouchableHighlight onPress={() => this.toUpdate()}>
+              <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate} />
+            </TouchableHighlight>
           </View>
 
           <View style={{ width: 215, marginTop: 20, marginLeft: 130, marginRight: 80 }}>
-            <Text onStartShouldSetResponder={() => this.verGuardadas()}
+            <Text onPress={() => this.verGuardadas()}
               style={{ color: 'white' }}>{this.state.opcion}</Text>
           </View>
 
