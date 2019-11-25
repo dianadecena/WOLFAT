@@ -11,7 +11,7 @@ import Card from './components/CardProfile';
 import CardProfile from './components/CardProfile';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Icon, Container, Header, Content, Left } from 'native-base'
-var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
+var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], items = [], username, result, uid, timestamp;
 
 class Profile extends React.Component {
   state = {
@@ -27,7 +27,8 @@ class Profile extends React.Component {
     result,
     uid,
     timestamp,
-    loading: false
+    loading: false,
+    items
   }
 
 
@@ -177,7 +178,11 @@ class Profile extends React.Component {
   }
 
   uploadImage() {
-    this.props.navigation.navigate('SubirImagen');
+    this.props.navigation.navigate('SubirImagen', {
+      insertImage: this.insertImage,
+      deleteImage: this.deleteImage,
+      index: this.state.items.length
+    });
   }
 
   toUpdate = async () => {
@@ -203,12 +208,22 @@ class Profile extends React.Component {
     }
   }
 
-  render() {
+  deleteImage = (index) => {
+    this.state.imagesUser.splice(index, 1);
+    this.setState({});
+  }
 
-    const items = []
-    if (Array.isArray(imagesUser) && imagesUser.length) {
+  insertImage = (image) => {
+    this.state.imagesUser.splice(0, 0, image)
+    this.setState({});
+  }
+
+  render() {
+    this.state.items = []
+    if (Array.isArray(imagesUser) && imagesUser.length && !this.state.loading) {
+      // console.log(this.state.imagesUser)
       for (const [index, image] of this.state.imagesUser.entries()) {
-        items.push(<CardProfile imageUri={image} uid={this.state.uid} opcion={this.state.opcion} key={index} />)
+        this.state.items.push(<CardProfile imageUri={image} uid={this.state.uid} opcion={this.state.opcion} key={index} index={index} delete={this.deleteImage} />)
       }
     }
 
@@ -284,7 +299,7 @@ class Profile extends React.Component {
           </View>
 
           <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
-            {items}
+            {this.state.items}
           </View>
 
         </View>

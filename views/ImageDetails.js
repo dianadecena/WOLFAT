@@ -81,7 +81,7 @@ class ImageDetails extends React.Component {
     }
 
     viewProfile(){
-      this.props.navigation.navigate('Profile');
+      this.props.navigation.navigate('ViewProfile');
     }
 
     likePost(image) {
@@ -93,6 +93,7 @@ class ImageDetails extends React.Component {
           querySnapshot.forEach(function (doc) {
             that.setState({ id: doc.id, likes: doc.data().like + 1});
             that.updatePost(image);
+            that.retrieveData();
           });
       });
       } else {
@@ -101,6 +102,7 @@ class ImageDetails extends React.Component {
           querySnapshot.forEach(function (doc) {
             that.setState({ id: doc.id, likes: doc.data().like - 1});
             that.updatePost(image);
+            that.retrieveData();
           });
       });
       }
