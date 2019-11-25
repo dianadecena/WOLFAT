@@ -39,6 +39,7 @@ class ImageDetails extends React.Component {
       });
 
       var image = this.props.navigation.getParam('image', 'NO-ID')
+      console.log(image)
 
       const postsRef = db.firestore().collection("Posts");
       const that = this;
@@ -66,8 +67,7 @@ class ImageDetails extends React.Component {
       db.firestore().collection('Usuario').doc(user.uid).get()
       .then(doc => {
       var saved = [];
-        saved = doc.data().likedImages
-        console.log(saved)
+          saved = doc.data().likedImages
         if(saved != null && saved.includes(image)) {
           that.setState({ isLiked: liked, loading: false })
         } else {

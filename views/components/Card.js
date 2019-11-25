@@ -75,7 +75,6 @@ class Card extends React.Component {
     var user = firebase.auth().currentUser;
     db.firestore().collection('Usuario').doc(this.props.uid).get()
       .then(doc => {
-        if (this._isMounted) {
           this.setState({
             name: doc.data().displayName,
             nombre: doc.data().Nombre,
@@ -83,22 +82,28 @@ class Card extends React.Component {
             profileImage: doc.data().profileImage,
             loading: false
           });
-        }
+          this.getSaved();
       });
-
-    /*db.firestore().collection('Usuario').doc(user.uid).get()
-      .then(doc => {
-        var saved = [];
-        if (this._isMounted) {
-          saved = doc.data().saveImages
-          if (saved != null && saved.includes(this.props.imageUri)) {
-            this.setState({ imageSaved: guardado })
-          }
-        }
-      });*/
   }
   catch(error) {
     console.log(error);
+  }
+
+  getSaved() {
+    this.setState({
+      loading: true,
+    });
+    var user = firebase.auth().currentUser;
+     db.firestore().collection('Usuario').doc(user.uid).get()
+      .then(doc => {
+        var saved = [];
+          saved = doc.data().saveImages
+          if (saved != null && saved.includes(this.props.imageUri)) {
+            this.setState({ imageSaved: guardado, loading: false })
+          } else {
+            this.setState({ imageSaved: noGuardado, loading: false })
+          }
+      });
   }
 
   componentWillUnmount() {

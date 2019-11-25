@@ -190,7 +190,9 @@ class SubirImagen extends React.Component {
                   image: downloadURL,
                   uid: user.uid,
                   tipo: 2,
-                  timestamp: Date.now()
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
                 });
               }
               else if (value == 'piercing') {
@@ -200,7 +202,9 @@ class SubirImagen extends React.Component {
                   image: downloadURL,
                   uid: user.uid,
                   tipo: 3,
-                  timestamp: Date.now()
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
                 });
               } else {
                 console.log(value)
@@ -209,7 +213,9 @@ class SubirImagen extends React.Component {
                   image: downloadURL,
                   uid: user.uid,
                   tipo: 4,
-                  timestamp: Date.now()
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
                 });
               }
 
