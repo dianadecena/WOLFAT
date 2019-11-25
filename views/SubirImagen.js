@@ -10,7 +10,7 @@ import back from './assets/back.png';
 import Button from './components/Button';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
+import CardProfile from './components/CardProfile';
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
 const sleep = (milliseconds) => {
@@ -153,6 +153,10 @@ class SubirImagen extends React.Component {
     var value = this.state.pickerSelection;
     var descrip = this.state.descripcion;
     var that = this;
+    var insertImage = this.props.navigation.getParam('insertImage', 'NO-ID')
+    var deleteImage = this.props.navigation.getParam('deleteImage', 'NO-ID')
+    var index = this.props.navigation.getParam('index', 'NO-ID')
+
     if (imageResult) {
       const response = await fetch(uri);
       const blob = await response.blob();
@@ -220,10 +224,14 @@ class SubirImagen extends React.Component {
               }
 
 
+              const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
+              insertImage(downloadURL);
             }
           });
         });
       });
+
+
       this.props.navigation.navigate('Profile');
     } else {
       Alert.alert('Error', 'No ha seleccionado ninguna foto')

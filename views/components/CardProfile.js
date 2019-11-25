@@ -74,6 +74,8 @@ class CardProfile extends React.Component {
   }
 
   deleteImage(image, uid) {
+    
+    
     const usuario = db.firestore().collection('Usuario').doc(uid);
     usuario.update({
       images: firebase.firestore.FieldValue.arrayRemove(image)
@@ -88,7 +90,7 @@ class CardProfile extends React.Component {
           this.deleteID();
         }
       });
-    });
+    }).then( () => this.props.delete(this.props.index));
   }
 
   deleteID() {

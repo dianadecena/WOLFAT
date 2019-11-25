@@ -81,7 +81,7 @@ class ImageDetails extends React.Component {
     }
 
     viewProfile(){
-      this.props.navigation.navigate('Profile');
+      this.props.navigation.navigate('ViewProfile');
     }
 
     likePost(image) {
