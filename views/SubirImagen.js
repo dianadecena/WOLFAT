@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView, TouchableHighlight } from 'react-native';
+import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView, TouchableHighlight, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -11,6 +11,7 @@ import Button from './components/Button';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CardProfile from './components/CardProfile';
+import Dashboard from './components/Module';
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
 const sleep = (milliseconds) => {
@@ -25,7 +26,8 @@ class SubirImagen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pickerSelection: 'tattoo'
+      pickerSelection: 'tattoo',
+      loading: false
     }
   }
 
@@ -82,6 +84,14 @@ class SubirImagen extends React.Component {
 
   render() {
     let { image } = this.state;
+
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size='large' />
+        </View>
+      );
+    }
 
     return (
       <ScrollView style={styles.container}>
@@ -166,6 +176,7 @@ class SubirImagen extends React.Component {
     var insertImage = this.props.navigation.getParam('insertImage', 'NO-ID')
     var deleteImage = this.props.navigation.getParam('deleteImage', 'NO-ID')
     var index = this.props.navigation.getParam('index', 'NO-ID')
+    that.setState({ loading: true })
     if (imageResult) {
       const response = await fetch(uri);
       const blob = await response.blob();
@@ -177,6 +188,7 @@ class SubirImagen extends React.Component {
         console.log('Upload is ' + progress + '% done');
       }).then(function () {
         // Upload completed successfully, now we can get the download URL
+        that.setState({ loading: false })
         storageRef.getDownloadURL().then(function (downloadURL) {
           console.log('File available at', downloadURL);
           firebase.auth().onAuthStateChanged(function (user) {
@@ -185,66 +197,20 @@ class SubirImagen extends React.Component {
               usuarios.update({
                 images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
               });
-              if (value == 'tattoo') {
-                console.log(value)
-                console.log("Es tattoo el valor")
-                db.firestore().collection('Posts').add({
-                  image: downloadURL,
-                  uid: user.uid,
-                  tipo: 1,
-                  timestamp: Date.now(),
-                  descripcion: descrip,
-                  like: 0
-                });
-              } else if (value == 'estetica') {
-                console.log(value)
-                console.log("Es estetica el valor")
-                db.firestore().collection('Posts').add({
-                  image: downloadURL,
-                  uid: user.uid,
-                  tipo: 2,
-                  timestamp: Date.now(),
-                  descripcion: descrip,
-                  like: 0
-                });
-              }
-              else if (value == 'piercing') {
-                console.log(value)
-                console.log("Es piercing el valor")
-                db.firestore().collection('Posts').add({
-                  image: downloadURL,
-                  uid: user.uid,
-                  tipo: 3,
-                  timestamp: Date.now(),
-                  descripcion: descrip,
-                  like: 0
-                });
-              } else {
-                console.log(value)
-                console.log("Es makeup el valor")
-                db.firestore().collection('Posts').add({
-                  image: downloadURL,
-                  uid: user.uid,
-                  tipo: 4,
-                  timestamp: Date.now(),
-                  descripcion: descrip,
-                  like: 0
-                });
-              }
-
-
-              const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
-              insertImage(downloadURL);
             }
+
+
+            const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
+            insertImage(downloadURL);
           });
-        });
       });
+    });
 
 
-      this.props.navigation.navigate('Profile');
-    } else {
-      Alert.alert('Error', 'No ha seleccionado ninguna foto')
-    }
+    this.props.navigation.navigate('Profile');
+  } else {
+  Alert.alert('Error', 'No ha seleccionado ninguna foto')
+}
   }
 };
 

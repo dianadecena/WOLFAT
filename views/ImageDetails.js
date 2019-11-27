@@ -7,7 +7,7 @@ import noLiked from './assets/no-like.png'
 import db from '../config';
 import firebase from 'firebase';
 
-let state = { isLiked: noLiked, likes: 0, id: '', totalLikes: 0, loading: false, fontLoaded: false, imageURL: ''};
+let state = { isLiked: noLiked, likes: 0, uid: '', totalLikes: 0, loading: false, fontLoaded: false, imageURL: ''};
 
 class ImageDetails extends React.Component {
 
@@ -46,7 +46,7 @@ class ImageDetails extends React.Component {
 
       this.unsubscribe = postsRef.where('image', '==', image).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          that.setState({ totalLikes: doc.data().like, imageURL: image});
+          that.setState({ totalLikes: doc.data().like, imageURL: image, uid: doc.data().uid});
           that.retrieveLike(image);
         });
       });
@@ -81,7 +81,9 @@ class ImageDetails extends React.Component {
     }
 
     viewProfile(){
-      this.props.navigation.navigate('ViewProfile');
+      this.props.navigation.navigate('ViewProfile', {
+        uid: this.state.uid
+      });
     }
 
     likePost(image) {

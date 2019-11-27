@@ -49,34 +49,13 @@ class SavedImages extends React.Component {
 
                     db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
                         if (doc.exists) {
-                            nombre = doc.data().Nombre
-                            apellido = doc.data().Apellido
-                            ubicacion = doc.data().Ubicacion
-                            descripcion = doc.data().Descripcion
                             savedImages = doc.data().saveImages
-                            fotoPerfil = doc.data().profileImage
-                            username = doc.data().displayName
-                            uid = doc.data().uid
-                            console.log(uid)
-                            this.setState({ nombre })
-                            this.setState({ apellido })
-                            this.setState({ ubicacion })
-                            this.setState({ descripcion })
                             if (savedImages != null) {
                                 var saved = savedImages.reverse()
+                                console.log(saved)
                                 this.setState({ imagesUser: saved })
                                 this.setState({ opcion: 'VER SUBIDAS' })
                             }
-                            if (fotoPerfil == null) {
-                                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
-                                this.setState({ fotoPerfil })
-                            } else {
-                                fotoPerfil = doc.data().profileImage
-                                this.setState({ fotoPerfil })
-                            }
-                            this.setState({ username })
-                            this.setState({ uid })
-                            this.setState({ loading: false })
                         } else {
                             // doc.data() will be undefined in this case
                             console.log("No such document!");
@@ -95,29 +74,12 @@ class SavedImages extends React.Component {
         }
     }
 
-   /* getUsernames() {  
-      const postsRef = db.firestore().collection("Posts");
-      const that = this;
-
-      that.setState({
-        loading: true,
-     });
-
-      this.unsubscribe = postsRef.get().then(querySnapshot => {
-        querySnapshot.docs.forEach(doc => {
-            if(this.state.imagesUser.includes(doc.data().image) {
-                this.setState({ uid: doc.data().uid, loading: false});
-            }
-        });
-      });
-    }*/
-
     render() {
 
         const items = []
         if (Array.isArray(savedImages) && savedImages.length) {
             for (const [index, image] of this.state.imagesUser.entries()) {
-                items.push(<CardSave imageUri={image} uid={this.state.uid} key={index} />)
+                items.push(<CardSave imageUri={image} saved={this.state.imagesUser} key={index} />)
             }
         }
 

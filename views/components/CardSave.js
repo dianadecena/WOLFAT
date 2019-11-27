@@ -5,7 +5,6 @@ import db from '../../config';
 import guardado from '../assets/saved.png';
 import firebase from 'firebase';
 import noGuardado from '../assets/no-save.png';
-
 class CardSave extends React.Component {
 
     _isMounted = false;
@@ -57,26 +56,26 @@ class CardSave extends React.Component {
             // No user is signed in.
         }
     }
-
-    getUsernames() {
-        this.setState({
+    
+    getIDs() {  
+        const postsRef = db.firestore().collection("Posts");
+        const that = this;
+        
+  
+        that.setState({
+        
           loading: true,
-        });
-        var user = firebase.auth().currentUser;
-        db.firestore().collection('Usuario').doc(this.props.uid).get()
-          .then(doc => {
-              this.setState({
-                name: doc.data().displayName,
-                nombre: doc.data().Nombre,
-                apellido: doc.data().Apellido,
-                profileImage: doc.data().profileImage,
-                loading: false
-              });
+       });
+  
+        this.unsubscribe = postsRef.get().then(querySnapshot => {
+          querySnapshot.docs.forEach(doc => {
+              if(this.props.saved.includes(doc.data().this.props.image)) {
+                  uid = doc.data().uid
+              }
           });
-      }
-      catch(error) {
-        console.log(error);
-      }
+        });
+    }
+      
 
     componentWillUnmount() {
         this._isMounted = false;
@@ -94,7 +93,7 @@ class CardSave extends React.Component {
                             borderRadius: 15, width: 30, height: 30,
                             marginLeft: 10, marginTop: 5
                         }} />
-                        <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.props.uid}</Text>
+                        <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
                         <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)} style={{justifyContent: 'center', alignItems: 'center'}}>
                             <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: '85%', marginTop: -25 }} />
                         </View>
