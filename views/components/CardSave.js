@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableHighlight } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import db from '../../config';
 import guardado from '../assets/saved.png';
@@ -11,7 +11,7 @@ class CardSave extends React.Component {
 
     state = {
         name: '',
-        nombre: '',
+        uid: '',
         apellido: '',
         profileImage: null,
         loading: false,
@@ -23,7 +23,7 @@ class CardSave extends React.Component {
         this._isMounted = true;
 
         try {
-            this.getUsernames();
+            this.getIDs();
         }
         catch (error) {
             console.log(error);
@@ -60,39 +60,52 @@ class CardSave extends React.Component {
     getIDs() {  
         const postsRef = db.firestore().collection("Posts");
         const that = this;
-        
-  
-        that.setState({
-        
-          loading: true,
-       });
-  
-        this.unsubscribe = postsRef.get().then(querySnapshot => {
+        postsRef.get().then(querySnapshot => {
           querySnapshot.docs.forEach(doc => {
-              if(this.props.saved.includes(doc.data().this.props.image)) {
-                  uid = doc.data().uid
+              if(this.props.imageUri == doc.data().image) {
+                  console.log(doc.data().uid)
+                  this.getUsernames(doc.data().uid)
               }
           });
         });
     }
-      
 
+    getUsernames(uid) {  
+        const userRef = db.firestore().collection("Usuario");
+        const that = this;
+        console.log(uid)
+
+        userRef.doc(uid).get().then(doc => {
+                  that.setState({ name: doc.data().displayName,
+                    profileImage: doc.data().profileImage,
+                    uid: uid})
+                  console.log(this.state.name)
+          });
+    }
+
+    viewProfile(uid) {
+        this.props.navigation.navigate('ViewProfile', {
+          uid: uid,
+        });
+    }
+      
     componentWillUnmount() {
         this._isMounted = false;
     }
 
     render() {
-        if (!this.state.loading) {
             return (
                 <View style={styles.card}>
                     <View onPress={() => this.imageDetails(this.props.imageUri)}>
                     </View>
                     <Image source={{ uri: this.props.imageUri.toString() }} style={styles.topCard} />
                     <View style={styles.bottomCard}>
+                    <TouchableHighlight onPress={() => this.viewProfile(this.state.uid)} >
                         <Image source={{ uri: this.state.profileImage }} style={{
                             borderRadius: 15, width: 30, height: 30,
                             marginLeft: 10, marginTop: 5
                         }} />
+                     </TouchableHighlight>
                         <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
                         <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)} style={{justifyContent: 'center', alignItems: 'center'}}>
                             <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: '85%', marginTop: -25 }} />
@@ -100,9 +113,6 @@ class CardSave extends React.Component {
                     </View>
                 </View>
             );
-        } else {
-            return null
-        }
     }
 }
 

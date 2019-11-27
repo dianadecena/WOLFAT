@@ -53,8 +53,7 @@ class SavedImages extends React.Component {
                             if (savedImages != null) {
                                 var saved = savedImages.reverse()
                                 console.log(saved)
-                                this.setState({ imagesUser: saved })
-                                this.setState({ opcion: 'VER SUBIDAS' })
+                                this.setState({ imagesUser: saved, loading: false })
                             }
                         } else {
                             // doc.data() will be undefined in this case
@@ -79,7 +78,7 @@ class SavedImages extends React.Component {
         const items = []
         if (Array.isArray(savedImages) && savedImages.length) {
             for (const [index, image] of this.state.imagesUser.entries()) {
-                items.push(<CardSave imageUri={image} saved={this.state.imagesUser} key={index} />)
+                items.push(<CardSave imageUri={image} key={index} />)
             }
         }
 
