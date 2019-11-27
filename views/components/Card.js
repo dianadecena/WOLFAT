@@ -9,8 +9,6 @@ import guardado from '../assets/saved.png';
 
 class Card extends React.Component {
 
-  _isMounted = false;
-
   state = {
     name: '',
     nombre: '',
@@ -21,8 +19,6 @@ class Card extends React.Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
-
     try {
       this.getUsernames();
     }
@@ -72,9 +68,7 @@ class Card extends React.Component {
     this.setState({
       loading: true,
     });
-    var user = firebase.auth().currentUser;
-    db.firestore().collection('Usuario').doc(this.props.uid).get()
-      .then(doc => {
+    db.firestore().collection('Usuario').doc(this.props.uid).get().then(doc => {
           this.setState({
             name: doc.data().displayName,
             nombre: doc.data().Nombre,
@@ -104,10 +98,6 @@ class Card extends React.Component {
             this.setState({ imageSaved: noGuardado, loading: false })
           }
       });
-  }
-
-  componentWillUnmount() {
-    this._isMounted = false;
   }
 
   render() {

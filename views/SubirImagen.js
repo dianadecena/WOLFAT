@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView } from 'react-native';
+import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -11,6 +11,7 @@ import Button from './components/Button';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CardProfile from './components/CardProfile';
+import Dashboard from './components/Module';
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
 const sleep = (milliseconds) => {
@@ -25,7 +26,8 @@ class SubirImagen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      pickerSelection: 'tattoo'
+      pickerSelection: 'tattoo',
+      loading: false
     }
   }
 
@@ -82,6 +84,14 @@ class SubirImagen extends React.Component {
 
   render() {
     let { image } = this.state;
+
+    if (this.state.loading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size='large' />
+        </View>
+      );
+    }
 
     return (
       <ScrollView style={styles.container}>
@@ -156,6 +166,7 @@ class SubirImagen extends React.Component {
     var insertImage = this.props.navigation.getParam('insertImage', 'NO-ID')
     var deleteImage = this.props.navigation.getParam('deleteImage', 'NO-ID')
     var index = this.props.navigation.getParam('index', 'NO-ID')
+    that.setState({ loading: true});
 
     if (imageResult) {
       const response = await fetch(uri);
@@ -167,6 +178,7 @@ class SubirImagen extends React.Component {
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log('Upload is ' + progress + '% done');
       }).then(function () {
+        that.setState({ loading: false });
         // Upload completed successfully, now we can get the download URL
         storageRef.getDownloadURL().then(function (downloadURL) {
           console.log('File available at', downloadURL);
@@ -226,6 +238,7 @@ class SubirImagen extends React.Component {
 
               const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
               insertImage(downloadURL);
+              new Dashboard().refreshDashboard;
             }
           });
         });

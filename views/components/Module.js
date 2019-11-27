@@ -62,6 +62,10 @@ class Module extends React.Component {
     }
   };
 
+  refreshDashboard = () => {
+    this.setState({});
+  }
+
   componentWillUnmount(){
     this.unsubscribe();
   }
