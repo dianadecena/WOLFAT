@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView } from 'react-native';
+import { Image, View, StyleSheet, Alert, Picker, Platform, TextInput, ScrollView, TouchableHighlight } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -86,10 +86,12 @@ class SubirImagen extends React.Component {
     return (
       <ScrollView style={styles.container}>
         <View style={styles.backgroundContainer}>
-          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.chooseImage()}>
-            <Button
-              text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
-            />
+          <View style={styles.buttonWrapper}>
+            <TouchableHighlight onPress={this.chooseImage}>
+              <Button
+                text="Pick an image from camera roll" background="#330D5A" color="white" onPress={this.chooseImage}
+              />
+            </TouchableHighlight>
           </View>
 
 
@@ -100,7 +102,7 @@ class SubirImagen extends React.Component {
             style={styles.input}
             placeholder='Descripcion'
             autoCapitalize="none"
-            placeholderTextColor='white'
+            placeholderTextColor='#000000'
             onChangeText={(descripcion) => this.setState({ descripcion })}
             value={this.state.descripcion}
           />
@@ -109,10 +111,13 @@ class SubirImagen extends React.Component {
             {this.showPicker()}
           </View>
 
-          <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.uploadImage(image)}>
-            <Button
-              text="Upload" background="#330D5A" color="white" onPress={() => this.uploadImage(image)}
-            />
+
+          <View style={styles.buttonWrapper}>
+            <TouchableHighlight onPress={() => this.uploadImage(image)}>
+              <Button
+                text="Upload" background="#330D5A" color="white" onPress={() => this.uploadImage(image)}
+              />
+            </TouchableHighlight>
           </View>
 
         </View>
@@ -153,7 +158,7 @@ class SubirImagen extends React.Component {
     var value = this.state.pickerSelection;
     if (this.state.descripcion != '' && this.state.descripcion != null) {
       var descrip = this.state.descripcion;
-    }else{
+    } else {
       var descrip = ''
     }
 
@@ -161,85 +166,85 @@ class SubirImagen extends React.Component {
     var insertImage = this.props.navigation.getParam('insertImage', 'NO-ID')
     var deleteImage = this.props.navigation.getParam('deleteImage', 'NO-ID')
     var index = this.props.navigation.getParam('index', 'NO-ID')
-      if (imageResult) {
-        const response = await fetch(uri);
-        const blob = await response.blob();
-        let filename = uri.split('/').pop();
-        var storageRef = db.storage().ref().child('images/' + filename);
-        storageRef.put(blob).then(function (snapshot) {
-          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-          var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log('Upload is ' + progress + '% done');
-        }).then(function () {
-          // Upload completed successfully, now we can get the download URL
-          storageRef.getDownloadURL().then(function (downloadURL) {
-            console.log('File available at', downloadURL);
-            firebase.auth().onAuthStateChanged(function (user) {
-              if (user) {
-                const usuarios = db.firestore().collection('Usuario').doc(user.uid);
-                usuarios.update({
-                  images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
+    if (imageResult) {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      let filename = uri.split('/').pop();
+      var storageRef = db.storage().ref().child('images/' + filename);
+      storageRef.put(blob).then(function (snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log('Upload is ' + progress + '% done');
+      }).then(function () {
+        // Upload completed successfully, now we can get the download URL
+        storageRef.getDownloadURL().then(function (downloadURL) {
+          console.log('File available at', downloadURL);
+          firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+              const usuarios = db.firestore().collection('Usuario').doc(user.uid);
+              usuarios.update({
+                images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
+              });
+              if (value == 'tattoo') {
+                console.log(value)
+                console.log("Es tattoo el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 1,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
                 });
-                if (value == 'tattoo') {
-                  console.log(value)
-                  console.log("Es tattoo el valor")
-                  db.firestore().collection('Posts').add({
-                    image: downloadURL,
-                    uid: user.uid,
-                    tipo: 1,
-                    timestamp: Date.now(),
-                    descripcion: descrip,
-                    like: 0
-                  });
-                } else if (value == 'estetica') {
-                  console.log(value)
-                  console.log("Es estetica el valor")
-                  db.firestore().collection('Posts').add({
-                    image: downloadURL,
-                    uid: user.uid,
-                    tipo: 2,
-                    timestamp: Date.now(),
-                    descripcion: descrip,
-                    like: 0
-                  });
-                }
-                else if (value == 'piercing') {
-                  console.log(value)
-                  console.log("Es piercing el valor")
-                  db.firestore().collection('Posts').add({
-                    image: downloadURL,
-                    uid: user.uid,
-                    tipo: 3,
-                    timestamp: Date.now(),
-                    descripcion: descrip,
-                    like: 0
-                  });
-                } else {
-                  console.log(value)
-                  console.log("Es makeup el valor")
-                  db.firestore().collection('Posts').add({
-                    image: downloadURL,
-                    uid: user.uid,
-                    tipo: 4,
-                    timestamp: Date.now(),
-                    descripcion: descrip,
-                    like: 0
-                  });
-                }
-
-
-                const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
-                insertImage(downloadURL);
+              } else if (value == 'estetica') {
+                console.log(value)
+                console.log("Es estetica el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 2,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
               }
-            });
+              else if (value == 'piercing') {
+                console.log(value)
+                console.log("Es piercing el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 3,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
+              } else {
+                console.log(value)
+                console.log("Es makeup el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 4,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
+              }
+
+
+              const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
+              insertImage(downloadURL);
+            }
           });
         });
+      });
 
 
-        this.props.navigation.navigate('Profile');
-      } else {
-        Alert.alert('Error', 'No ha seleccionado ninguna foto')
-      }
+      this.props.navigation.navigate('Profile');
+    } else {
+      Alert.alert('Error', 'No ha seleccionado ninguna foto')
+    }
   }
 };
 
@@ -263,10 +268,10 @@ const styles = StyleSheet.create({
   input: {
     width: wp('90%'),
     height: hp('7.5%'),
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     margin: '2.5%',
     padding: '2.5%',
-    color: 'white',
+    color: '#000000',
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 20,
