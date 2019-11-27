@@ -6,13 +6,14 @@ import {
   StyleSheet,
   TextInput,
   Alert,
-  Image
+  Image,
+  TouchableHighlight
 } from "react-native";
 import Button from './components/Button';
 
 import firebase from 'firebase';
 import db from '../config';
-import back from './assets/back.png';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 var id, nombre, apellido, username, email, ubicacion;
 
@@ -124,13 +125,15 @@ class EditarPerfil extends Component {
           value={this.state.ubicacion}
           clearTextOnFocus={true}
         />
-        <View style={{ marginTop: 40 }} onStartShouldSetResponder={() => this.update()}>
-          <Button
-            text="UPDATE" background="#330D5A" color="white" onPress={this.update}
-          />
+        <View style={styles.buttonWrapper} onPress={this.update}>
+          <TouchableHighlight onPress={this.chooseImage}>
+            <Button
+              text="UPDATE" background="#330D5A" color="white" onPress={this.update}
+            />
+          </TouchableHighlight>
         </View>
 
-      
+
       </View>
     );
   }
@@ -165,5 +168,12 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  buttonWrapper: {
+    overflow: 'hidden',
+    marginBottom: hp('1.5%'),
+    height: hp('10%'),
+    width: wp('70%'),
+    marginTop: hp('5%')
   }
 });

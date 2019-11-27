@@ -14,10 +14,6 @@ import CardProfile from './components/CardProfile';
 import Dashboard from './components/Module';
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
-const sleep = (milliseconds) => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
 var imageResult, uploadResult;
 var userName;
 
@@ -176,8 +172,9 @@ class SubirImagen extends React.Component {
     var insertImage = this.props.navigation.getParam('insertImage', 'NO-ID')
     var deleteImage = this.props.navigation.getParam('deleteImage', 'NO-ID')
     var index = this.props.navigation.getParam('index', 'NO-ID')
-    that.setState({ loading: true })
+
     if (imageResult) {
+      that.setState({ loading: true })
       const response = await fetch(uri);
       const blob = await response.blob();
       let filename = uri.split('/').pop();
@@ -197,20 +194,66 @@ class SubirImagen extends React.Component {
               usuarios.update({
                 images: firebase.firestore.FieldValue.arrayUnion(downloadURL)
               });
+              if (value == 'tattoo') {
+                console.log(value)
+                console.log("Es tattoo el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 1,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
+              } else if (value == 'estetica') {
+                console.log(value)
+                console.log("Es estetica el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 2,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
+              }
+              else if (value == 'piercing') {
+                console.log(value)
+                console.log("Es piercing el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 3,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
+              } else {
+                console.log(value)
+                console.log("Es makeup el valor")
+                db.firestore().collection('Posts').add({
+                  image: downloadURL,
+                  uid: user.uid,
+                  tipo: 4,
+                  timestamp: Date.now(),
+                  descripcion: descrip,
+                  like: 0
+                });
+              }
             }
 
 
             const card = <CardProfile imageUri={downloadURL} uid={user.uid} opcion={'Hola'} key={index} index={index} delete={deleteImage} />
             insertImage(downloadURL);
           });
+        });
       });
-    });
 
 
-    this.props.navigation.navigate('Profile');
-  } else {
-  Alert.alert('Error', 'No ha seleccionado ninguna foto')
-}
+      this.props.navigation.navigate('Profile');
+    } else {
+      Alert.alert('Error', 'No ha seleccionado ninguna foto')
+    }
   }
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, Text, Alert } from 'react-native';
+import { StyleSheet, View, ImageBackground, Image, Text, Alert, TouchableHighlight } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import db from '../../config';
 import moment from "moment";
@@ -74,8 +74,8 @@ class CardProfile extends React.Component {
   }
 
   deleteImage(image, uid) {
-    
-    
+
+
     const usuario = db.firestore().collection('Usuario').doc(uid);
     usuario.update({
       images: firebase.firestore.FieldValue.arrayRemove(image)
@@ -90,7 +90,7 @@ class CardProfile extends React.Component {
           this.deleteID();
         }
       });
-    }).then( () => this.props.delete(this.props.index));
+    }).then(() => this.props.delete(this.props.index));
   }
 
   deleteID() {
@@ -127,7 +127,7 @@ class CardProfile extends React.Component {
             }} />
             <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
             <View onStartShouldSetResponder={() => this.deleteAlert()}>
-              <Image source={papelera} style={{ width: 26, height: 26, marginLeft: 265, marginTop: -25 }} />
+                <Image onPress={() => this.deleteAlert()} source={papelera} style={{ width: 26, height: 26, marginLeft: 265, marginTop: -25 }} />
             </View>
           </View>
         </View>

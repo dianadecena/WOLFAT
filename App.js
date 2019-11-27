@@ -94,7 +94,10 @@ const ProfileStack = createStackNavigator({
   FotoPerfil: {
     screen: FotoPerfil,
     navigationOptions: {
-      header: null
+      headerStyle: {
+        backgroundColor: '#000000'
+      },
+      headerTintColor: '#fff'
     }
   },
   VerGuardadas: {

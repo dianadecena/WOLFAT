@@ -101,77 +101,6 @@ class Profile extends React.Component {
     }
   }
 
-  retrieveSaved = async () => {
-    try {
-      this.setState({
-        loading: true,
-      });
-
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          console.log(user.uid);
-
-          db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
-            if (doc.exists) {
-              nombre = doc.data().Nombre
-              apellido = doc.data().Apellido
-              ubicacion = doc.data().Ubicacion
-              descripcion = doc.data().Descripcion
-              savedImages = doc.data().saveImages
-              fotoPerfil = doc.data().profileImage
-              username = doc.data().displayName
-              uid = doc.data().uid
-              console.log(uid)
-              this.setState({ nombre })
-              this.setState({ apellido })
-              this.setState({ ubicacion })
-              this.setState({ descripcion })
-              if (savedImages != null) {
-                var saved = savedImages.reverse()
-                this.setState({ imagesUser: saved })
-                this.setState({ opcion: 'VER SUBIDAS' })
-              }
-              if (fotoPerfil == null) {
-                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
-                this.setState({ fotoPerfil })
-              } else {
-                fotoPerfil = doc.data().profileImage
-                this.setState({ fotoPerfil })
-              }
-              this.setState({ username })
-              this.setState({ uid })
-              this.setState({ loading: false })
-            } else {
-              // doc.data() will be undefined in this case
-              console.log("No such document!");
-            }
-          }).catch((error) => {
-            console.log("Error getting document:", error);
-          });
-        } else {
-          // No user is signed in.
-        }
-      });
-
-    }
-    catch (error) {
-      console.log(error);
-    }
-  }
-
-  signOut() {
-    firebase.auth().signOut().then(function () {
-      console.log('Sesion Cerrada')
-
-    }).catch(function (error) {
-      console.log(error)
-    });
-  }
-
-  cerrarSesion() {
-    this.props.navigation.navigate('Init');
-  }
-
   uploadImage() {
     this.props.navigation.navigate('SubirImagen', {
       insertImage: this.insertImage,
@@ -180,27 +109,8 @@ class Profile extends React.Component {
     });
   }
 
-  toUpdate = async () => {
-    this.props.navigation.navigate('EditarPerfil');
-  }
-
-  toProfile = async () => {
-
-    this.props.navigation.navigate('Dashboard');
-  }
-
   changeProfilePic() {
     this.props.navigation.navigate('FotoPerfil');
-  }
-
-  verGuardadas() {
-    console.log(this.state.opcion)
-    if (this.state.opcion === 'VER GUARDADAS') {
-      console.log('entro')
-      this.retrieveSaved()
-    } else if (this.state.opcion === 'VER SUBIDAS') {
-      this.retrieveData()
-    }
   }
 
   deleteImage = (index) => {
@@ -260,19 +170,10 @@ class Profile extends React.Component {
             <Text style={{ color: 'white' }}>{this.state.ubicacion}</Text>
             <Text style={{ color: 'white' }}>{this.state.descripcion}</Text>
           </View>
-          <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'space-between', height: 40 }}>
-            <View style={{
-              width: 40, height: 40, borderRadius: 50, marginTop: 10, marginLeft: 20,
-              backgroundColor: 'white', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <TouchableHighlight onPress={() => this.signOut()}>
-                <Image style={{ resizeMode: 'cover' }}
-                  source={require('./assets/logout.png')} />
-              </TouchableHighlight>
+          <View style={{marginTop: 10, justifyContent: 'center', alignItems: 'center', height: 40 }}>
 
-            </View>
             <View style={{
-              width: 40, height: 40, borderRadius: 50, marginTop: 10, marginRight: 20,
+              width: 40, height: 40, borderRadius: 50, marginTop: 10,
               backgroundColor: 'white', alignItems: 'center', justifyContent: 'center'
             }}>
               <TouchableHighlight onPress={() => this.uploadImage()}>
@@ -282,18 +183,7 @@ class Profile extends React.Component {
 
             </View>
           </View>
-          <View style={{ width: 215, marginTop: -45, marginLeft: 75, marginRight: 80 }}>
-            <TouchableHighlight onPress={() => this.toUpdate()}>
-              <Button text="Edit profile" background="white" color="#330D5A" onPress={this.toUpdate} />
-            </TouchableHighlight>
-          </View>
-
-          <View style={{ width: 215, marginTop: 20, marginLeft: 130, marginRight: 80 }}>
-            <Text onPress={() => this.verGuardadas()}
-              style={{ color: 'white' }}>{this.state.opcion}</Text>
-          </View>
-
-          <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 40 }}>
+          <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
             {this.state.items}
           </View>
 
