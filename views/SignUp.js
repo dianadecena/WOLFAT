@@ -59,48 +59,61 @@ class SignUp extends Component {
     this.props.navigation.navigate('Dashboard')
   }
 
+
+
   register = async () => {
     const that = this;
     const { nombre, apellido, username, email, password, ubicacion } = this.state
     if (this.state.nombre != '' && this.state.apellido != '' && this.state.username != '' && this.state.password != '' && this.state.email != '' && this.state.ubicacion != '') {
-      try {
-        that.setState({
-          loading: true,
-        });
-        db.firestore().collection('Usuario').where('displayName', '==', username).get()
-          .then((snapshot) => {
-            if (snapshot.empty) {
-              db.firestore().collection('Usuario').where('email', '==', email).get().then((snapshot) => {
-                if (snapshot.empty) {
-                  this.dbRegister()
-                } else {
-                  that.setState({
-                    loading: false,
+      if (this.state.nombre.search(/^[a-zA-Z]{5,12}$/) === -1) {
+        Alert.alert('Error', 'El nombre no puede contener espacios en blanco, números ni caracteres especiales')
+      } else {
+        if (this.state.apellido.search(/^[a-zA-Z]{5,12}$/) === -1) {
+          Alert.alert('Error', 'El apellido no puede contener espacios en blanco, números ni caracteres especiales')
+        } else {
+          if (this.state.username.search(/^[a-z\d]{5,12}$/) === -1) {
+            Alert.alert('Error', 'El apellido no puede contener espacios en blanco ni caracteres especiales')
+          } else {
+            if (this.state.ubicacion.search(/^[a-zA-Z]{5,20}$/) === -1) {
+              Alert.alert('Error', 'La ubicacion no puede contener espacios en blanco, numeros ni caracteres especiales')
+            } else {
+              try {
+                that.setState({
+                  loading: true,
+                });
+                db.firestore().collection('Usuario').where('displayName', '==', username).get()
+                  .then((snapshot) => {
+                    if (snapshot.empty) {
+                      db.firestore().collection('Usuario').where('email', '==', email).get().then((snapshot) => {
+                        if (snapshot.empty) {
+                          this.dbRegister()
+                        } else {
+                          that.setState({
+                            loading: false,
+                          });
+                          Alert.alert('Error', 'El email ya está en uso')
+                        }
+                      }).catch((err) => {
+                        console.log('Error getting documents', err);
+                      });
+
+                    }
+                    else {
+                      that.setState({
+                        loading: false,
+                      });
+                      Alert.alert('Error', 'El usuario ya está en uso')
+                    }
+                  })
+                  .catch((err) => {
+                    console.log('Error getting documents', err);
                   });
-                  Alert.alert('Error', 'El email ya está en uso')
-                }
-              }).catch((err) => {
-                console.log('Error getting documents', err);
-              });
-
+              } catch (e) {
+                alert(e)
+              }
             }
-            else {
-              that.setState({
-                loading: false,
-              });
-              Alert.alert('Error', 'El usuario ya está en uso')
-            }
-          })
-          .catch((err) => {
-            console.log('Error getting documents', err);
-          });
-
-
-
-
-
-      } catch (e) {
-        alert(e)
+          }
+        }
       }
     } else {
       Alert.alert('Error', 'No se pueden dejar campos en blanco')
@@ -125,7 +138,7 @@ class SignUp extends Component {
           <View style={{ marginTop: hp('5%') }}>
             <TextInput
               style={styles.input}
-              placeholder='Nombre'
+              placeholder='Nombre (5-12 Caracteres)'
               autoCapitalize="none"
               placeholderTextColor='white'
               onChangeText={(nombre) => this.setState({ nombre })}
@@ -134,7 +147,7 @@ class SignUp extends Component {
           </View>
           <TextInput
             style={styles.input}
-            placeholder='Apellido'
+            placeholder='Apellido (5-12 Caracteres)'
             autoCapitalize="none"
             placeholderTextColor='white'
             onChangeText={(apellido) => this.setState({ apellido })}
@@ -142,7 +155,7 @@ class SignUp extends Component {
           />
           <TextInput
             style={styles.input}
-            placeholder='Username'
+            placeholder='Username (5-12 Caracteres)'
             autoCapitalize="none"
             placeholderTextColor='white'
             onChangeText={(username) => this.setState({ username })}
@@ -167,7 +180,7 @@ class SignUp extends Component {
           />
           <TextInput
             style={styles.input}
-            placeholder='Ubicacion'
+            placeholder='Ubicacion (5-20 Caracteres)'
             autoCapitalize="none"
             placeholderTextColor='white'
             onChangeText={(ubicacion) => this.setState({ ubicacion })}

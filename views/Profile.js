@@ -5,12 +5,7 @@ import firebase from 'firebase';
 import db from '../config';
 import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
-import papelera from './assets/delete.png';
-import profile from './assets/profile.jpg';
-import Card from './components/CardProfile';
 import CardProfile from './components/CardProfile';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon, Container, Header, Content, Left } from 'native-base'
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], items = [], username, result, uid, timestamp;
 
 class Profile extends React.Component {
@@ -235,13 +230,13 @@ class Profile extends React.Component {
       );
     }
 
-    if (this.state.imagesUser == null) {
+    /*if (this.state.imagesUser == null) {
       return (
         <View style={styles.container}>
           <Text>NO POSTS YET</Text>
         </View>
       );
-    }
+    }*/
 
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}

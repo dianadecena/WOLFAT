@@ -68,15 +68,25 @@ class Card extends React.Component {
     this.setState({
       loading: true,
     });
-    db.firestore().collection('Usuario').doc(this.props.uid).get().then(doc => {
-          this.setState({
-            name: doc.data().displayName,
-            nombre: doc.data().Nombre,
-            apellido: doc.data().Apellido,
-            profileImage: doc.data().profileImage,
-            loading: false
-          });
-          this.getSaved();
+    var user = firebase.auth().currentUser;
+    db.firestore().collection('Usuario').doc(this.props.uid).get()
+      .then(doc => {
+        
+        this.setState({
+          name: doc.data().displayName,
+          nombre: doc.data().Nombre,
+          apellido: doc.data().Apellido,
+          loading: false
+        });
+        profileImage = doc.data().profileImage;
+        if (profileImage == null) {
+          profileImage = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+          this.setState({ profileImage })
+        } else {
+          profileImage = doc.data().profileImage
+          this.setState({ profileImage })
+        }
+        this.getSaved();
       });
   }
   catch(error) {
@@ -88,15 +98,15 @@ class Card extends React.Component {
       loading: true,
     });
     var user = firebase.auth().currentUser;
-     db.firestore().collection('Usuario').doc(user.uid).get()
+    db.firestore().collection('Usuario').doc(user.uid).get()
       .then(doc => {
         var saved = [];
-          saved = doc.data().saveImages
-          if (saved != null && saved.includes(this.props.imageUri)) {
-            this.setState({ imageSaved: guardado, loading: false })
-          } else {
-            this.setState({ imageSaved: noGuardado, loading: false })
-          }
+        saved = doc.data().saveImages
+        if (saved != null && saved.includes(this.props.imageUri)) {
+          this.setState({ imageSaved: guardado, loading: false })
+        } else {
+          this.setState({ imageSaved: noGuardado, loading: false })
+        }
       });
   }
 
