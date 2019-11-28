@@ -51,11 +51,18 @@ class SavedImages extends React.Component {
                             if (savedImages != null) {
                                 var saved = savedImages.reverse()
                                 console.log(saved)
-                                this.setState({ imagesUser: saved, loading: false })
+                                this.setState({ imagesUser: saved })
+                                this.setState({
+                                    loading: false
+                                });
                             }
+                            this.setState({ loading: false })
                         } else {
                             // doc.data() will be undefined in this case
                             console.log("No such document!");
+                            this.setState({
+                                loading: false
+                            });
                         }
                     }).catch((error) => {
                         console.log("Error getting document:", error);
@@ -89,16 +96,16 @@ class SavedImages extends React.Component {
         }
         if (this.state.savedImages == null || (Array.isArray(savedImages) && savedImages.length === 0)) {
             return (
-                    <ScrollView contentContainerStyle={styles.container} decelerationRate={'fast'}
-                        refreshControl={
-                            <RefreshControl
-                                refreshing={this.state.loading}
-                                onRefresh={this.retrieveSaved}
-                            />
-                        }>
+                <ScrollView contentContainerStyle={styles.container} decelerationRate={'fast'}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.loading}
+                            onRefresh={this.retrieveSaved}
+                        />
+                    }>
 
-                        <Text style={{ color: 'white', fontSize: 18 }}>NO HAY FOTOS AUN</Text>
-                    </ScrollView>
+                    <Text style={{ color: 'white', fontSize: 18 }}>NO HAY FOTOS AUN</Text>
+                </ScrollView>
 
             );
         }

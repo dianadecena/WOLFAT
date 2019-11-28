@@ -74,6 +74,9 @@ class SavedImages extends React.Component {
                             this.setState({ loading: false })
                         } else {
                             // doc.data() will be undefined in this case
+                            this.setState({
+                                loading: false
+                              });
                         }
                     }).catch((error) => {
                         console.log("Error getting document:", error);
