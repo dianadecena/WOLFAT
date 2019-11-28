@@ -4,8 +4,6 @@ import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
 import CardSave from './components/CardSave'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon, Container, Header, Content, Left } from 'native-base'
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
 class SavedImages extends React.Component {
@@ -89,12 +87,19 @@ class SavedImages extends React.Component {
                 </View>
             );
         }
-
-        if (this.state.imagesUser == null) {
+        if (this.state.savedImages == null || (Array.isArray(savedImages) && savedImages.length === 0)) {
             return (
-                <View style={styles.container}>
-                    <Text>NO POSTS YET</Text>
-                </View>
+                    <ScrollView contentContainerStyle={styles.container} decelerationRate={'fast'}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.loading}
+                                onRefresh={this.retrieveSaved}
+                            />
+                        }>
+
+                        <Text style={{ color: 'white', fontSize: 18 }}>NO HAY FOTOS AUN</Text>
+                    </ScrollView>
+
             );
         }
 

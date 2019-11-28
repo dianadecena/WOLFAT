@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableHighlight } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import db from '../../config';
 import moment from "moment";
@@ -23,7 +23,6 @@ class Card extends React.Component {
       this.getUsernames();
     }
     catch (error) {
-      console.log(error);
     }
   };
 
@@ -34,7 +33,6 @@ class Card extends React.Component {
   }
 
   imageDetails(image, descripcion) {
-    //this.setState({ imageSaved: guardado })
     this.props.navigation.navigate('ImageDetails', {
       image: image,
       descripcion: descripcion,
@@ -90,7 +88,6 @@ class Card extends React.Component {
       });
   }
   catch(error) {
-    console.log(error);
   }
 
   getSaved() {

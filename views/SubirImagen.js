@@ -11,11 +11,9 @@ import Button from './components/Button';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import CardProfile from './components/CardProfile';
-import Dashboard from './components/Module';
 //var storage = firebase.app().storage("gs://wolfat-9ca6f.appspot.com");
 
-var imageResult, uploadResult;
-var userName;
+var imageResult
 
 class SubirImagen extends React.Component {
 
@@ -37,7 +35,6 @@ class SubirImagen extends React.Component {
   }
 
   toProfile = async () => {
-    //await sleep(2000)
     this.props.navigation.navigate('Profile');
   }
 

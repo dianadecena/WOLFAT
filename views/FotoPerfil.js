@@ -73,8 +73,6 @@ class FotoPerfil extends React.Component {
       aspect: [4, 3],
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       this.setState({ image: result.uri });
       imageResult = true
@@ -92,16 +90,15 @@ class FotoPerfil extends React.Component {
       storageRef.put(blob).then(function (snapshot) {
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+     //   console.log('Upload is ' + progress + '% done');
       }).then(function () {
         // Upload completed successfully, now we can get the download URL
         that.setState({ loading: false })
         storageRef.getDownloadURL().then(function (downloadURL) {
-          console.log('File available at', downloadURL);
+         // console.log('File available at', downloadURL);
           firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
               var usuarios = db.firestore().collection('Usuario').doc(user.uid);
-              console.log(user.uid);
               usuarios.update({
                 profileImage: downloadURL
               });

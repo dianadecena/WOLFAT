@@ -1,10 +1,7 @@
 import React, { Component } from "react";
-import { Image, ImageBackground, TouchableHighlight } from 'react-native';
-import back from './assets/back.png';
-import { withNavigation } from 'react-navigation';
+import {ImageBackground, TouchableHighlight } from 'react-native';
 import {
     View,
-    Text,
     StyleSheet,
     TextInput,
     Alert
@@ -27,7 +24,6 @@ class Login extends Component {
     }
 
     toProfile = async () => {
-        //await sleep(2000)
         this.props.navigation.navigate('Init');
     }
 

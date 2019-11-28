@@ -1,11 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshControl, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshControl } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
 import CardLike from './components/CardLike'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Icon, Container, Header, Content, Left } from 'native-base'
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], username, result, uid, timestamp;
 
 class SavedImages extends React.Component {
@@ -33,7 +31,7 @@ class SavedImages extends React.Component {
             this.retrieveSaved();
         }
         catch (error) {
-            console.log(error);
+            Alert.alert('Error', 'No se pudo cargar la data.')
         }
     };
 
@@ -45,8 +43,6 @@ class SavedImages extends React.Component {
 
             firebase.auth().onAuthStateChanged((user) => {
                 if (user) {
-                    console.log(user.uid);
-
                     db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
                         if (doc.exists) {
                             nombre = doc.data().Nombre
@@ -57,7 +53,6 @@ class SavedImages extends React.Component {
                             fotoPerfil = doc.data().profileImage
                             username = doc.data().displayName
                             uid = doc.data().uid
-                            console.log(uid)
                             this.setState({ nombre })
                             this.setState({ apellido })
                             this.setState({ ubicacion })
@@ -76,10 +71,9 @@ class SavedImages extends React.Component {
                             }
                             this.setState({ username })
                             this.setState({ uid })
-                            this.setState({ loading: false})
+                            this.setState({ loading: false })
                         } else {
                             // doc.data() will be undefined in this case
-                            console.log("No such document!");
                         }
                     }).catch((error) => {
                         console.log("Error getting document:", error);
@@ -91,26 +85,9 @@ class SavedImages extends React.Component {
 
         }
         catch (error) {
-            console.log(error);
+            Alert.alert('Error', 'No se pudo cargar la data.')
         }
     }
-
-   /* getUsernames() {  
-      const postsRef = db.firestore().collection("Posts");
-      const that = this;
-
-      that.setState({
-        loading: true,
-     });
-
-      this.unsubscribe = postsRef.get().then(querySnapshot => {
-        querySnapshot.docs.forEach(doc => {
-            if(this.state.imagesUser.includes(doc.data().image) {
-                this.setState({ uid: doc.data().uid, loading: false});
-            }
-        });
-      });
-    }*/
 
     render() {
 
@@ -129,11 +106,17 @@ class SavedImages extends React.Component {
             );
         }
 
-        if (this.state.imagesUser == null) {
+        if (this.state.savedImages == null || (Array.isArray(savedImages) && savedImages.length === 0)) {
             return (
-                <View style={styles.container}>
-                    <Text>NO POSTS YET</Text>
-                </View>
+                <ScrollView contentContainerStyle={styles.container} decelerationRate={'fast'}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={this.state.loading}
+                            onRefresh={this.retrieveSaved}
+                        />
+                    }>
+                    <Text style={{ color: 'white', fontSize: 18 }}>NO HAY FOTOS AUN</Text>
+                </ScrollView>
             );
         }
 

@@ -1,12 +1,9 @@
 import React, { Component } from "react";
-import { withNavigation } from 'react-navigation';
 import {
   View,
-  Text,
   StyleSheet,
   TextInput,
   Alert,
-  Image,
   TouchableHighlight
 } from "react-native";
 import Button from './components/Button';
@@ -34,7 +31,6 @@ class EditarPerfil extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user.uid);
 
         db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
           if (doc.exists) {
@@ -52,10 +48,10 @@ class EditarPerfil extends Component {
             this.setState({ ubicacion })
           } else {
             // doc.data() will be undefined in this case
-            console.log("No such document!");
           }
         }).catch((error) => {
           console.log("Error getting document:", error);
+          Alert.alert('Error', 'No se pudo cargar la data.')
         });
       } else {
         // No user is signed in.
@@ -126,7 +122,7 @@ class EditarPerfil extends Component {
           clearTextOnFocus={true}
         />
         <View style={styles.buttonWrapper} onPress={this.update}>
-          <TouchableHighlight onPress={this.chooseImage}>
+          <TouchableHighlight onPress={this.update}>
             <Button
               text="UPDATE" background="#330D5A" color="white" onPress={this.update}
             />

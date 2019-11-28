@@ -3,7 +3,6 @@ import { StyleSheet, View, ScrollView, Image, Text, ActivityIndicator, RefreshCo
 import { withNavigation } from 'react-navigation';
 import firebase from 'firebase';
 import db from '../config';
-import Button from './components/Button';
 import header from './assets/wolfat2.jpg';
 import CardProfile from './components/CardProfile';
 var nombre, apellido, ubicacion, descripcion, fotoPerfil, imagesUser = [], savedImages = [], items = [], username, result, uid, timestamp;
@@ -35,6 +34,7 @@ class Profile extends React.Component {
     }
     catch (error) {
       console.log(error);
+      Alert.alert('Error', 'No se pudo cargar la data.')
     }
   };
 
@@ -46,7 +46,6 @@ class Profile extends React.Component {
 
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-          console.log(user.uid);
 
           db.firestore().collection('Usuario').doc(user.uid).get().then((doc) => {
             if (doc.exists) {
@@ -55,9 +54,7 @@ class Profile extends React.Component {
               ubicacion = doc.data().Ubicacion
               descripcion = doc.data().Descripcion
               imagesUser = doc.data().images
-              //savedImages = doc.data().savedImages
               fotoPerfil = doc.data().profileImage
-              console.log(fotoPerfil)
               username = doc.data().displayName
               uid = doc.data().uid
               this.setState({ nombre })
@@ -68,10 +65,6 @@ class Profile extends React.Component {
                 var new_images = imagesUser.reverse()
                 this.setState({ imagesUser: new_images })
               }
-              /*if(savedImages.length != null) {
-                var savedImages = savedImages.reverse()
-                this.setState({ savedImages: savedImages })
-              }*/
               if (fotoPerfil == null) {
                 fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
                 this.setState({ fotoPerfil })
@@ -126,7 +119,6 @@ class Profile extends React.Component {
   render() {
     this.state.items = []
     if (Array.isArray(imagesUser) && imagesUser.length && !this.state.loading) {
-      // console.log(this.state.imagesUser)
       for (const [index, image] of this.state.imagesUser.entries()) {
         this.state.items.push(<CardProfile imageUri={image} uid={this.state.uid} opcion={this.state.opcion} key={index} index={index} delete={this.deleteImage} />)
       }

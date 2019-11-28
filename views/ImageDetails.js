@@ -7,7 +7,7 @@ import noLiked from './assets/no-like.png'
 import db from '../config';
 import firebase from 'firebase';
 
-let state = { isLiked: noLiked, likes: 0, uid: '', totalLikes: 0, loading: false, fontLoaded: false, imageURL: ''};
+let state = { isLiked: noLiked, likes: 0, uid: '', totalLikes: 0, loading: false, fontLoaded: false, imageURL: '' };
 
 class ImageDetails extends React.Component {
 
@@ -29,6 +29,7 @@ class ImageDetails extends React.Component {
     }
     catch (error) {
       console.log(error);
+      Alert.alert('Error', 'No se pudo cargar la data.')
     }
   };
 
@@ -39,106 +40,105 @@ class ImageDetails extends React.Component {
       });
 
       var image = this.props.navigation.getParam('image', 'NO-ID')
-      console.log(image)
 
       const postsRef = db.firestore().collection("Posts");
       const that = this;
 
       this.unsubscribe = postsRef.where('image', '==', image).get().then(function (querySnapshot) {
         querySnapshot.forEach(function (doc) {
-          that.setState({ totalLikes: doc.data().like, imageURL: image, uid: doc.data().uid});
+          that.setState({ totalLikes: doc.data().like, imageURL: image, uid: doc.data().uid });
           that.retrieveLike(image);
         });
       });
     }
     catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'No se pudo cargar la data.')
     }
   }
 
-    retrieveLike(image) {
-      var user = firebase.auth().currentUser;
-      const that = this;
+  retrieveLike(image) {
+    var user = firebase.auth().currentUser;
+    const that = this;
 
-      that.setState({
-        loading: true,
-      });
+    that.setState({
+      loading: true,
+    });
 
-      db.firestore().collection('Usuario').doc(user.uid).get()
+    db.firestore().collection('Usuario').doc(user.uid).get()
       .then(doc => {
-      var saved = [];
-          saved = doc.data().likedImages
-        if(saved != null && saved.includes(image)) {
+        var saved = [];
+        saved = doc.data().likedImages
+        if (saved != null && saved.includes(image)) {
           that.setState({ isLiked: liked, loading: false })
         } else {
           that.setState({ isLiked: noLiked, loading: false })
         }
       });
-    }
-  
-    closeImage(){
-        this.props.navigation.navigate('Dashboard');
-    }
+  }
 
-    viewProfile(){
-      this.props.navigation.navigate('ViewProfile', {
-        uid: this.state.uid
+  closeImage() {
+    this.props.navigation.navigate('Dashboard');
+  }
+
+  viewProfile() {
+    this.props.navigation.navigate('ViewProfile', {
+      uid: this.state.uid
+    });
+  }
+
+  likePost(image) {
+    let that = this;
+
+    if (that.state.isLiked == noLiked) {
+      that.setState({ isLiked: liked })
+      db.firestore().collection('Posts').where('image', '==', image).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          that.setState({ id: doc.id, likes: doc.data().like + 1 });
+          that.updatePost(image);
+          that.retrieveData();
+        });
+      });
+    } else {
+      that.setState({ isLiked: noLiked })
+      db.firestore().collection('Posts').where('image', '==', image).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
+          that.setState({ id: doc.id, likes: doc.data().like - 1 });
+          that.updatePost(image);
+          that.retrieveData();
+        });
       });
     }
+  }
 
-    likePost(image) {
-      let that = this;
+  updatePost(image) {
+    let that = this;
+    db.firestore().collection('Posts').doc(this.state.id).update({ like: this.state.likes });
+    that.saveLike(image);
+  }
 
-      if(that.state.isLiked == noLiked) {
-        that.setState({ isLiked: liked })
-        db.firestore().collection('Posts').where('image', '==', image).get().then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            that.setState({ id: doc.id, likes: doc.data().like + 1});
-            that.updatePost(image);
-            that.retrieveData();
-          });
-      });
+  saveLike(image) {
+    var user = firebase.auth().currentUser;
+    let that = this;
+
+    if (user) {
+      const usuario = db.firestore().collection('Usuario').doc(user.uid);
+      if (this.state.isLiked == liked) {
+        usuario.update({
+          likedImages: firebase.firestore.FieldValue.arrayUnion(image)
+        });
       } else {
-        that.setState({ isLiked: noLiked })
-        db.firestore().collection('Posts').where('image', '==', image).get().then(function (querySnapshot) {
-          querySnapshot.forEach(function (doc) {
-            that.setState({ id: doc.id, likes: doc.data().like - 1});
-            that.updatePost(image);
-            that.retrieveData();
-          });
-      });
+        usuario.update({
+          likedImages: firebase.firestore.FieldValue.arrayRemove(image)
+        });
       }
+    } else {
+      // No user is signed in.
     }
+  }
 
-    updatePost(image) {
-      let that = this;
-      db.firestore().collection('Posts').doc(this.state.id).update({ like: this.state.likes });
-      that.saveLike(image);
-    }
-
-    saveLike(image){
-      var user = firebase.auth().currentUser;
-      let that = this;
-  
-        if (user) {
-          const usuario = db.firestore().collection('Usuario').doc(user.uid);      
-            if(this.state.isLiked == liked) {
-              usuario.update({
-                likedImages: firebase.firestore.FieldValue.arrayUnion(image)
-              });
-            } else {
-              usuario.update({
-                likedImages: firebase.firestore.FieldValue.arrayRemove(image)
-              });
-            }
-        } else {
-        // No user is signed in.
-        }
-    }
-
-    componentWillUnmount() {
-        state = this.state;
-    }
+  componentWillUnmount() {
+    state = this.state;
+  }
 
   render() {
     const image = this.props.navigation.getParam('image', 'NO-ID')
@@ -146,7 +146,7 @@ class ImageDetails extends React.Component {
     const nombre = this.props.navigation.getParam('nombre', 'NO-ID')
     const apellido = this.props.navigation.getParam('apellido', 'NO-ID')
 
-    
+
     if (this.state.loading) {
       return (
         <View style={styles.container}>
@@ -156,40 +156,44 @@ class ImageDetails extends React.Component {
     }
 
     return (
-      <ImageBackground source={{uri: image.toString()}} 
-      style={styles.backgroundContainer}>
-          <View style={{marginLeft: 300, marginTop: -10}} onStartShouldSetResponder={() => this.closeImage()}>
-              <Image source={close} style={{width: 26, height: 26}}></Image>
+      <ImageBackground source={{ uri: image.toString() }}
+        style={styles.backgroundContainer}>
+        <View style={{ marginLeft: 300, marginTop: -10 }} onStartShouldSetResponder={() => this.closeImage()}>
+          <Image source={close} style={{ width: 26, height: 26 }}></Image>
+        </View>
+        <View style={styles.card}>
+
+          <View style={{ flex: 1, padding: 6, height: 50, marginTop: 20, marginLeft: 10 }}>
+            <Text style={{ color: 'white', fontSize: 36, fontFamily: 'old-london' }}>{nombre} {apellido}</Text>
           </View>
-          <View style={styles.card}>
 
-        <View style={{flex:1, padding:6, height: 50, marginTop: 20, marginLeft: 10}}>
-        <Text style={{color:'white', fontSize: 36, fontFamily: 'old-london'}}>{nombre} {apellido}</Text>
-        </View>
-
-        <View style={{padding:6, height: 60, alignItems:'center', 
-        justifyContent:'center'}}>
-        <Text style={{color:'white', fontSize:12}}>{descripcion}</Text>
-        </View>
-
-        <View style={{alignItems: 'center', justifyContent:'center', marginTop:30}}>
-        <View style={{width: 150, padding:6}}>
-        <Button title="VER PERFIL" color="black" onPress={() => this.viewProfile()}></Button>
-        </View>
-        </View>
-
-        <View style={{display:'flex', flexDirection:'row', height: 60, marginTop: 30}}>
-        <View style={{padding:6, height: 60, alignItems:'center', 
-        justifyContent:'center'}}>
-        <Text style={{color:'white', fontSize:12, marginLeft: 10}}>{this.state.totalLikes} persons liked this post</Text>
-        </View>
-        
-        <View style={{padding:6, height: 50}} onStartShouldSetResponder={() => this.likePost(image)}>
-        <Image source={this.state.isLiked} style={{width: 40, height:40, marginLeft: 70}}></Image>
-        </View>
-        </View>
-
+          <View style={{
+            padding: 6, height: 60, alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            <Text style={{ color: 'white', fontSize: 12 }}>{descripcion}</Text>
           </View>
+
+          <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 30 }}>
+            <View style={{ width: 150, padding: 6 }}>
+              <Button title="VER PERFIL" color="black" onPress={() => this.viewProfile()}></Button>
+            </View>
+          </View>
+
+          <View style={{ display: 'flex', flexDirection: 'row', height: 60, marginTop: 30 }}>
+            <View style={{
+              padding: 6, height: 60, alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Text style={{ color: 'white', fontSize: 12, marginLeft: 10 }}>{this.state.totalLikes} persons liked this post</Text>
+            </View>
+
+            <View style={{ padding: 6, height: 50 }} onStartShouldSetResponder={() => this.likePost(image)}>
+              <Image source={this.state.isLiked} style={{ width: 40, height: 40, marginLeft: 70 }}></Image>
+            </View>
+          </View>
+
+        </View>
       </ImageBackground>
     );
   }

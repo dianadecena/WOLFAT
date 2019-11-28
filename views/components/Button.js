@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableNativeFeedback, Platform, TouchableHighlight} from 'react-native';
-import PropTypes from 'prop-types';
+import { StyleSheet, View, Text, TouchableHighlight} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class Button extends React.Component {
@@ -33,9 +32,7 @@ export default class Button extends React.Component {
 
 const styles = StyleSheet.create({
   wrapper: {
-    //overflow: 'hidden',
     borderRadius: 40,
-    //marginBottom: 15,
     alignItems: 'center',
     justifyContent: 'center',
   },

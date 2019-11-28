@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text, 
-ActivityIndicator, Dimensions, FlatList, SafeAreaView, RefreshControl, LayoutAnimation } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, FlatList, SafeAreaView, RefreshControl, LayoutAnimation } from 'react-native';
 import db from '../../config';
 import Card from './Card';
 
@@ -35,7 +34,7 @@ class Module extends React.Component {
         this.retrieveData();
     }
     catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'No se pudo cargar la data.')
     }
   };
 
@@ -58,7 +57,7 @@ class Module extends React.Component {
     
     }
     catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'No se pudo cargar la data.')
     }
   };
 
@@ -72,14 +71,6 @@ class Module extends React.Component {
 
   render() {
     LayoutAnimation.easeInEaseOut();
-
-    if(this.state.posts == null) {
-      return (
-        <View style={styles.container}>
-          <Text>NO POSTS YET</Text>
-        </View>
-      );
-    }
 
     return (
       <SafeAreaView style={styles.backgroundContainer}>

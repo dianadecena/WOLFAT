@@ -1,11 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, Text, Alert, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Image, Text, Alert } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import db from '../../config';
-import moment from "moment";
 import papelera from '../assets/delete.png';
 import firebase from 'firebase'
-import profile from '../Profile';
 
 class CardProfile extends React.Component {
 
@@ -25,7 +23,7 @@ class CardProfile extends React.Component {
       this.getUsernames();
     }
     catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'No se pudo cargar la data.')
     }
   };
 
@@ -66,7 +64,7 @@ class CardProfile extends React.Component {
 
   }
   catch(error) {
-    console.log(error);
+    Alert.alert('Error', 'No se pudo cargar la data.')
   }
 
   componentWillUnmount() {
@@ -98,7 +96,7 @@ class CardProfile extends React.Component {
     postsRef.doc(this.state.imageID).delete().then(function () {
       console.log("Document successfully deleted!");
     }).catch(function (error) {
-      console.error("Error removing document: ", error);
+      Alert.alert(Error, 'No se pudo borrar exitosamente.')
     });
   }
 
@@ -127,7 +125,7 @@ class CardProfile extends React.Component {
             }} />
             <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
             <View onStartShouldSetResponder={() => this.deleteAlert()}>
-                <Image onPress={() => this.deleteAlert()} source={papelera} style={{ width: 26, height: 26, marginLeft: 265, marginTop: -25 }} />
+              <Image onPress={() => this.deleteAlert()} source={papelera} style={{ width: 26, height: 26, marginLeft: 265, marginTop: -25 }} />
             </View>
           </View>
         </View>

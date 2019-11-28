@@ -4,13 +4,7 @@ import { Container, Content, Button, ListItem, Text, Icon, Left, Body, Right } f
 import firebase from 'firebase';
 import db from "../config";
 
-const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
 export default class ListIconExample extends Component {
-
-
-
     toUpdate = async () => {
         this.props.navigation.navigate('EditarPerfil');
     }

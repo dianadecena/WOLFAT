@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import back from './assets/back.png';
 import {
   View,
-  Text,
   StyleSheet,
   TextInput,
   Alert,
@@ -24,7 +22,6 @@ class SignUp extends Component {
   }
 
   toProfile = async () => {
-    //await sleep(2000)
     this.props.navigation.navigate('Init');
   }
 

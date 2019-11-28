@@ -26,7 +26,7 @@ class CardSave extends React.Component {
             this.getIDs();
         }
         catch (error) {
-            console.log(error);
+            Alert.alert('Error', 'No se pudo cargar la data.')
         }
     };
 
@@ -56,63 +56,61 @@ class CardSave extends React.Component {
             // No user is signed in.
         }
     }
-    
-    getIDs() {  
+
+    getIDs() {
         const postsRef = db.firestore().collection("Posts");
-        const that = this;
         postsRef.get().then(querySnapshot => {
-          querySnapshot.docs.forEach(doc => {
-              if(this.props.imageUri == doc.data().image) {
-                  console.log(doc.data().uid)
-                  this.getUsernames(doc.data().uid)
-              }
-          });
+            querySnapshot.docs.forEach(doc => {
+                if (this.props.imageUri == doc.data().image) {
+                    this.getUsernames(doc.data().uid)
+                }
+            });
         });
     }
 
-    getUsernames(uid) {  
+    getUsernames(uid) {
         const userRef = db.firestore().collection("Usuario");
         const that = this;
-        console.log(uid)
 
         userRef.doc(uid).get().then(doc => {
-                  that.setState({ name: doc.data().displayName,
-                    profileImage: doc.data().profileImage,
-                    uid: uid})
-                  console.log(this.state.name)
-          });
+            that.setState({
+                name: doc.data().displayName,
+                profileImage: doc.data().profileImage,
+                uid: uid
+            })
+        });
     }
 
     viewProfile(uid) {
         this.props.navigation.navigate('ViewProfile', {
-          uid: uid,
+            uid: uid,
         });
     }
-      
+
     componentWillUnmount() {
         this._isMounted = false;
     }
 
     render() {
-            return (
-                <View style={styles.card}>
-                    <View onPress={() => this.imageDetails(this.props.imageUri)}>
-                    </View>
-                    <Image source={{ uri: this.props.imageUri.toString() }} style={styles.topCard} />
-                    <View style={styles.bottomCard}>
+        return (
+            <View style={styles.card}>
+                <View onPress={() => this.imageDetails(this.props.imageUri)}>
+                </View>
+                <Image source={{ uri: this.props.imageUri.toString() }} style={styles.topCard} />
+                <View style={styles.bottomCard}>
                     <TouchableHighlight onPress={() => this.viewProfile(this.state.uid)} >
                         <Image source={{ uri: this.state.profileImage }} style={{
                             borderRadius: 15, width: 30, height: 30,
                             marginLeft: 10, marginTop: 5
                         }} />
-                     </TouchableHighlight>
-                        <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
-                        <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)} style={{justifyContent: 'center', alignItems: 'center'}}>
-                            <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: '85%', marginTop: -25 }} />
-                        </View>
+                    </TouchableHighlight>
+                    <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
+                    <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)} style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: '85%', marginTop: -25 }} />
                     </View>
                 </View>
-            );
+            </View>
+        );
     }
 }
 
