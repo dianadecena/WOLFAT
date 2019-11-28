@@ -63,50 +63,58 @@ class SignUp extends Component {
     const { nombre, apellido, username, email, password, ubicacion } = this.state
     if (this.state.nombre != '' && this.state.apellido != '' && this.state.username != '' && this.state.password != '' && this.state.email != '' && this.state.ubicacion != '') {
       if (this.state.nombre.search(/^[a-zA-Z]{5,12}$/) === -1) {
-        Alert.alert('Error', 'El nombre no puede contener espacios en blanco, números ni caracteres especiales')
+        Alert.alert('Error', 'El nombre debe tener como minimo 5 letras, no puede contener espacios en blanco, números ni caracteres especiales')
       } else {
         if (this.state.apellido.search(/^[a-zA-Z]{5,12}$/) === -1) {
-          Alert.alert('Error', 'El apellido no puede contener espacios en blanco, números ni caracteres especiales')
+          Alert.alert('Error', 'El apellido debe tener como minimo 5 letras, no puede contener espacios en blanco, números ni caracteres especiales')
         } else {
           if (this.state.username.search(/^[a-z\d]{5,12}$/) === -1) {
-            Alert.alert('Error', 'El apellido no puede contener espacios en blanco ni caracteres especiales')
+            Alert.alert('Error', 'El usuario debe tener como minimo 5 letras, no puede contener espacios en blanco ni caracteres especiales')
           } else {
-            if (this.state.ubicacion.search(/^[a-zA-Z]{5,20}$/) === -1) {
-              Alert.alert('Error', 'La ubicacion no puede contener espacios en blanco, numeros ni caracteres especiales')
+            if (this.state.email.search(/^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,8})(\.[a-z]{2,8})?$/)=== -1) {
+              Alert.alert('Error', 'El Email es incorrecto')
             } else {
-              try {
-                that.setState({
-                  loading: true,
-                });
-                db.firestore().collection('Usuario').where('displayName', '==', username).get()
-                  .then((snapshot) => {
-                    if (snapshot.empty) {
-                      db.firestore().collection('Usuario').where('email', '==', email).get().then((snapshot) => {
+              if (this.state.password.search(/^[#\w@_-]{6,20}$/) === -1) {
+                Alert.alert('Error', 'La contraseña debe tener como minimo 6 caracteres, y no puede contener caracteres especiales')
+              } else {
+                if (this.state.ubicacion.search(/^[a-zA-Z]{5,20}$/) === -1) {
+                  Alert.alert('Error', 'La ubicacion debe tener como minimo 5 letras, no puede contener espacios en blanco, numeros ni caracteres especiales')
+                } else {
+                  try {
+                    that.setState({
+                      loading: true,
+                    });
+                    db.firestore().collection('Usuario').where('displayName', '==', username).get()
+                      .then((snapshot) => {
                         if (snapshot.empty) {
-                          this.dbRegister()
-                        } else {
+                          db.firestore().collection('Usuario').where('email', '==', email).get().then((snapshot) => {
+                            if (snapshot.empty) {
+                              this.dbRegister()
+                            } else {
+                              that.setState({
+                                loading: false,
+                              });
+                              Alert.alert('Error', 'El email ya está en uso')
+                            }
+                          }).catch((err) => {
+                            console.log('Error getting documents', err);
+                          });
+
+                        }
+                        else {
                           that.setState({
                             loading: false,
                           });
-                          Alert.alert('Error', 'El email ya está en uso')
+                          Alert.alert('Error', 'El usuario ya está en uso')
                         }
-                      }).catch((err) => {
+                      })
+                      .catch((err) => {
                         console.log('Error getting documents', err);
                       });
-
-                    }
-                    else {
-                      that.setState({
-                        loading: false,
-                      });
-                      Alert.alert('Error', 'El usuario ya está en uso')
-                    }
-                  })
-                  .catch((err) => {
-                    console.log('Error getting documents', err);
-                  });
-              } catch (e) {
-                alert(e)
+                  } catch (e) {
+                    alert(e)
+                  }
+                }
               }
             }
           }
@@ -152,7 +160,7 @@ class SignUp extends Component {
           />
           <TextInput
             style={styles.input}
-            placeholder='Username (5-12 Caracteres)'
+            placeholder='Usuario (5-12 Caracteres)'
             autoCapitalize="none"
             placeholderTextColor='white'
             onChangeText={(username) => this.setState({ username })}
@@ -160,7 +168,7 @@ class SignUp extends Component {
           />
           <TextInput
             style={styles.input}
-            placeholder='Password'
+            placeholder='Contraseña'
             secureTextEntry={true}
             autoCapitalize="none"
             placeholderTextColor='white'

@@ -77,10 +77,6 @@ export default class ListIconExample extends Component {
                         </Right>
                     </ListItem>*/
 
-
-
-
-
     render() {
         return (
             <Container style={styles.backgroundContainer}>

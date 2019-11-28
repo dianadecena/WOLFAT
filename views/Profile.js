@@ -132,14 +132,6 @@ class Profile extends React.Component {
       );
     }
 
-    /*if (this.state.imagesUser == null) {
-      return (
-        <View style={styles.container}>
-          <Text>NO POSTS YET</Text>
-        </View>
-      );
-    }*/
-
     return (
       <ScrollView style={styles.backgroundContainer} decelerationRate={'fast'}
         refreshControl={

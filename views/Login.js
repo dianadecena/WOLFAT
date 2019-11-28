@@ -58,7 +58,7 @@ class Login extends Component {
                     <View style={{ marginTop: hp('20%') }}>
                         <TextInput
                             style={styles.input}
-                            placeholder='email'
+                            placeholder='Email'
                             autoCapitalize="none"
                             placeholderTextColor='white'
                             onChangeText={(email) => this.setState({ email })}
@@ -66,7 +66,7 @@ class Login extends Component {
                         />
                         <TextInput
                             style={styles.input}
-                            placeholder='password'
+                            placeholder='Contraseña'
                             secureTextEntry={true}
                             autoCapitalize="none"
                             placeholderTextColor='white'

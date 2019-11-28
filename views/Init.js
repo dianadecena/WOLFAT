@@ -40,17 +40,17 @@ class Init extends React.Component {
           ) : null}
         </View>
         <View style={{ marginTop: hp('5%'), alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: '#ccff00', fontSize: hp('3.5%'), fontWeight: 'bold' }}>WELCOME</Text>
+          <Text style={{ color: '#ccff00', fontSize: hp('3.5%'), fontWeight: 'bold' }}>BIENVENIDO</Text>
         </View>
         <View style={{ marginTop: hp('7.5%'), alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.buttonWrapper}>
             <TouchableHighlight onPress={() => this.onLogIn()} >
-              <Button text="LOG IN" background="black" color="white" onPress={this.onLogIn} />
+              <Button text="INICIAR SESION" background="black" color="white" onPress={this.onLogIn} />
             </TouchableHighlight>
           </View>
           <View style={styles.buttonWrapper} onStartShouldSetResponder={() => this.onSignUp()}>
             <TouchableHighlight onPress={() => this.onSignUp()}>
-              <Button text="SIGN UP" background="white" color="black" onPress={this.onSignUp} />
+              <Button text="CREAR CUENTA" background="white" color="black" onPress={this.onSignUp} />
             </TouchableHighlight>
           </View>
         </View>

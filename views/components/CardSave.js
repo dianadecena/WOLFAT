@@ -104,7 +104,7 @@ class CardSave extends React.Component {
                             marginLeft: 10, marginTop: 5
                         }} />
                     </TouchableHighlight>
-                    <Text style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
+                    <Text onPress={() => this.viewProfile(this.state.uid)} style={{ color: 'white', marginLeft: 47, marginTop: -25 }}>{this.state.name}</Text>
                     <View onStartShouldSetResponder={() => this.saveImage(this.props.imageUri)} style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Image source={this.state.imageSaved} style={{ width: 26, height: 26, marginLeft: '85%', marginTop: -25 }} />
                     </View>

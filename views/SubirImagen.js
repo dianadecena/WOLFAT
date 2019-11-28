@@ -103,7 +103,7 @@ class SubirImagen extends React.Component {
 
           <TextInput
             style={styles.input}
-            placeholder='Descripcion'
+            placeholder='Description'
             autoCapitalize="none"
             placeholderTextColor='#000000'
             onChangeText={(descripcion) => this.setState({ descripcion })}
