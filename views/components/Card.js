@@ -78,7 +78,7 @@ class Card extends React.Component {
         });
         profileImage = doc.data().profileImage;
         if (profileImage == null) {
-          profileImage = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+          profileImage = 'https://firebasestorage.googleapis.com/v0/b/wolfat-final.appspot.com/o/profile.jpg?alt=media&token=7f35015c-d7af-44d8-811d-bf794e1ff3c9'
           this.setState({ profileImage })
         } else {
           profileImage = doc.data().profileImage
@@ -91,10 +91,11 @@ class Card extends React.Component {
   }
 
   getSaved() {
+    var user = firebase.auth().currentUser;
+
     this.setState({
       loading: true,
     });
-    var user = firebase.auth().currentUser;
     db.firestore().collection('Usuario').doc(user.uid).get()
       .then(doc => {
         var saved = [];

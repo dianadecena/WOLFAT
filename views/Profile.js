@@ -66,7 +66,7 @@ class Profile extends React.Component {
                 this.setState({ imagesUser: new_images })
               }
               if (fotoPerfil == null) {
-                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-7c5c9.appspot.com/o/profile.jpg?alt=media&token=1089243a-2aa6-4648-a318-604e0c4a9503'
+                fotoPerfil = 'https://firebasestorage.googleapis.com/v0/b/wolfat-final.appspot.com/o/profile.jpg?alt=media&token=7f35015c-d7af-44d8-811d-bf794e1ff3c9'
                 this.setState({ fotoPerfil })
               } else {
                 fotoPerfil = doc.data().profileImage
