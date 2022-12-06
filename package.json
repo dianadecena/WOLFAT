@@ -10,7 +10,7 @@
   "dependencies": {
     "@google-cloud/storage": "^4.0.0",
     "expo": "^35.0.0",
-    "expo-cli": "^3.4.1",
+    "expo-cli": "^6.0.8",
     "expo-google-app-auth": "^7.0.0",
     "expo-image-picker": "~7.0.0",
     "firebase": "^7.2.0",
